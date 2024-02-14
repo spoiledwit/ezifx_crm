@@ -61,9 +61,12 @@ const Layout = () => {
 
   return (
     <>
-      <div>
-        <Navbar />
-      </div>
+      {user && (
+        <div>
+          <Navbar />
+        </div>
+      )}
+
       <div className="min-h-screen flex w-full">
         <Toaster />
         {user && (
