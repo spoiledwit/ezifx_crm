@@ -41,6 +41,9 @@ const Login = () => {
     try {
       setLoading(true);
       const data = await login(values.email, values.password);
+      if (!data.user) {
+        throw new Error("An error occurred");
+      }
       setUser(data.user);
       localStorage.setItem("token", data.token);
       toast({
@@ -48,9 +51,17 @@ const Login = () => {
         description: "You have successfully logged in",
       });
     } catch (error: any) {
+      if (error.response.data) {
+        toast({
+          title: "An error occurred",
+          description: error.response.data,
+          variant: "destructive",
+        });
+      }
+      console.error(error);
       toast({
         title: "An error occurred",
-        description: error.response.data,
+        description: "An error occurred while trying to login",
         variant: "destructive",
       });
     } finally {
