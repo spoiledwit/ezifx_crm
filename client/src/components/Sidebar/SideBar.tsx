@@ -190,7 +190,7 @@ const SideBar = () => {
   const pathname = useLocation().pathname;
 
   return (
-    <div className="h-screen w-full p-4 overflow-auto flex flex-col shadow-xl shadow-[#ffe5bb] bg-[#1d1d1d] " id="sidebar">
+    <div className="pb-20 h-screen w-full p-4 overflow-auto flex flex-col shadow-xl shadow-[#ffe5bb] bg-[#1d1d1d] " id="sidebar">
       {links.map((link, index) => (
         <div
           key={index}

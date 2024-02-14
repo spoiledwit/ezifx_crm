@@ -8,6 +8,7 @@ import { Toaster } from "./components/ui/toaster";
 import SideBar from "./components/Sidebar/SideBar";
 import { useToast } from "./components/ui/use-toast";
 import Navbar from "./components/Navbar/Navbar";
+import './layout.css'
 
 const Layout = () => {
   const { user } = useAuthStore();
@@ -67,7 +68,7 @@ const Layout = () => {
         </div>
       )}
 
-      <div className="min-h-screen flex w-full">
+      <div className="min-h-screen flex relative w-full">
         <Toaster />
         {user && (
           <>
@@ -77,7 +78,7 @@ const Layout = () => {
           </>
         )}
 
-        <div className="w-full h-screen">
+        <div className="w-full h-screen" id="outlet">
           <Outlet />
         </div>
       </div>
