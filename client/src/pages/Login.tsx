@@ -60,14 +60,14 @@ const Login = () => {
 
   return (
     <Form {...form}>
-      <div className="flex flex-col w-full h-screen items-center justify-center bg-gray-100">
-        <div>
+      <div className="flex flex-col w-full h-screen items-center justify-center bg-[#F5AE39]">
+        <div className="p-10 rounded-lg bg-white shadow-xl">
           <form
             onSubmit={form.handleSubmit(onSubmit)}
             className="w-[400px] space-y-2 max-h-[900px]"
           >
             <div className="mb-6 w-full space-y-2">
-              <h1 className="text-center font-semibold text-3xl  text-black">
+              <h1 className="text-center font-semibold text-3xl text-black ">
                 Login to your account{" "}
               </h1>
               <p className="text-center text-gray-500 text-sm">

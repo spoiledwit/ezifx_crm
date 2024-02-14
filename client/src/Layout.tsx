@@ -7,12 +7,13 @@ import { loginBack } from "./hooks/auth";
 import { Toaster } from "./components/ui/toaster";
 import SideBar from "./components/Sidebar/SideBar";
 import { useToast } from "./components/ui/use-toast";
+import Navbar from "./components/Navbar/Navbar";
 
 const Layout = () => {
   const { user } = useAuthStore();
   const { setSocket, socket } = useSocketStore();
   const { setUser, setToken } = useAuthStore();
-  const {toast} = useToast();
+  const { toast } = useToast();
 
   useEffect(() => {
     handleLoginBack();
@@ -38,7 +39,7 @@ const Layout = () => {
       toast({
         title: (error.message),
         description: "Please try again",
-        variant:"destructive",
+        variant: "destructive",
       })
     }
   };
@@ -59,18 +60,25 @@ const Layout = () => {
   }, [user, socket]);
 
   return (
-    <div className="min-h-screen flex w-full">
-      <Toaster />
-      {user && (
-        <div className="w-[350px]">
-          <SideBar />
-        </div>
-      )}
-
-      <div className="w-full h-screen">
-        <Outlet />
+    <>
+      <div>
+        <Navbar />
       </div>
-    </div>
+      <div className="min-h-screen flex w-full">
+        <Toaster />
+        {user && (
+          <>
+            <div className="w-[350px]">
+              <SideBar />
+            </div>
+          </>
+        )}
+
+        <div className="w-full h-screen">
+          <Outlet />
+        </div>
+      </div>
+    </>
   );
 };
 
