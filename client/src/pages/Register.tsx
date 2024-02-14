@@ -78,9 +78,17 @@ const Register = () => {
       form.reset();
       navigate("/login");
     } catch (error: any) {
+      if (error.response.data) {
+        toast({
+          title: "An error occurred",
+          description: error.response.data,
+          variant: "destructive",
+        });
+      }
+      console.error(error);
       toast({
         title: "An error occurred",
-        description: error.response.data,
+        description: "An error occurred while trying to create an account",
         variant: "destructive",
       });
     } finally {
