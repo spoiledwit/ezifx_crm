@@ -76,7 +76,7 @@ const Register = () => {
         description: "You have successfully created an account",
       });
       form.reset();
-      navigate("/login");
+      navigate("/");
     } catch (error: any) {
       toast({
         title: "An error occurred",

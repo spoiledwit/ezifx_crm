@@ -142,11 +142,11 @@ const SideBar = () => {
   const pathname = useLocation().pathname;
 
   return (
-    <div className="h-screen w-full p-4 overflow-auto flex flex-col shadow-xl shadow-[#ffe5bb] bg-[#2d2d2d] " id="sidebar">
+    <div className="h-screen w-full p-4 overflow-auto flex flex-col shadow-xl shadow-[#ffe5bb] bg-[#1d1d1d] " id="sidebar">
       {links.map((link, index) => (
         <div
           key={index}
-          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#e8a130] hover:bg-opacity-20 transition
+          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#2d2d2d]  transition
           ${pathname === link.slug && "bg-gray-100"}
           `}
         >
