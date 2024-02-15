@@ -53,24 +53,17 @@ const Home = () => {
   const { user } = useAuthStore();
 
   return (
-    <div className="min-h-screen bg-white border">
+    <div className="min-h-screen bg-[#fff09e] dark:bg-white bg-opacity-30 border pb-16">
       <div className="flex justify-center ">
         <div className="w-full py-10 px-5 flex flex-col gap-8">
-          <div className="w-full flex flex-row justify-between gap-5 border rounded-lg p-5 shadow-xl">
+          <div className="w-full flex flex-row justify-between gap-5 border bg-white rounded-lg p-5 shadow-xl">
             <div>
               <h1 className="px-5 text-4xl font-semibold">$8,185</h1>
               <LineChart
                 width={500}
                 height={300}
                 data={data}
-
-                // margin={{
                 className="mt-5"
-              //   top: 5,
-              //   right: 30,
-              //   left: 20,
-              //   bottom: 5,
-              // }}
               >
                 <CartesianGrid strokeDasharray="2 2" />
                 <XAxis dataKey="name" fontSize={12} />
@@ -78,7 +71,6 @@ const Home = () => {
                 <Tooltip />
                 <Legend />
                 <Line type="monotone" dataKey="pv" stroke="#f5ae39" strokeWidth={2} dot={false} />
-                {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" dot={false} /> */}
               </LineChart>
             </div>
             <div className="w-1/3 flex flex-col justify-between">
@@ -91,24 +83,17 @@ const Home = () => {
                   <p>Desposited Charge: $500</p>
                 </div>
               </div>
-              <Button className="bg-[#f5ae39] hover:bg-[#e2a43f] mb-6">View Deposits</Button>
+              <Button className="bg-[#f5ae39] text-white dark:text-white dark:hover:bg-[#e2a43f] dark:bg-[#f5ae39] hover:bg-[#e2a43f] mb-6">View Deposits</Button>
             </div>
           </div>
-          <div className="w-full flex flex-row justify-between gap-5 border rounded-lg p-5 shadow-xl">
+          <div className="w-full flex flex-row bg-white justify-between gap-5 border rounded-lg p-5 shadow-xl">
             <div>
               <h1 className="px-5 text-4xl font-semibold">$5,395</h1>
               <LineChart
                 width={500}
                 height={300}
                 data={data}
-
-                // margin={{
                 className="mt-5"
-              //   top: 5,
-              //   right: 30,
-              //   left: 20,
-              //   bottom: 5,
-              // }}
               >
                 <CartesianGrid strokeDasharray="2 2" />
                 <XAxis dataKey="name" fontSize={12} />
@@ -116,7 +101,6 @@ const Home = () => {
                 <Tooltip />
                 <Legend />
                 <Line type="monotone" dataKey="pv" stroke="#f5ae39" strokeWidth={2} dot={false} />
-                {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" dot={false} /> */}
               </LineChart>
             </div>
             <div className="w-1/3 flex flex-col justify-between">
@@ -124,31 +108,16 @@ const Home = () => {
                 <p className="text-2xl font-semibold">Total Withdrawals</p>
                 <p className=" opacity-50 mt-3">Total amount withdrawed this month by all the users</p>
                 <div className="flex flex-col mt-2 opacity-80 ">
-                  <p>Pending Withdrawals: 32</p>
-                  <p>Rejected Withdrawals: 130</p>
-                  <p>Withdrawal Charge: $142</p>
+                  <p>Pending Withdrawals: <span className="font-medium">32</span></p>
+                  <p>Rejected Withdrawals: <span className="font-medium">130</span></p>
+                  <p>Withdrawal Charge: <span className="font-medium">$142</span></p>
                 </div>
               </div>
-              <Button className="bg-[#f5ae39] hover:bg-[#e2a43f] mb-6">View Withdrawals</Button>
+              <Button className="bg-[#f5ae39] text-white dark:text-white dark:hover:bg-[#e2a43f] dark:bg-[#f5ae39] hover:bg-[#e2a43f] mb-6">View Withdrawals</Button>
             </div>
           </div>
-
-          {/* {user ? (
-            <div>
-              <h1 className="font-medium text-3xl text-black mb-1">
-                Welcome {user.name}!
-              </h1>
-              <h2 className="text-md text-black mb-6">
-                Your email is: {user.email}!
-              </h2>
-            </div>
-          ) : (
-            <h1 className="font-medium text-3xl text-black mb-6">
-              Login first.
-            </h1>
-          )} */}
-
         </div>
+
         <div className="w-1/2 flex flex-col gap-3 pt-10 pr-5">
           <SolidCard title="Total Users" data={1000} bgStyle="bg-[#FAD79C]" titleStyle="text-[#D29125]" dataStyle="text-[#D29125]" />
           <SolidCard title="Active Users" data={"2k+"} bgStyle="bg-white  border-2 border-[#fad79c]" titleStyle="text-[#D29125]" dataStyle="text-[#D29125]" />

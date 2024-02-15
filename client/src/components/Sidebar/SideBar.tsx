@@ -190,11 +190,11 @@ const SideBar = () => {
   const pathname = useLocation().pathname;
 
   return (
-    <div className="pb-20 h-screen w-full p-4 overflow-auto flex flex-col shadow-xl shadow-[#ffe5bb] bg-[#1d1d1d] " id="sidebar">
+    <div className="pb-20 h-screen w-full p-4 overflow-auto flex flex-col shadow-xl shadow-[#ffe5bb] bg-white dark:bg-[#1d1d1d] " id="sidebar">
       {links.map((link, index) => (
         <div
           key={index}
-          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#2d2d2d]  transition
+          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#e8a130] hover:bg-opacity-20 dark:hover:bg-[#2d2d2d]  transition
           ${pathname === link.slug && "bg-gray-100"}
           `}
         >
@@ -203,16 +203,16 @@ const SideBar = () => {
               <div className="text-white bg-[#F5AE39] p-2 text-xl rounded-xl font-semibold">
                 {link.icon}
               </div>
-              <div className="text-white md:block hidden font-semibold">{link.title}</div>
+              <div className="text-black dark:text-white md:block hidden ">{link.title}</div>
             </div>
           </Link>
         </div>
       ))}
-      <p className="font-semibold p-4 text-white">Settings</p>
+      <p className="font-semibold p-4 text-black dark:text-white">Settings</p>
       {settings.map((link, index) => (
         <div
           key={index}
-          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#2d2d2d] transition
+          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#fff09e]  dark:hover:bg-[#2d2d2d] transition
           ${pathname === link.slug && "bg-gray-100"}
           `}
         >
@@ -221,16 +221,16 @@ const SideBar = () => {
               <div className="text-white bg-[#F5AE39] p-2 text-xl rounded-xl font-semibold">
                 {link.icon}
               </div>
-              <div className="text-white md:block hidden">{link.title}</div>
+              <div className="text-black dark:text-white md:block hidden">{link.title}</div>
             </div>
           </Link>
         </div>
       ))}
-      <p className="font-semibold p-4 text-white">Frontend Manager</p>
+      <p className="font-semibold p-4  text-black dark:text-white">Frontend Manager</p>
       {frontendManager.map((link, index) => (
         <div
           key={index}
-          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#2d2d2d] transition
+          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#fff09e] dark:hover:bg-[#2d2d2d] transition
           ${pathname === link.slug && "bg-gray-100"}
           `}
         >
@@ -239,16 +239,16 @@ const SideBar = () => {
               <div className="text-white bg-[#F5AE39] p-2 text-xl rounded-xl font-semibold">
                 {link.icon}
               </div>
-              <div className="text-white md:block hidden">{link.title}</div>
+              <div className="text-black dark:text-white md:block hidden">{link.title}</div>
             </div>
           </Link>
         </div>
       ))}
-      <p className="font-semibold p-4 text-white">Extra</p>
+      <p className="font-semibold p-4 text-black dark:text-white">Extra</p>
       {extra.map((link, index) => (
         <div
           key={index}
-          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#2d2d2d] transition
+          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#fff09e] dark:hover:bg-[#2d2d2d] transition
           ${pathname === link.slug && "bg-gray-100"}
           `}
         >
@@ -257,14 +257,14 @@ const SideBar = () => {
               <div className="text-white bg-[#F5AE39] p-2 text-xl rounded-xl font-semibold">
                 {link.icon}
               </div>
-              <div className="text-white md:block hidden">{link.title}</div>
+              <div className="text-black dark:text-white md:block hidden">{link.title}</div>
             </div>
           </Link>
         </div>
       ))}
       <Button
         onClick={() => logout()}
-        className="w-full bg-[#F5AE39] hover:bg-[#e8a130] h-10 mt-5 mb-6 flex md:gap-2 items-center justify-center">
+        className="w-full bg-[#F5AE39] hover:bg-[#e8a130] dark:bg-[#f5ae39] dark:hover:bg-[#e8a130] h-10 mt-5 mb-6 flex md:gap-2 items-center justify-center">
         <p
           className="md:block hidden text-white font-semibold"
         >
