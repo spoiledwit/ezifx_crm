@@ -126,244 +126,246 @@ const Register = () => {
 
   return (
     <Form {...form}>
-      <div className="flex w-full h-screen items-center justify-center bg-gray-100">
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-[400px] space-y-2 max-h-[900px]"
-        >
-          <div className="mb-6 w-full space-y-2">
-            <h1 className="text-center font-semibold text-3xl  text-black">
-              Sign Up for an account{" "}
-            </h1>
-            <p className="text-center text-gray-500 text-sm">
-              {steps === 1
-                ? "Let's start with your name, email and password"
-                : "Now we need some more information"}
+      <div className="flex w-full h-screen items-center justify-center bg-primary">
+        <div className="border p-10 rounded-lg bg-white">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-[400px] space-y-2 max-h-[900px]"
+          >
+            <div className="mb-6 w-full space-y-2">
+              <h1 className="text-center font-semibold text-3xl  text-black">
+                Sign Up for an account{" "}
+              </h1>
+              <p className="text-center text-gray-500 text-sm">
+                {steps === 1
+                  ? "Let's start with your name, email and password"
+                  : "Now we need some more information"}
+              </p>
+              <Progress value={steps === 1 ? 0 : loading ? 100 : 100} />
+            </div>
+
+            {steps === 1 && (
+              <>
+                <FormField
+                  disabled={loading}
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  disabled={loading}
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  disabled={loading}
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  disabled={loading}
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+
+            {steps === 2 && (
+              <>
+                <div className="flex w-full gap-5">
+                  <span className="w-full">
+                    <FormField
+                      disabled={loading}
+                      control={form.control}
+                      name="phoneNumber"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone Number</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </span>
+                  <span className="w-full">
+                    <FormField
+                      disabled={loading}
+                      control={form.control}
+                      name="birthday"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Birthday</FormLabel>
+                          <FormControl>
+                            <Input type="date" placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </span>
+                </div>
+                <div className="flex w-full gap-5">
+                  <span className="w-full">
+                    <FormField
+                      disabled={loading}
+                      control={form.control}
+                      name="country"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Country</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </span>
+                  <span className="w-full">
+                    <FormField
+                      disabled={loading}
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>City</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </span>
+                </div>
+                <FormField
+                  disabled={loading}
+                  control={form.control}
+                  name="address"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Address</FormLabel>
+                      <FormControl>
+                        <Input placeholder="" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="flex w-full gap-5">
+                  <span className="w-full">
+                    <FormField
+                      disabled={loading}
+                      control={form.control}
+                      name="state"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>State</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </span>
+                  <span className="w-full">
+                    <FormField
+                      disabled={loading}
+                      control={form.control}
+                      name="postalCode"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Postal Code</FormLabel>
+                          <FormControl>
+                            <Input placeholder="" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </span>
+                </div>
+              </>
+            )}
+
+            {steps === 1 && (
+              <div>
+                <Button
+                  onClick={() => {
+                    stepsValidation();
+                  }}
+                >
+                  Next
+                </Button>
+              </div>
+            )}
+            {steps === 2 && (
+              <div className="flex justify-between w-full gap-5 ">
+                <Button
+                  variant={"secondary"}
+                  disabled={loading}
+                  onClick={() => {
+                    setSteps(1);
+                  }}
+                >
+                  Back
+                </Button>
+                <Button disabled={loading} className="w-full" type="submit">
+                  {loading ? (
+                    <div className="dotFlashing"></div>
+                  ) : (
+                    <p>Register</p>
+                  )}
+                </Button>
+              </div>
+            )}
+            <p className="text-center mt-6 text-gray-500 text-sm">
+              Already have an account?{" "}
+              <Link to={"/login"} className="text-primary">
+                Login
+              </Link>
             </p>
-            <Progress value={steps === 1 ? 0 : loading ? 100 : 100} />
-          </div>
-
-          {steps === 1 && (
-            <>
-              <FormField
-                disabled={loading}
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                disabled={loading}
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                disabled={loading}
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                disabled={loading}
-                control={form.control}
-                name="confirmPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </>
-          )}
-
-          {steps === 2 && (
-            <>
-              <div className="flex w-full gap-5">
-                <span className="w-full">
-                  <FormField
-                    disabled={loading}
-                    control={form.control}
-                    name="phoneNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormControl>
-                          <Input placeholder="" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-                <span className="w-full">
-                  <FormField
-                    disabled={loading}
-                    control={form.control}
-                    name="birthday"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Birthday</FormLabel>
-                        <FormControl>
-                          <Input type="date" placeholder="" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-              </div>
-              <div className="flex w-full gap-5">
-                <span className="w-full">
-                  <FormField
-                    disabled={loading}
-                    control={form.control}
-                    name="country"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Country</FormLabel>
-                        <FormControl>
-                          <Input placeholder="" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-                <span className="w-full">
-                  <FormField
-                    disabled={loading}
-                    control={form.control}
-                    name="city"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>City</FormLabel>
-                        <FormControl>
-                          <Input placeholder="" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-              </div>
-              <FormField
-                disabled={loading}
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Address</FormLabel>
-                    <FormControl>
-                      <Input placeholder="" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="flex w-full gap-5">
-                <span className="w-full">
-                  <FormField
-                    disabled={loading}
-                    control={form.control}
-                    name="state"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>State</FormLabel>
-                        <FormControl>
-                          <Input placeholder="" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-                <span className="w-full">
-                  <FormField
-                    disabled={loading}
-                    control={form.control}
-                    name="postalCode"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Postal Code</FormLabel>
-                        <FormControl>
-                          <Input placeholder="" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </span>
-              </div>
-            </>
-          )}
-
-          {steps === 1 && (
-            <div>
-              <Button
-                onClick={() => {
-                  stepsValidation();
-                }}
-              >
-                Next
-              </Button>
-            </div>
-          )}
-          {steps === 2 && (
-            <div className="flex justify-between w-full gap-5 ">
-              <Button
-                variant={"secondary"}
-                disabled={loading}
-                onClick={() => {
-                  setSteps(1);
-                }}
-              >
-                Back
-              </Button>
-              <Button disabled={loading} className="w-full" type="submit">
-                {loading ? (
-                  <div className="dotFlashing"></div>
-                ) : (
-                  <p>Register</p>
-                )}
-              </Button>
-            </div>
-          )}
-          <p className="text-center mt-6 text-gray-500 text-sm">
-            Already have an account?{" "}
-            <Link to={"/login"} className="text-primary">
-              Login
-            </Link>
-          </p>
-        </form>
+          </form>
+        </div>
       </div>
     </Form>
   );

@@ -5,43 +5,43 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 const data = [
   {
-    name: 'Page A',
+    name: ' A',
     uv: 4000,
     pv: 2400,
     amt: 2400,
   },
   {
-    name: 'Page B',
+    name: ' B',
     uv: 3000,
     pv: 1398,
     amt: 2210,
   },
   {
-    name: 'Page C',
+    name: ' C',
     uv: 2000,
     pv: 9800,
     amt: 2290,
   },
   {
-    name: 'Page D',
+    name: ' D',
     uv: 2780,
     pv: 3908,
     amt: 2000,
   },
   {
-    name: 'Page E',
+    name: ' E',
     uv: 1890,
     pv: 4800,
     amt: 2181,
   },
   {
-    name: 'Page F',
+    name: ' F',
     uv: 2390,
     pv: 3800,
     amt: 2500,
   },
   {
-    name: 'Page G',
+    name: 'G',
     uv: 3490,
     pv: 4300,
     amt: 2100,
@@ -77,10 +77,10 @@ const Home = () => {
               <div>
                 <p className="text-2xl font-semibold">Total Deposits</p>
                 <p className=" opacity-50 mt-3">Total amount deposited this month by all the users</p>
-                <div className="flex flex-col mt-2 opacity-80 ">
-                  <p>Pending Deposits: 40</p>
-                  <p>Rejected Deposits: 100</p>
-                  <p>Desposited Charge: $500</p>
+                <div className="flex flex-col gap-1 mt-5 opacity-80 ">
+                  <p>Pending Deposits: <span className="font-medium">40</span></p>
+                  <p>Rejected Deposits: <span className="font-medium">27</span></p>
+                  <p>Desposited Charge: <span className="font-medium">$642</span></p>
                 </div>
               </div>
               <Button className="bg-[#f5ae39] text-white dark:text-white dark:hover:bg-[#e2a43f] dark:bg-[#f5ae39] hover:bg-[#e2a43f] mb-6">View Deposits</Button>
@@ -107,7 +107,7 @@ const Home = () => {
               <div>
                 <p className="text-2xl font-semibold">Total Withdrawals</p>
                 <p className=" opacity-50 mt-3">Total amount withdrawed this month by all the users</p>
-                <div className="flex flex-col mt-2 opacity-80 ">
+                <div className="flex flex-col gap-1 mt-5 opacity-80 ">
                   <p>Pending Withdrawals: <span className="font-medium">32</span></p>
                   <p>Rejected Withdrawals: <span className="font-medium">130</span></p>
                   <p>Withdrawal Charge: <span className="font-medium">$142</span></p>

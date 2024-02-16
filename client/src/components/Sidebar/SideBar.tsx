@@ -194,7 +194,7 @@ const SideBar = () => {
       {links.map((link, index) => (
         <div
           key={index}
-          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#e8a130] hover:bg-opacity-20 dark:hover:bg-[#2d2d2d]  transition
+          className={`bg-[#e8a130] bg-opacity-0 rounded-lg md:p-4 p-2 cursor-pointer hover:bg-[#fff09e] dark:hover:bg-[#2d2d2d]  transition
           ${pathname === link.slug && "bg-gray-100"}
           `}
         >

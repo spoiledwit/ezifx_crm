@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import { login } from "@/hooks/auth";
 import useAuthStore from "@/store/authStore";
 import {
@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+
 
 const formSchema = z.object({
   email: z.string().email({
@@ -65,6 +66,7 @@ const Login = () => {
         variant: "destructive",
       });
     } finally {
+      redirect('/');
       setLoading(false);
     }
   };
