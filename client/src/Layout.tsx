@@ -1,8 +1,6 @@
 import { Outlet } from "react-router-dom";
 import useAuthStore from "./store/authStore";
-import useSocketStore from "./store/socketStore";
 import { useEffect } from "react";
-import { io } from "socket.io-client";
 import { loginBack } from "./hooks/auth";
 import { Toaster } from "./components/ui/toaster";
 import SideBar from "./components/Sidebar/SideBar";
@@ -12,7 +10,6 @@ import './layout.css'
 
 const Layout = () => {
   const { user } = useAuthStore();
-  const { setSocket, socket } = useSocketStore();
   const { setUser, setToken } = useAuthStore();
   const { toast } = useToast();
 
@@ -45,20 +42,6 @@ const Layout = () => {
     }
   };
 
-  useEffect(() => {
-    try {
-      const socketConnect = io("http://localhost:5000");
-      setSocket(socketConnect);
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (user && socket) {
-      socket.emit("addUser", user._id);
-    }
-  }, [user, socket]);
 
   return (
     <>

@@ -21,8 +21,8 @@ const Navbar = () => {
                         <IoSearch size={25} className={"text-white dark:text-white font-light focus:border-white "} />
                         <Input placeholder='Search' className='w-2/3 focus:w-full transition-all duration-300 placeholder:text-white  border-white dark:border-[#2d2d2d] text-white dark:text-white text-md outline-none' />
                     </div>
-                    <div className='flex flex-row items-center justify-between w-1/3'>
-                        <p className='text-white dark:text-white text-lg w-full'>Welcome, {user?.name}</p>
+                    <div className='flex flex-row items-center justify-between cursor-pointer'>
+                     
                         {
                             theme == 'dark' ?
                                 <BiMoon size={25} className="text-black dark:text-white" onClick={() => setTheme("light")} />
