@@ -44,6 +44,7 @@ export const register = async (req, res) => {
       address,
     });
 
+    console.log("sending email");
     // Create token
     const token = jwt.sign(
       { email: user.email, id: user._id },
@@ -71,6 +72,8 @@ export const register = async (req, res) => {
       `,
     };
     await transporter.sendMail(mailOptions);
+
+    console.log("email sent!");
 
     res.status(201).json({ user, token });
   } catch (err) {
