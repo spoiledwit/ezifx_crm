@@ -11,66 +11,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from '../ui/button'
 import { Withdrawal } from '@/types'
-
-const invoices = [
-    {
-        gateway: "Bank Transfer",
-        transaction: "1RSFRER54FWQR",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-        type: 786880,
-        status: "approved",
-        name: "Deandre Golburn",
-        amount: "100",
-        currency: "PKR",
-        conversion: "1 USD = 285.00 PKR",
-
-    },
-    {
-        gateway: "Bank Transfer",
-        transaction: "1RSFRER54FWQR",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-        type: 786880,
-        status: "approved",
-        name: "Deandre Golburn",
-        amount: "100",
-        currency: "PKR",
-        conversion: "1 USD = 285.00 PKR",
-
-    },
-    {
-
-        gateway: "Bank Transfer",
-        transaction: "1RSFRER54FWQR",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-        type: 786880,
-        status: "rejected",
-        name: "Deandre Golburn",
-        amount: "100",
-        currency: "PKR",
-        conversion: "1 USD = 285.00 PKR",
-
-    },
-
-
-]
+import { Link } from 'react-router-dom'
 
 
 const WithdrawalTable = ({ withdrawals }: { withdrawals: Withdrawal[] }) => {
@@ -112,7 +53,9 @@ const WithdrawalTable = ({ withdrawals }: { withdrawals: Withdrawal[] }) => {
                             }
                         </TableCell>
                         <TableCell className="">
-                            <Button className='bg-primary dark:bg-dark hover:bg-hover'>Details</Button>
+                            <Link to={`/withdrawal/${invoice.transaction}`}>
+                                <Button className='bg-primary dark:bg-dark hover:bg-hover'>Details</Button>
+                            </Link>
                         </TableCell>
                     </TableRow>
                 ))}

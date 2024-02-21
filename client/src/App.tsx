@@ -30,6 +30,8 @@ import AllTickets from "./pages/Support/AllTickets";
 import ClosedTickets from "./pages/Support/ClosedTickets";
 import PendingTickets from "./pages/Support/PendingTickets";
 import AnsweredTickets from "./pages/Support/AnsweredTickets";
+import DepositDetail from "./pages/Deposits/DepositDetail/DepositDetail";
+import WithdrawDetail from "./pages/Withdrawals/WithdrawDetail/WithdrawDetail";
 
 const App = () => {
 
@@ -69,11 +71,13 @@ const App = () => {
         <Route path="successful-deposits" element={<SuccessfulDeposits />} />
         <Route path="pending-deposits" element={<PendingDeposits />} />
         <Route path="rejected-deposits" element={<RejectedDeposits />} />
+        <Route path="deposit/:id" element={<DepositDetail />} />
         {/* All withdrawal routes */}
         <Route path="all-withdrawals" element={<AllWithdrawals />} />
         <Route path="approved-withdrawals" element={<ApprovedWithdrawals />} />
         <Route path="withdrawal-methods" element={<WithdrawalMethods />} />
         <Route path="pending-withdrawals" element={<PendingWithdrawals />} />
+        <Route path="withdrawal/:id" element={<WithdrawDetail />} />
         {/* All support routes */}
         <Route path="all-tickets" element={<AllTickets />} />
         <Route path="closed-tickets" element={<ClosedTickets />} />

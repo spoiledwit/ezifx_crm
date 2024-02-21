@@ -84,6 +84,9 @@ export const deposits = [
     timestamp: "15 hours ago",
     balance: "0.00",
     type: 786880,
+    payable: 100,
+    charge: 0,
+    rate: "1 USD = 285.00 PKR",
     status: "approved",
     name: "Deandre Golburn",
     amount: "100",
@@ -93,7 +96,7 @@ export const deposits = [
   },
   {
     gateway: "Bank Transfer",
-    transaction: "1RSFRER54FWQR",
+    transaction: "1RSFRER54FWQG",
     id: "@AcWufWxMD",
     email: "d.golburn10@gmail.com",
     phone: "44 079233472",
@@ -101,6 +104,9 @@ export const deposits = [
     joinedAt: "2024-02-19 7:08 PM\n ",
     timestamp: "15 hours ago",
     balance: "0.00",
+    payable: 100,
+    charge: 0,
+    rate: "1 USD = 285.00 PKR",
     type: 786880,
     status: "approved",
     name: "Deandre Golburn",
@@ -111,10 +117,13 @@ export const deposits = [
   },
   {
     gateway: "Bank Transfer",
-    transaction: "1RSFRER54FWQR",
+    transaction: "1RSFRER54FWQU",
     id: "@AcWufWxMD",
     email: "d.golburn10@gmail.com",
     phone: "44 079233472",
+    payable: 100,
+    charge: 0,
+    rate: "1 USD = 285.00 PKR",
     country: "GB",
     joinedAt: "2024-02-19 7:08 PM\n ",
     timestamp: "15 hours ago",
@@ -137,6 +146,9 @@ export const withdrawals = [
     email: "d.golburn10@gmail.com",
     phone: "44 079233472",
     country: "GB",
+    payable: 100,
+    charge: 0,
+    rate: "1 USD = 285.00 PKR",
     joinedAt: "2024-02-19 7:08 PM\n ",
     timestamp: "15 hours ago",
     balance: "0.00",
@@ -155,6 +167,9 @@ export const withdrawals = [
     email: "d.golburn10@gmail.com",
     phone: "44 079233472",
     country: "GB",
+    payable: 100,
+    charge: 0,
+    rate: "1 USD = 285.00 PKR",
     joinedAt: "2024-02-19 7:08 PM\n ",
     timestamp: "15 hours ago",
     balance: "0.00",
@@ -170,6 +185,9 @@ export const withdrawals = [
     gateway: "Bank Transfer",
     transaction: "1RSFRER54FWQR",
     id: "@AcWufWxMD",
+    payable: 100,
+    charge: 0,
+    rate: "1 USD = 285.00 PKR",
     email: "d.golburn10@gmail.com",
     phone: "44 079233472",
     country: "GB",
@@ -323,4 +341,48 @@ export const users = [
 
   },
 ];
+
+export const tickets = [
+  {
+    name: "Deandre Golburn",
+    id: "830729",
+    joinedAt: "2024-02-19 7:08 PM\n ",
+    timestamp: "15 hours ago",
+    balance: "0.00",
+    status: "open",
+    priority: "high",
+    subject: "Did not trade close"
+  },
+  {
+    name: "Deandre Golburn",
+    id: "830729",
+    joinedAt: "2024-02-19 7:08 PM\n ",
+    timestamp: "15 hours ago",
+    balance: "0.00",
+    status: "open",
+    priority: "low",
+    subject: "Did not trade close"
+  },
+  {
+    name: "Deandre Golburn",
+    id: "830729",
+    joinedAt: "2024-02-19 7:08 PM\n ",
+    timestamp: "15 hours ago",
+    balance: "0.00",
+    status: "closed",
+    priority: "low",
+    subject: "Did not trade close"
+  },
+  {
+    name: "Deandre Golburn",
+    id: "830729",
+    joinedAt: "2024-02-19 7:08 PM\n ",
+    timestamp: "15 hours ago",
+    balance: "0.00",
+    status: "open",
+    priority: "high",
+    subject: "Did not trade close"
+  },
+
+]
 

@@ -10,23 +10,10 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Button } from '../ui/button'
-
-const invoices = [
-    {
-        name: "Deandre Golburn",
-        id: "830729",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-        status: "open",
-        priority: "high",
-        subject: "Did not trade close"
-    },
-
-]
+import { Ticket } from '@/types'
 
 
-const SupportTable = () => {
+const SupportTable = ({ tickets }: { tickets: Ticket[] }) => {
 
     return (
         <Table className='mt-7 text-[15px]'>
@@ -43,7 +30,7 @@ const SupportTable = () => {
                 </TableRow>
             </TableHeader>
             <TableBody className=''>
-                {invoices.map((invoice) => (
+                {tickets.map((invoice) => (
                     <TableRow key={invoice.id} className='text-center dark:hover:bg-dark/10'>
                         <TableCell className="font-medium">{invoice.id}</TableCell>
                         <TableCell>{invoice.subject}</TableCell>

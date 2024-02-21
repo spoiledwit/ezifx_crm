@@ -61,4 +61,16 @@ type UserDetail = {
     paid: boolean;
 
 }
-export type { User, Deposit, Withdrawal, UserDetail };
+
+type Ticket = {
+    name: string;
+    id: string;
+    joinedAt: string;
+    timestamp: string;
+    balance: string;
+    status: string;
+    subject: string;
+    priority: string;
+
+}
+export type { User, Deposit, Withdrawal, UserDetail, Ticket };
