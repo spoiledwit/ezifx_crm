@@ -66,7 +66,7 @@ const WithdrawalMethodTable = () => {
                             }
                         </TableCell>
                         <TableCell className="">
-                            <Button className='dark:bg-dark bg-transparent border dark:text-white text-dark border-dark hover:bg-dark hover:text-white'>Edit</Button>
+                            {/* <Button className='dark:bg-dark bg-transparent border dark:text-white text-dark border-dark hover:bg-dark hover:text-white'>Edit</Button> */}
                             <Button className='bg-primary dark:bg-dark hover:bg-hover ml-2'>Disable</Button>
                         </TableCell>
                     </TableRow>

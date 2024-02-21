@@ -83,6 +83,7 @@ const App = () => {
         <Route path="approved-withdrawals" element={<ApprovedWithdrawals />} />
         <Route path="withdrawal-methods" element={<WithdrawalMethods />} />
         <Route path="pending-withdrawals" element={<PendingWithdrawals />} />
+        <Route path="rejected-withdrawals" element={<RejectedWithdrawals />} />
         <Route path="withdrawal/:id" element={<WithdrawDetail />} />
         {/* All support routes */}
         <Route path="all-tickets" element={<AllTickets />} />
