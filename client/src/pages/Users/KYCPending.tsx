@@ -1,7 +1,7 @@
 import React from 'react'
-import { Button } from '../ui/button'
+import { Button } from '../../components/ui/button'
 import { IoSearch } from 'react-icons/io5'
-import { Input } from '../ui/input'
+import { Input } from '../../components/ui/input'
 import {
     Table,
     TableBody,

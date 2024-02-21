@@ -1,18 +1,18 @@
 
 import React from 'react'
-import { Button } from '../ui/button'
+import { Button } from '../../components/ui/button'
 import { IoSearch } from 'react-icons/io5'
-import { Input } from '../ui/input'
-import UserTable from '../UserTable/UserTable'
-import DepositTable from '../DepositTable/DepositTable'
+import { Input } from '../../components/ui/input'
+import UserTable from '../../components/UserTable/UserTable'
+import DepositTable from '../../components/DepositTable/DepositTable'
 
-const InitiatedDeposits = () => {
+const AllDeposits = () => {
     return (
         <>
             <div className='py-10 px-10'>
 
                 <div className='flex flex-row justify-between'>
-                    <h1 className='text-2xl font-semibold'>Initiated Deposits</h1>
+                    <h1 className='text-2xl font-semibold'>All Deposits</h1>
                     <div className='flex flex-row gap-4'>
                         <div className='flex flex-row items-center justify-end gap-3 w-full'>
                             <IoSearch size={25} className={"text-dark dark:text-dark font-light focus:border-white "} />
@@ -30,4 +30,4 @@ const InitiatedDeposits = () => {
     )
 }
 
-export default InitiatedDeposits; 
+export default AllDeposits; 

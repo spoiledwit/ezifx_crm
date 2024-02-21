@@ -1,10 +1,10 @@
 
 import React from 'react'
-import { Button } from '../ui/button'
+import { Button } from '../../components/ui/button'
 import { IoSearch } from 'react-icons/io5'
-import { Input } from '../ui/input'
-import UserTable from '../UserTable/UserTable'
-import DepositTable from '../DepositTable/DepositTable'
+import { Input } from '../../components/ui/input'
+import UserTable from '../../components/UserTable/UserTable'
+import DepositTable from '../../components/DepositTable/DepositTable'
 
 const RejectedDeposits = () => {
     return (

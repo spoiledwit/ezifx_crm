@@ -1,16 +1,16 @@
 import React from 'react'
-import { Button } from '../ui/button'
+import { Button } from '../../components/ui/button'
 import { IoSearch } from 'react-icons/io5'
-import { Input } from '../ui/input'
-import UserTable from '../UserTable/UserTable'
+import { Input } from '../../components/ui/input'
+import UserTable from '../../components/UserTable/UserTable'
 
-const BannedUsers = () => {
+const ActiveUsers = () => {
   return (
     <>
       <div className='py-10 px-10'>
 
         <div className='flex flex-row justify-between'>
-          <h1 className='text-2xl font-semibold'>Banned Users</h1>
+          <h1 className='text-2xl font-semibold'>Active Users</h1>
           <div className='flex flex-row gap-4'>
             <div className='flex flex-row items-center justify-end gap-3 w-full'>
               <IoSearch size={25} className={"text-dark dark:text-dark font-light focus:border-white "} />
@@ -28,4 +28,4 @@ const BannedUsers = () => {
   )
 }
 
-export default BannedUsers 
+export default ActiveUsers 

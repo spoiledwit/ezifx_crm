@@ -6,21 +6,30 @@ import Layout from "./Layout";
 import useAuthStore from "./store/authStore";
 import ForgotPass from "./pages/ForgotPass";
 import { useEffect } from "react";
-import ActiveUsers from "./components/Users/ActiveUsers";
-import BannedUsers from "./components/Users/BannedUsers";
-import WithBalance from "./components/Users/WithBalance";
-import AllUsers from "./components/Users/AllUsers";
-import PaidUsers from "./components/Users/PaidUsers";
-import KYCPending from "./components/Users/KYCPending";
-import KYCUnverified from "./components/Users/KYCUnverified";
-import EmailUnverified from "./components/Users/EmailUnverified";
-import MobileUnverified from "./components/Users/MobileUnverified";
-import AllDeposits from "./components/Deposits/AllDeposits";
-import ApprovedDeposits from "./components/Deposits/ApprovedDeposits";
-import InitiatedDeposits from "./components/Deposits/InitiatedDeposits";
-import SuccessfulDeposits from "./components/Deposits/SuccessfulDeposits";
-import PendingDeposits from "./components/Deposits/PendingDeposits";
-import RejectedDeposits from "./components/Deposits/RejectedDeposits";
+import ActiveUsers from "./pages/Users/ActiveUsers";
+import BannedUsers from "./pages/Users/BannedUsers";
+import WithBalance from "./pages/Users/WithBalance";
+import AllUsers from "./pages/Users/AllUsers";
+import PaidUsers from "./pages/Users/PaidUsers";
+import KYCPending from "./pages/Users/KYCPending";
+import KYCUnverified from "./pages/Users/KYCUnverified";
+import EmailUnverified from "./pages/Users/EmailUnverified";
+import MobileUnverified from "./pages/Users/MobileUnverified";
+import AllDeposits from "./pages/Deposits/AllDeposits";
+import ApprovedDeposits from "./pages/Deposits/ApprovedDeposits";
+import InitiatedDeposits from "./pages/Deposits/InitiatedDeposits";
+import SuccessfulDeposits from "./pages/Deposits/SuccessfulDeposits";
+import PendingDeposits from "./pages/Deposits/PendingDeposits";
+import RejectedDeposits from "./pages/Deposits/RejectedDeposits";
+import AllWithdrawals from "./pages/Withdrawals/AllWithdrawals";
+import ApprovedWithdrawals from "./pages/Withdrawals/ApprovedWithdrawals";
+import WithdrawalMethods from "./pages/Withdrawals/WithdrawalMethods";
+import PendingWithdrawals from "./pages/Withdrawals/PendingWithdrawals";
+import RejectedWithdrawals from "./pages/Withdrawals/RejectedWithdrawals";
+import AllTickets from "./pages/Support/AllTickets";
+import ClosedTickets from "./pages/Support/ClosedTickets";
+import PendingTickets from "./pages/Support/PendingTickets";
+import AnsweredTickets from "./pages/Support/AnsweredTickets";
 
 const App = () => {
 
@@ -60,12 +69,16 @@ const App = () => {
         <Route path="successful-deposits" element={<SuccessfulDeposits />} />
         <Route path="pending-deposits" element={<PendingDeposits />} />
         <Route path="rejected-deposits" element={<RejectedDeposits />} />
-        {/* All deposit routes */}
-        <Route path="all-withdrawals" element={<AllDeposits />} />
-        <Route path="approved-withdrawals" element={<ApprovedDeposits />} />
-        <Route path="withdrawal-methods" element={<SuccessfulDeposits />} />
-        <Route path="pending-withdrawals" element={<PendingDeposits />} />
-        <Route path="rejected-deposits" element={<RejectedDeposits />} />
+        {/* All withdrawal routes */}
+        <Route path="all-withdrawals" element={<AllWithdrawals />} />
+        <Route path="approved-withdrawals" element={<ApprovedWithdrawals />} />
+        <Route path="withdrawal-methods" element={<WithdrawalMethods />} />
+        <Route path="pending-withdrawals" element={<PendingWithdrawals />} />
+        {/* All support routes */}
+        <Route path="all-tickets" element={<AllTickets />} />
+        <Route path="closed-tickets" element={<ClosedTickets />} />
+        <Route path="pending-tickets" element={<PendingTickets />} />
+        <Route path="answered-tickets" element={<AnsweredTickets />} />
       </Route>
     </Routes>
   );

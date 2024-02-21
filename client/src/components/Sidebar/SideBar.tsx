@@ -169,14 +169,63 @@ const SideBar = () => {
     },
     {
       title: "Withdrawals",
-      sections: [],
-      slug: "/withdrawals",
+      sections: [
+        {
+          title: "Pending Withdrawals",
+          slug: "/pending-withdrawals",
+
+        },
+        {
+          title: "Approved Withdrawals",
+          slug: "/approved-withdrawals",
+
+        },
+        {
+          title: "Rejected Withdrawals",
+          slug: "/rejected-withdrawals",
+
+        },
+        {
+          title: "Withdrawal Methods",
+          slug: "/withdrawal-methods",
+
+        },
+        {
+          title: "All Withdrawals",
+          slug: "/all-withdrawals",
+
+        },
+
+      ],
+      slug: "",
       icon: <RxDashboard />,
     },
     {
       title: "Support Ticket",
-      sections: [],
-      slug: "/support-ticket",
+      sections: [
+        {
+          title: "Pending Tickets",
+          slug: "/pending-tickets",
+
+        },
+        {
+          title: "Answered Tickets",
+          slug: "/answered-tickets",
+
+        },
+        {
+          title: "Closed Tickets",
+          slug: "/closed-tickets",
+
+        },
+        {
+          title: "All Tickets",
+          slug: "/all-tickets",
+
+        },
+
+      ],
+      slug: "",
       icon: <RxDashboard />,
     },
     {

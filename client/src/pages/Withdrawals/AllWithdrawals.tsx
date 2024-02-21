@@ -1,18 +1,18 @@
-
 import React from 'react'
-import { Button } from '../ui/button'
+import { Button } from '../../components/ui/button'
 import { IoSearch } from 'react-icons/io5'
-import { Input } from '../ui/input'
-import UserTable from '../UserTable/UserTable'
-import DepositTable from '../DepositTable/DepositTable'
+import { Input } from '../../components/ui/input'
+import UserTable from '../../components/UserTable/UserTable'
+import DepositTable from '../../components/DepositTable/DepositTable'
+import WithdrawalTable from '../../components/WithdrawalTable/WithdrawalTable'
 
-const PendingDeposits = () => {
+const AllWithdrawals = () => {
     return (
         <>
             <div className='py-10 px-10'>
 
                 <div className='flex flex-row justify-between'>
-                    <h1 className='text-2xl font-semibold'>Pending Deposits</h1>
+                    <h1 className='text-2xl font-semibold'>All Withdrawals</h1>
                     <div className='flex flex-row gap-4'>
                         <div className='flex flex-row items-center justify-end gap-3 w-full'>
                             <IoSearch size={25} className={"text-dark dark:text-dark font-light focus:border-white "} />
@@ -21,7 +21,7 @@ const PendingDeposits = () => {
                         <Button className='bg-transparent border-primary border text-primary hover:bg-primary hover:text-white dark:text-dark dark:border-dark dark:hover:bg-dark dark:hover:text-white '>Export Excel</Button>
                     </div>
                 </div>
-                <DepositTable />
+                <WithdrawalTable />
 
 
             </div>
@@ -30,4 +30,4 @@ const PendingDeposits = () => {
     )
 }
 
-export default PendingDeposits; 
+export default AllWithdrawals; 
