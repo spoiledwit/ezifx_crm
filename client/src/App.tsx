@@ -33,18 +33,22 @@ import AnsweredTickets from "./pages/Support/AnsweredTickets";
 import DepositDetail from "./pages/Deposits/DepositDetail/DepositDetail";
 import WithdrawDetail from "./pages/Withdrawals/WithdrawDetail/WithdrawDetail";
 import UserDetails from "./components/UserDetails/UserDetails";
+import IbRequests from "./pages/ibRequests";
+import Plans from "./pages/plans";
+import UnsubCopyRequest from "./pages/unsubCopyRequest";
+import CopyRequest from "./pages/copyRequest";
+import CopyTrade from "./pages/copyTrade";
 
 const App = () => {
-
   const { user, theme } = useAuthStore();
 
   useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark')
+      document.documentElement.classList.remove("dark");
     }
-  }, [theme])
+  }, [theme]);
 
   return (
     <Routes>
@@ -85,6 +89,12 @@ const App = () => {
         <Route path="closed-tickets" element={<ClosedTickets />} />
         <Route path="pending-tickets" element={<PendingTickets />} />
         <Route path="answered-tickets" element={<AnsweredTickets />} />
+        {/* ------------------ */}
+        <Route path="ib-requests" element={<IbRequests />} />
+        <Route path="copy-trade" element={<CopyTrade />} />
+        <Route path="copy-request" element={<CopyRequest />} />
+        <Route path="unsub-copy-request" element={<UnsubCopyRequest />} />
+        <Route path="plans" element={<Plans />} />
       </Route>
     </Routes>
   );
