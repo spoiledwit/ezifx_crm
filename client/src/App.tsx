@@ -32,6 +32,7 @@ import PendingTickets from "./pages/Support/PendingTickets";
 import AnsweredTickets from "./pages/Support/AnsweredTickets";
 import DepositDetail from "./pages/Deposits/DepositDetail/DepositDetail";
 import WithdrawDetail from "./pages/Withdrawals/WithdrawDetail/WithdrawDetail";
+import UserDetails from "./components/UserDetails/UserDetails";
 
 const App = () => {
 
@@ -64,6 +65,7 @@ const App = () => {
         <Route path="banned-users" element={<BannedUsers />} />
         <Route path="with-balance" element={<WithBalance />} />
         <Route path="notification-to-all" element={<BannedUsers />} />
+        <Route path="user/:id" element={<UserDetails />} />
         {/* All deposit routes */}
         <Route path="all-deposits" element={<AllDeposits />} />
         <Route path="approved-deposits" element={<ApprovedDeposits />} />

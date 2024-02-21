@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from '../ui/button'
 import { UserDetail } from '@/types'
+import { Link } from 'react-router-dom'
 
 
 const UserTable = ({ users }: { users: UserDetail[] }) => {
@@ -39,7 +40,9 @@ const UserTable = ({ users }: { users: UserDetail[] }) => {
                         <TableCell className="">{invoice.joinedAt}<br /><span className='font-medium'>{invoice.timestamp}</span></TableCell>
                         <TableCell className="font-medium">{invoice.balance}</TableCell>
                         <TableCell className="">
-                            <Button className='bg-primary dark:bg-dark hover:bg-hover'>Details</Button>
+                            <Link to={`/user/${invoice.id}`}>
+                                <Button className='bg-primary dark:bg-dark hover:bg-hover'>Details</Button>
+                            </Link>
                         </TableCell>
                     </TableRow>
                 ))}

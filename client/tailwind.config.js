@@ -20,7 +20,9 @@ module.exports = {
       colors: {
         "primary": "#f5ae39",
         "hover": "#e2a43f",
-        "dark": "#1D1D1D"
+        "dark": "#1D1D1D",
+        "card-primary": "#FAD79C",
+        "card-text": "#B4812E"
       },
       keyframes: {
         "accordion-down": {
