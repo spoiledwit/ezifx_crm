@@ -115,11 +115,11 @@ const SideBar = () => {
           slug: "/all-users",
 
         },
-        {
-          title: "Notification to All",
-          slug: "/notification-to-all",
+        // {
+        //   title: "Notification to All",
+        //   slug: "/notification-to-all",
 
-        },
+        // },
       ],
       icon: <RxDashboard />,
     },
