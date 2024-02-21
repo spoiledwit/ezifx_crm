@@ -10,93 +10,10 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Button } from '../ui/button'
-
-const invoices = [
-    {
-        name: "Deandre Golburn",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-    },
-    {
-        name: "Deandre Golburn",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        timestamp: "15 hours ago",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        balance: "0.00",
-    },
-    {
-        name: "Deandre Golburn",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        timestamp: "15 hours ago",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        balance: "0.00",
-    },
-    {
-        name: "Deandre Golburn",
-        id: "@AcWufWxMD",
-        timestamp: "15 hours ago",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        balance: "0.00",
-    },
-
-    {
-        name: "Deandre Golburn",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-    },
-    {
-        name: "Deandre Golburn",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        country: "GB",
-        phone: "44 079233472",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-    },
-    {
-        name: "Deandre Golburn",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        joinedAt: "2024-02-19 7:08 PM ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-    },
-    {
-        name: "Deandre Golburn",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        country: "GB",
-        phone: "44 079233472",
-        joinedAt: "2024-02-19 7:08 PM ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-    },
-]
+import { UserDetail } from '@/types'
 
 
-const UserTable = () => {
+const UserTable = ({ users }: { users: UserDetail[] }) => {
 
     return (
         <Table className='mt-7 text-[15px]'>
@@ -113,7 +30,7 @@ const UserTable = () => {
                 </TableRow>
             </TableHeader>
             <TableBody className=''>
-                {invoices.map((invoice) => (
+                {users.map((invoice: UserDetail) => (
                     <TableRow key={invoice.id} className='text-center dark:hover:bg-dark/10'>
                         <TableCell className="font-medium">{invoice.name}<br /><span className='text-dark/80 cursor-pointer'>{invoice.id}</span></TableCell>
                         <TableCell>{invoice.email}</TableCell>

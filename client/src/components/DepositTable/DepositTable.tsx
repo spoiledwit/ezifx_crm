@@ -10,69 +10,70 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Button } from '../ui/button'
+import { Deposit } from '@/types'
 
-const invoices = [
-    {
-        gateway: "Bank Transfer",
-        transaction: "1RSFRER54FWQR",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-        type: 786880,
-        status: "approved",
-        name: "Deandre Golburn",
-        amount: "100",
-        currency: "PKR",
-        conversion: "1 USD = 285.00 PKR",
+// const invoices = [
+//     {
+//         gateway: "Bank Transfer",
+//         transaction: "1RSFRER54FWQR",
+//         id: "@AcWufWxMD",
+//         email: "d.golburn10@gmail.com",
+//         phone: "44 079233472",
+//         country: "GB",
+//         joinedAt: "2024-02-19 7:08 PM\n ",
+//         timestamp: "15 hours ago",
+//         balance: "0.00",
+//         type: 786880,
+//         status: "approved",
+//         name: "Deandre Golburn",
+//         amount: "100",
+//         currency: "PKR",
+//         conversion: "1 USD = 285.00 PKR",
 
-    },
-    {
-        gateway: "Bank Transfer",
-        transaction: "1RSFRER54FWQR",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-        type: 786880,
-        status: "approved",
-        name: "Deandre Golburn",
-        amount: "100",
-        currency: "PKR",
-        conversion: "1 USD = 285.00 PKR",
+//     },
+//     {
+//         gateway: "Bank Transfer",
+//         transaction: "1RSFRER54FWQR",
+//         id: "@AcWufWxMD",
+//         email: "d.golburn10@gmail.com",
+//         phone: "44 079233472",
+//         country: "GB",
+//         joinedAt: "2024-02-19 7:08 PM\n ",
+//         timestamp: "15 hours ago",
+//         balance: "0.00",
+//         type: 786880,
+//         status: "approved",
+//         name: "Deandre Golburn",
+//         amount: "100",
+//         currency: "PKR",
+//         conversion: "1 USD = 285.00 PKR",
 
-    },
-    {
+//     },
+//     {
 
-        gateway: "Bank Transfer",
-        transaction: "1RSFRER54FWQR",
-        id: "@AcWufWxMD",
-        email: "d.golburn10@gmail.com",
-        phone: "44 079233472",
-        country: "GB",
-        joinedAt: "2024-02-19 7:08 PM\n ",
-        timestamp: "15 hours ago",
-        balance: "0.00",
-        type: 786880,
-        status: "rejected",
-        name: "Deandre Golburn",
-        amount: "100",
-        currency: "PKR",
-        conversion: "1 USD = 285.00 PKR",
+//         gateway: "Bank Transfer",
+//         transaction: "1RSFRER54FWQR",
+//         id: "@AcWufWxMD",
+//         email: "d.golburn10@gmail.com",
+//         phone: "44 079233472",
+//         country: "GB",
+//         joinedAt: "2024-02-19 7:08 PM\n ",
+//         timestamp: "15 hours ago",
+//         balance: "0.00",
+//         type: 786880,
+//         status: "rejected",
+//         name: "Deandre Golburn",
+//         amount: "100",
+//         currency: "PKR",
+//         conversion: "1 USD = 285.00 PKR",
 
-    },
-
-
-]
+//     },
 
 
-const DepositTable = () => {
+// ]
+
+
+const DepositTable = ({ invoices }: { invoices: Deposit[] }) => {
 
     return (
         <Table className='mt-7 text-[15px]'>
@@ -90,7 +91,7 @@ const DepositTable = () => {
                 </TableRow>
             </TableHeader>
             <TableBody className=''>
-                {invoices.map((invoice) => (
+                {invoices.map((invoice: any) => (
                     <TableRow key={invoice.id} className='text-center dark:hover:bg-dark/10'>
                         <TableCell className="font-medium">{invoice.gateway}<br /><span className='text-dark/80 cursor-pointer'>{invoice.transaction}</span></TableCell>
                         <TableCell className="">{invoice.joinedAt}<br /><span className='font-medium'>{invoice.timestamp}</span></TableCell>

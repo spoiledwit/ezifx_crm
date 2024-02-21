@@ -7,4 +7,58 @@ type User = {
     updatedAt: string;
 };
 
-export type { User };
+type Deposit = {
+    gateway: string;
+    transaction: string;
+    id: string;
+    email: string;
+    phone: string;
+    country: string;
+    joinedAt: string;
+    timestamp: string;
+    balance: string;
+    type: number;
+    status: string;
+    name: string;
+    amount: string;
+    currency: string;
+    conversion: string;
+
+}
+type Withdrawal = {
+    gateway: string;
+    transaction: string;
+    id: string;
+    email: string;
+    phone: string;
+    country: string;
+    joinedAt: string;
+    timestamp: string;
+    balance: string;
+    type: number;
+    status: string;
+    name: string;
+    amount: string;
+    currency: string;
+    conversion: string;
+
+}
+
+type UserDetail = {
+    name: string;
+    id: string;
+    email: string;
+    phone: string;
+    country: string;
+    joinedAt: string;
+    timestamp: string;
+    balance: string;
+    status: string;
+    emailVerified: boolean;
+    mobileVerified: boolean;
+    kycVerified: boolean;
+    kycPending: boolean;
+    paid: boolean;
+
+}
+export type { User, Deposit, Withdrawal, UserDetail };

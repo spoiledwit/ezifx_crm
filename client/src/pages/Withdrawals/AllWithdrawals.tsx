@@ -5,6 +5,7 @@ import { Input } from '../../components/ui/input'
 import UserTable from '../../components/UserTable/UserTable'
 import DepositTable from '../../components/DepositTable/DepositTable'
 import WithdrawalTable from '../../components/WithdrawalTable/WithdrawalTable'
+import { withdrawals } from '@/constants'
 
 const AllWithdrawals = () => {
     return (
@@ -21,7 +22,7 @@ const AllWithdrawals = () => {
                         <Button className='bg-transparent border-primary border text-primary hover:bg-primary hover:text-white dark:text-dark dark:border-dark dark:hover:bg-dark dark:hover:text-white '>Export Excel</Button>
                     </div>
                 </div>
-                <WithdrawalTable />
+                <WithdrawalTable withdrawals={withdrawals} />
 
 
             </div>

@@ -5,6 +5,7 @@ import { IoSearch } from 'react-icons/io5'
 import { Input } from '../../components/ui/input'
 import UserTable from '../../components/UserTable/UserTable'
 import DepositTable from '../../components/DepositTable/DepositTable'
+import { deposits } from '@/constants'
 
 const SuccessfulDeposits = () => {
     return (
@@ -21,7 +22,7 @@ const SuccessfulDeposits = () => {
                         <Button className='bg-transparent border-primary border text-primary hover:bg-primary hover:text-white dark:text-dark dark:border-dark dark:hover:bg-dark dark:hover:text-white '>Export Excel</Button>
                     </div>
                 </div>
-                <DepositTable />
+                <DepositTable invoices={deposits.filter((dep) => dep.status !== 'pending')} />
 
 
             </div>

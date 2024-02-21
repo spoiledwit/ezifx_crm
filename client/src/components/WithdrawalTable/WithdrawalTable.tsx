@@ -10,6 +10,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Button } from '../ui/button'
+import { Withdrawal } from '@/types'
 
 const invoices = [
     {
@@ -72,7 +73,7 @@ const invoices = [
 ]
 
 
-const WithdrawalTable = () => {
+const WithdrawalTable = ({ withdrawals }: { withdrawals: Withdrawal[] }) => {
 
     return (
         <Table className='mt-7 text-[15px]'>
@@ -90,7 +91,7 @@ const WithdrawalTable = () => {
                 </TableRow>
             </TableHeader>
             <TableBody className=''>
-                {invoices.map((invoice) => (
+                {withdrawals.map((invoice: Withdrawal) => (
                     <TableRow key={invoice.id} className='text-center dark:hover:bg-dark/10'>
                         <TableCell className="font-medium">{invoice.gateway}<br /><span className='text-dark/80 cursor-pointer'>{invoice.transaction}</span></TableCell>
                         <TableCell className="">{invoice.joinedAt}<br /><span className='font-medium'>{invoice.timestamp}</span></TableCell>
