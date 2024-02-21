@@ -53,7 +53,7 @@ const Login = () => {
       });
     } catch (error: any) {
       if (error.response.data) {
-        toast({
+        return toast({
           title: "An error occurred",
           description: error.response.data,
           variant: "destructive",
