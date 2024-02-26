@@ -39,6 +39,7 @@ import CopyRequest from "./pages/copyRequest";
 import CopyTrade from "./pages/copyTrade";
 import TradeAccounts from "./pages/tradeAccounts/TradeAccounts";
 import DemoAccounts from "./pages/demoAccounts/DemoAccounts";
+import MyReferrals from "./pages/MyReferrals/Referrals";
 
 const App = () => {
   const { user, theme } = useAuthStore();
@@ -88,10 +89,12 @@ const App = () => {
         <Route path="rejected-withdrawals" element={<RejectedWithdrawals />} />
         <Route path="withdrawal/:id" element={<WithdrawDetail />} />
         {/* All support routes */}
-        <Route path="all-tickets" element={<AllTickets />} />
+        <Route path="support-tickets" element={<AllTickets />} />
         <Route path="closed-tickets" element={<ClosedTickets />} />
         <Route path="pending-tickets" element={<PendingTickets />} />
         <Route path="answered-tickets" element={<AnsweredTickets />} />
+        {/* All referral routes */}
+        <Route path="my-referrals" element={<MyReferrals />} />
         {/* ------------------ */}
         <Route path="ib-requests" element={<IbRequests />} />
         <Route path="copy-trade" element={<CopyTrade />} />
