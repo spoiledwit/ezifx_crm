@@ -40,6 +40,9 @@ import CopyTrade from "./pages/copyTrade";
 import TradeAccounts from "./pages/tradeAccounts/TradeAccounts";
 import DemoAccounts from "./pages/demoAccounts/DemoAccounts";
 import MyReferrals from "./pages/MyReferrals/Referrals";
+import OpenTicket from "./pages/Support/OpenTicket";
+import Deposit from "./pages/Deposit/Deposit";
+import Withdraw from "./pages/Withdraw/Withdraw";
 
 const App = () => {
   const { user, theme } = useAuthStore();
@@ -74,6 +77,7 @@ const App = () => {
         <Route path="notification-to-all" element={<BannedUsers />} />
         <Route path="user/:id" element={<UserDetails />} />
         {/* All deposit routes */}
+        <Route path="deposit" element={<Deposit />} />
         <Route path="all-deposits" element={<AllDeposits />} />
         <Route path="approved-deposits" element={<ApprovedDeposits />} />
         <Route path="initiated-deposits" element={<InitiatedDeposits />} />
@@ -82,6 +86,7 @@ const App = () => {
         <Route path="rejected-deposits" element={<RejectedDeposits />} />
         <Route path="deposit/:id" element={<DepositDetail />} />
         {/* All withdrawal routes */}
+        <Route path="withdraw" element={<Withdraw />} />
         <Route path="all-withdrawals" element={<AllWithdrawals />} />
         <Route path="approved-withdrawals" element={<ApprovedWithdrawals />} />
         <Route path="withdrawal-methods" element={<WithdrawalMethods />} />
@@ -90,7 +95,7 @@ const App = () => {
         <Route path="withdrawal/:id" element={<WithdrawDetail />} />
         {/* All support routes */}
         <Route path="support-tickets" element={<AllTickets />} />
-        <Route path="closed-tickets" element={<ClosedTickets />} />
+        <Route path="open-ticket" element={<OpenTicket />} />
         <Route path="pending-tickets" element={<PendingTickets />} />
         <Route path="answered-tickets" element={<AnsweredTickets />} />
         {/* All referral routes */}

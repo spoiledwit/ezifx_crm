@@ -5,7 +5,7 @@ const MyReferrals = () => {
         <div className='p-10'>
             <div className='flex flex-row justify-between items-center'>
                 <h1 className='text-2xl font-semibold'>My Referrals</h1>
-                <div className='rounded-md w-1/3 px-3 py-1 text-primary font-semibold bg-primary/10'>
+                <div className='rounded-md w-1/3 px-3 py-1 text-primary font-semibold border border-primary/50 bg-primary/10'>
                     Level 1
                 </div>
 

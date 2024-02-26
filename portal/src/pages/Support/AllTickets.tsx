@@ -1,10 +1,7 @@
-import React from 'react'
 import { Button } from '../../components/ui/button'
-import { IoSearch } from 'react-icons/io5'
-import { Input } from '../../components/ui/input'
 import SupportTable from '@/components/SupportTables/SupportTable'
-import { tickets } from '@/constants'
 import { Ticket } from '@/types'
+import { Link } from 'react-router-dom';
 
 const AllTickets = () => {
     const emptyTickets: Ticket[] = [];
@@ -14,7 +11,9 @@ const AllTickets = () => {
 
                 <div className='flex flex-row justify-between'>
                     <h1 className='text-2xl font-semibold'>Support Tickets</h1>
-                    <Button className='bg-primary dark:bg-dark dark:hover:bg-dark hover:bg-hover'>Open Support Ticket</Button>
+                    <Link to={'/open-ticket'}>
+                        <Button className='bg-primary dark:bg-dark dark:hover:bg-dark hover:bg-hover'>Open Support Ticket</Button>
+                    </Link>
                 </div>
                 <SupportTable tickets={emptyTickets} />
 

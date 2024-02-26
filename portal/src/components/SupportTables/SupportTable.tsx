@@ -20,7 +20,7 @@ const SupportTable = ({ tickets }: { tickets: Ticket[] }) => {
         tickets.length == 0 ?
             <>
                 <div className='bg-primary/10 p-5 rounded mt-5'>
-                    <h1 className='text-primary/70 text-xl font-semibold text-center'>No referrals found</h1>
+                    <h1 className='text-primary/70 text-xl font-semibold text-center'>No tickets found</h1>
                 </div>
 
             </>

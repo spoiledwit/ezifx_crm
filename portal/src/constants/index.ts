@@ -370,3 +370,17 @@ export const acData = [
   },
 
 ]
+
+export const priorities = [
+  "high",
+  "low"
+]
+
+export const gateways = [
+  "Bank Transfer",
+  "USDT"
+]
+
+export const accounts = [
+  "786194",
+]
