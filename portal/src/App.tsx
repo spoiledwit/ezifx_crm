@@ -44,6 +44,9 @@ import OpenTicket from "./pages/Support/OpenTicket";
 import Deposit from "./pages/Deposit/Deposit";
 import Withdraw from "./pages/Withdraw/Withdraw";
 import Transactions from "./pages/transactions/Transactions";
+import BalanceTransfer from "./pages/BalanceTransfer/BalanceTransfer";
+import ChangePassword from "./pages/Profile/ChangePassword";
+import Profile from "./pages/Profile/Profile";
 
 const App = () => {
   const { user, theme } = useAuthStore();
@@ -96,6 +99,13 @@ const App = () => {
         <Route path="withdrawal/:id" element={<WithdrawDetail />} />
         {/* All transaction routes */}
         <Route path="transactions" element={<Transactions />} />
+
+        {/* All balance transfer routes */}
+        <Route path="balance-transfer" element={<BalanceTransfer />} />
+
+        {/* All profile routes */}
+        <Route path="change-password" element={<ChangePassword />} />
+        <Route path="profile" element={<Profile />} />
 
         {/* All support routes */}
         <Route path="support-tickets" element={<AllTickets />} />

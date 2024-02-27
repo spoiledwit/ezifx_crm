@@ -5,6 +5,7 @@ type User = {
     approved: boolean;
     createdAt: string;
     updatedAt: string;
+    profilePicture: string;
 };
 
 type Deposit = {
