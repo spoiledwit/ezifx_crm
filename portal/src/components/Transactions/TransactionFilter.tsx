@@ -43,7 +43,7 @@ const TransactionFilter = () => {
         <>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 py-2">
-                    <div className='flex flex-row gap-5 justify-between  px-5 py-4 bg-primary/10 rounded-md items-center'>
+                    <div className='flex flex-row gap-5 justify-between  px-5 py-4 bg-primary-light rounded-md items-center'>
                         <FormField
                             control={form.control}
                             name="number"

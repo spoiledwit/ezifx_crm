@@ -1,4 +1,3 @@
-import React from 'react'
 import { Input } from '../ui/input'
 import { IoSearch } from 'react-icons/io5';
 import {
@@ -58,9 +57,6 @@ const Navbar = () => {
                                 <DropdownMenuItem>
                                     Profile
                                 </DropdownMenuItem>
-                            </Link>
-                            <Link to={"/surprise-me"}>
-                                <DropdownMenuItem>Surprise me</DropdownMenuItem>
                             </Link>
                             {
                                 user &&

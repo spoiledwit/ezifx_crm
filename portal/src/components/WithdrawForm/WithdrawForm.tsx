@@ -23,7 +23,7 @@ const formSchema = z.object({
 
 })
 
-const DepositForm = () => {
+const WithdrawForm = () => {
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -117,4 +117,4 @@ const DepositForm = () => {
     )
 }
 
-export default DepositForm
+export default WithdrawForm

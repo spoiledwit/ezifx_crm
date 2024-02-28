@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -16,6 +16,8 @@ import { Input } from "@/components/ui/input"
 import { priorities } from '@/constants'
 import { capitalizeFirstLetter } from '@/lib/utils'
 import { Textarea } from "@/components/ui/textarea"
+import PhotosUploader from '../Uploaders/PhotoUploader'
+import useAuthStore from '@/store/authStore'
 
 const formSchema = z.object({
     name: z.string().min(2, {
@@ -33,6 +35,16 @@ const formSchema = z.object({
 })
 
 const OpenTicketForm = () => {
+
+    const [images, setImages] = useState<string[]>([]);
+    const { user } = useAuthStore();
+
+    useEffect(() => {
+        if (user?.profilePicture) {
+            setImages([user?.profilePicture]);
+        }
+    }, []);
+
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -129,7 +141,7 @@ const OpenTicketForm = () => {
                                 <FormControl>
                                     <Textarea
                                         placeholder="What seems to be the problem?"
-                                        className="resize-none bg-white h-[100px]"
+                                        className="resize-none border-0 bg-white h-[100px]"
                                         {...field}
                                     />
                                 </FormControl>
@@ -137,6 +149,14 @@ const OpenTicketForm = () => {
                             </FormItem>
                         )}
                     />
+                    <div className=''>
+                        <FormLabel>Attachments</FormLabel>
+                        <PhotosUploader
+                            maxPhotos={1}
+                            addedPhotos={images}
+                            onChange={setImages}
+                        />
+                    </div>
 
                     <Button type="submit" className='w-full dark:bg-dark bg-primary hover:bg-hover'>Submit</Button>
                 </form>
