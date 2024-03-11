@@ -219,7 +219,7 @@ const Header = () => {
                     aria-labelledby="dropdownMenuButton"
                   >
                     <h6 className="mb-2 text-sm font-normal text-slate-500 dark:text-zink-300">
-                      Welcome to SZL-CRM
+                      Welcome to EZIFX-CRM
                     </h6>
                     <a href="#!" className="flex gap-3 mb-3">
                       <div className="relative inline-block shrink-0">
@@ -243,13 +243,13 @@ const Header = () => {
                     </a>
                     <ul>
                       <li>
-                        <a
+                        <Link
                           className="block ltr:pr-4 rtl:pl-4 py-1.5 text-base font-medium transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:text-custom-500 focus:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:focus:text-custom-500"
-                          href={process.env.PUBLIC_URL + "/user-profile"}
+                          to={process.env.PUBLIC_URL + "/user-profile"}
                         >
                           <User2 className="inline-block size-4 ltr:mr-2 rtl:ml-2"></User2>{" "}
                           Profile
-                        </a>
+                        </Link>
                       </li>
 
                       <li className="pt-2 mt-2 border-t border-slate-200 dark:border-zink-500">

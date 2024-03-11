@@ -2,14 +2,25 @@ import React from "react";
 import withRouter from "Common/withRouter";
 import { useNavigate } from "react-router-dom";
 import AuthIcon from "pages/AuthenticationInner/AuthIcon";
+import { Link } from "react-router-dom";
+import logo from "assets/images/logo.webp";
+import { login } from "helpers/auth";
+import { useAuthStore } from "store/useAuthStore";
 
-const Login = (props: any) => {
+const Login = () => {
   const navigate = useNavigate();
   document.title = "Login";
 
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState("");
+
   const signIn = async () => {
-    localStorage.setItem("authUser", "true");
-    console.log("Sign In");
+    try {
+      const data = await login(email, password);
+    } catch (error) {
+      console.error(error);
+    }
     navigate("/");
   };
 
@@ -52,25 +63,25 @@ const Login = (props: any) => {
 
         <div className="mb-0 w-screen lg:mx-auto lg:w-[500px] card shadow-lg border-none shadow-slate-100 relative">
           <div className="!px-10 !py-12 card-body">
-            {/* <Link to="/">
+            <Link to="/">
               <img
-                src={logoLight}
+                src={logo}
                 alt=""
                 className="hidden h-6 mx-auto dark:block"
               />
               <img
-                src={logoDark}
+                src={logo}
                 alt=""
                 className="block h-6 mx-auto dark:hidden"
               />
-            </Link> */}
+            </Link>
 
             <div className="mt-8 text-center">
               <h4 className="mb-1 text-custom-500 dark:text-custom-500">
                 Welcome Back !
               </h4>
               <p className="text-slate-500 dark:text-zink-200">
-                Sign in to continue to SZL CRM.
+                Sign in to continue to EZIFX CRM.
               </p>
             </div>
 
@@ -83,22 +94,6 @@ const Login = (props: any) => {
                 return false;
               }}
             >
-              {/* {success && (
-                <div
-                  className="px-4 py-3 mb-3 text-sm text-green-500 border border-green-200 rounded-md bg-green-50 dark:bg-green-400/20 dark:border-green-500/50"
-                  id="successAlert"
-                >
-                  You have <b>successfully</b> signed in.
-                </div>
-              )}
-              {error && (
-                <div
-                  className="px-4 py-3 mb-3 text-sm text-red-500 border border-red-200 rounded-md bg-red-50 dark:bg-red-400/20 dark:border-red-500/50"
-                  id="successAlert"
-                >
-                  You have <b>failed</b> signed in.
-                </div>
-              )} */}
               <div className="mb-3">
                 <label
                   htmlFor="email"
@@ -154,7 +149,6 @@ const Login = (props: any) => {
                   Sign In
                 </button>
               </div>
-
             </form>
           </div>
         </div>

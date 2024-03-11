@@ -1,31 +1,17 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "slices/thunk";
 import { Navigate } from "react-router-dom";
-import { RootState } from "slices";
-import { createSelector } from 'reselect';
-
-interface selectLogoutState {
-    isUserLogout: boolean;
-}
+import { useAuthStore } from "store/useAuthStore";
 
 const Logout: React.FC = () => {
-
-    const dispatch = useDispatch<any>();
-
-    const selectLogout = createSelector(
-        (state: RootState) => state.Login as selectLogoutState,
-        (login) => ({
-            isUserLogout: login.isUserLogout
-        })
-    );
-
-    const { isUserLogout } = useSelector(selectLogout);
-
+    const { setUser } = useAuthStore();
+    const [isUserLogout, setIsUserLogout] = React.useState<boolean>(false);
     React.useEffect(() => {
-        dispatch(logoutUser());
-    }, [dispatch]);
-
+        setUser(null);
+        setIsUserLogout(true);
+    }
+    , [setUser]);
+    
+    
     return isUserLogout ? <Navigate to="/login" /> : null;
 }
 

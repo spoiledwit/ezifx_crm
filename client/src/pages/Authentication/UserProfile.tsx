@@ -12,7 +12,6 @@ import userProfile from "assets/images/users/user-profile.png";
 import { createSelector } from 'reselect';
 import BreadCrumb from "Common/BreadCrumb";
 import withRouter from "Common/withRouter";
-import { editProfile } from "slices/thunk";
 
 const UserProfile = () => {
 
@@ -60,7 +59,7 @@ const UserProfile = () => {
       username: Yup.string().required("Please Enter Your UserName"),
     }),
     onSubmit: (values) => {
-      dispatch(editProfile(values));
+      // dispatch(editProfile(values));
     }
   });
 
@@ -68,7 +67,7 @@ const UserProfile = () => {
     <React.Fragment>
       <div className="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
         {/* Render Breadcrumb */}
-        <BreadCrumb title="SZL-CRM" pageTitle="Profile" />
+        <BreadCrumb title="EZIFX-CRM" pageTitle="Profile" />
 
         <div className="row">
           <div className="grid grid-cols-1 gap-x-5 xl:grid-cols-1">

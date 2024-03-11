@@ -7,7 +7,7 @@ interface BreadCrumbProps {
 }
 const BreadCrumb = ({ title, pageTitle }: BreadCrumbProps) => {
 
-    document.title = `${title} | SZL-CRM`;
+    document.title = `${title} | EZIFX-CRM`;
 
     return (
         <React.Fragment>

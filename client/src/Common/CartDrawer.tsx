@@ -82,7 +82,7 @@ const CartDrawer = ({ show, handleDrawer }: any) => {
                     </div>
                 </div>
                 <div className="px-4 py-3 text-sm text-green-500 border border-transparent bg-green-50 dark:bg-green-400/20">
-                    <span className="font-bold underline">SZL-CRM</span> Coupon code applied successfully.
+                    <span className="font-bold underline">EZIFX-CRM</span> Coupon code applied successfully.
                 </div>
                 <div>
                     <div className="h-[calc(100vh_-_370px)] p-4 overflow-y-auto product-list">
@@ -136,7 +136,7 @@ const CartDrawer = ({ show, handleDrawer }: any) => {
                                     <td className="text-right cart-subtotal">${subTotal.toFixed(2)}</td>
                                 </tr>
                                 <tr>
-                                    <td className="py-2">Discount <span className="text-muted">(SZL-CRM)</span>:</td>
+                                    <td className="py-2">Discount <span className="text-muted">(EZIFX-CRM)</span>:</td>
                                     <td className="text-right cart-discount">-${dis.toFixed(2)}</td>
                                 </tr>
                                 <tr>
