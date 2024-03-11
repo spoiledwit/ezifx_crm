@@ -14,7 +14,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:5173", "https://ezifx-crm.vercel.app"],
+    origin: ["http://localhost:5173", "http://localhost:5174", "https://ezifx-crm.vercel.app"],
   }), 
 );
 
