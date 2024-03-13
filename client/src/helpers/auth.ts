@@ -16,7 +16,7 @@ export const logout = async () => {
 
 export const register = async (name:string, email: string, password: string) => {
   const response = await axios.post(
-    `${process.env.REACT_APP_BASE_URI}/auth/register`,
+    `${process.env.REACT_APP_BASE_URI}/auth/registerr`,
     {
       name,
       email,
