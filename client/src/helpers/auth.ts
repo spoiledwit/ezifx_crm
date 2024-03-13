@@ -2,7 +2,7 @@ import axios from "axios";
 import { useAuthStore } from "store/useAuthStore";
 
 export const login = async (email: string, password: string) => {
-  const response = await axios.post(`${process.env.REACT_APP_BASE_URI}/login`, {
+  const response = await axios.post(`${process.env.REACT_APP_BASE_URI}/auth/login`, {
     email,
     password,
   });
@@ -14,13 +14,23 @@ export const logout = async () => {
   localStorage.removeItem("token");
 };
 
-export const register = async (email: string, password: string) => {
+export const register = async (name:string, email: string, password: string) => {
   const response = await axios.post(
-    `${process.env.REACT_APP_BASE_URI}/register`,
+    `${process.env.REACT_APP_BASE_URI}/auth/register`,
     {
+      name,
       email,
       password,
     }
   );
+  return response.data;
+};
+
+export const getUserFromLocalStorage = async (token:string) => {
+  const response = await axios.get(`${process.env.REACT_APP_BASE_URI}/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }
+  });
   return response.data;
 };

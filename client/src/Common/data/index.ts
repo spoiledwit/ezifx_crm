@@ -1,8 +1,8 @@
 import {
-    ProductsStatisticsData,
-    ProductOrdersData,
+    AccountsStatsData,
     widgetsData,
     widgetsData2,
+    ProductOrdersData,
     EmployeePerformanceData, RecentPayrollData, UpcomingInterviewData, UpcomingScheduledData, activeFriendsData, storyData, MessageData, PopularEventsData, UpcomingBirthdayData, EmailPerformanceData
 } from "./dashboard";
 
@@ -40,7 +40,7 @@ import { basic, reactTableData } from "./table";
 import { pricingData, cardData } from "./pages";
 
 export {
-    ProductsStatisticsData,
+    AccountsStatsData,
     ProductOrdersData,
     widgetsData,
     widgetsData2,

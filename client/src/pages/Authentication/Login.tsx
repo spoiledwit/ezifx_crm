@@ -6,22 +6,67 @@ import { Link } from "react-router-dom";
 import logo from "assets/images/logo.webp";
 import { login } from "helpers/auth";
 import { useAuthStore } from "store/useAuthStore";
+import { getUserFromLocalStorage } from "helpers/auth";
+import AnimationButton from "components/UIElement/UiButtons/AnimationButton";
+import {toast, Toaster} from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
   document.title = "Login";
 
+  const { setUser, setLoading, loading } = useAuthStore();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState("");
+  const [signing, setSigning] = React.useState(false);
+  const [remember, setRemember] = React.useState(false);
 
   const signIn = async () => {
     try {
+      setSigning(true);
+      if (!email || !password) {
+        toast.error("Please fill all fields");
+        return;
+      }
       const data = await login(email, password);
-    } catch (error) {
-      console.error(error);
+      setUser(data.user);
+      if (remember) {
+        localStorage.setItem("token", data.token);
+      }
+      navigate("/");
+    } catch (error:any) {
+      if (typeof error.response === "undefined") {
+        return toast.error("Network Error");
+      }
+      if (typeof error.response.data === "string") {
+        return toast.error(error.response.data);
+      }
+      toast.error("Something went wrong, please try again");
+    } finally {
+      setSigning(false);
     }
-    navigate("/");
+  };
+
+  React.useEffect(() => {
+    setLoading(true);
+    handleLoginFromLocalStorage();
+  }, []);
+
+  const handleLoginFromLocalStorage = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    try {
+      const data = await getUserFromLocalStorage(token);
+      setUser(data);
+      navigate("/");
+    } catch (error) {
+      localStorage.setItem("token", "");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   React.useEffect(() => {
@@ -58,9 +103,9 @@ const Login = () => {
 
   return (
     <React.Fragment>
+       <Toaster />
       <div className="relative">
         <AuthIcon />
-
         <div className="mb-0 w-screen lg:mx-auto lg:w-[500px] card shadow-lg border-none shadow-slate-100 relative">
           <div className="!px-10 !py-12 card-body">
             <Link to="/">
@@ -91,7 +136,6 @@ const Login = () => {
               onSubmit={async (event: any) => {
                 event.preventDefault();
                 await signIn();
-                return false;
               }}
             >
               <div className="mb-3">
@@ -103,8 +147,12 @@ const Login = () => {
                 </label>
                 <input
                   type="text"
+                  disabled={signing || loading}
                   id="email"
                   name="email"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
                   className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                   placeholder="Enter username or email"
                 />
@@ -117,8 +165,12 @@ const Login = () => {
                   Password
                 </label>
                 <input
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
                   type="password"
                   id="password"
+                  disabled={signing || loading}
                   name="password"
                   className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                   placeholder="Enter password"
@@ -130,7 +182,10 @@ const Login = () => {
                     id="checkboxDefault1"
                     className="size-4 border rounded-sm appearance-none bg-slate-100 border-slate-200 dark:bg-zink-600 dark:border-zink-500 checked:bg-custom-500 checked:border-custom-500 dark:checked:bg-custom-500 dark:checked:border-custom-500 checked:disabled:bg-custom-400 checked:disabled:border-custom-400"
                     type="checkbox"
-                    value=""
+                    value={remember.toString()}
+                    onChange={() => {
+                      setRemember(!remember);
+                    }}
                   />
                   <label
                     htmlFor="checkboxDefault1"
@@ -139,17 +194,35 @@ const Login = () => {
                     Remember me
                   </label>
                 </div>
-                {/* <div id="remember-error" className="hidden mt-1 text-sm text-red-500">Please check the "Remember me" before submitting the form.</div> */}
+                <div
+                  id="remember-error"
+                  className="hidden mt-1 text-sm text-red-500"
+                >
+                  Please check the "Remember me" before submitting the form.
+                </div>
               </div>
               <div className="mt-10">
-                <button
-                  type="submit"
-                  className="w-full text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
-                >
-                  Sign In
-                </button>
+                <AnimationButton
+                  className="w-full items-center justify-center"
+                  loading={signing || loading}
+                  disabled={signing || loading}
+                  loadingText={loading ? "Logging you in..." : "Signing in"}
+                  label="Login"
+                  onClick={signIn}
+                />
               </div>
             </form>
+            <div className="mt-10 text-center">
+              <p className="mb-0 text-slate-500 dark:text-zink-200">
+                Don't have an account?{" "}
+                <Link
+                  to="/register"
+                  className="font-semibold underline transition-all duration-150 ease-linear text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500"
+                >
+                  Signup
+                </Link>{" "}
+              </p>
+            </div>
           </div>
         </div>
       </div>

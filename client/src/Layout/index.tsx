@@ -5,6 +5,7 @@ import Footer from './Footer';
 import RightSidebar from './RightSidebar';
 import { createSelector } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
+import { Toaster } from 'react-hot-toast';
 import { Settings } from 'lucide-react';
 import CartDrawer from 'Common/CartDrawer';
 
@@ -115,6 +116,7 @@ const Layout = ({ children }: any) => {
   return (
     <>
       <div className="group-data-[sidebar-size=sm]:min-h-sm group-data-[sidebar-size=sm]:relative">
+        <Toaster />
         <Sidebar layoutType={layoutType} layoutSidebarSizeType={layoutSidebarSizeType} />
         <Header  />
         <div className='relative min-h-screen group-data-[sidebar-size=sm]:min-h-sm'>

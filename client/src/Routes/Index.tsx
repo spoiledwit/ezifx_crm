@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { authProtectedRoutes, publicRoutes } from './allRoutes';
 import Layout from 'Layout';
@@ -6,6 +6,7 @@ import NonAuthLayout from "Layout/NonLayout"
 import AuthProtected from './AuthProtected';
 
 const RouteIndex = () => {
+
   return (
     <React.Fragment>
       <Routes>

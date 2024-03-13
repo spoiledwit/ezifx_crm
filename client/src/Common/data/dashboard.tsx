@@ -22,140 +22,140 @@ import telegram from "assets/images/brand/telegram.png";
 import android from "assets/images/brand/android.png";
 import slack from "assets/images/brand/slack.png";
 
-const ProductsStatisticsData = [
+
+const AccountsStatsData = [
     {
-        id: "productsCheck1",
-        productName: "SmartTech Pro-4K Ultra HD TV",
-        price: "$1,542.99",
-        income: "$12.36k",
-        sales: "3,217",
-        view: "21,451",
-        click: "16,287",
-        clickPercentage: "39.56%",
-        status: "Active"
+        accountId: "786914",
+        mainPassword: "Mo5B@1aRWBC",
+        investorPassword: "Mo5B@1aRWBC",
+        type: "Real",
+        server: "EZICapitalManagement-Server",
+        balance: 1,
+        equity: 1,
+        liveStatus: "Disabled"
     },
     {
-        id: "productsCheck2",
-        productName: "LuxeLeather Vintage Messenger Bag",
-        price: "$699.99",
-        income: "$22.88k",
-        sales: "7,321",
-        view: "32,151",
-        click: "27,485",
-        clickPercentage: "87.33%",
-        status: "Active"
+        accountId: "789123",
+        mainPassword: "Px9C#2oRGDM",
+        investorPassword: "Px9C#2oRGDM",
+        type: "Demo",
+        server: "DemoServer1",
+        balance: 10000,
+        equity: 10000,
+        liveStatus: "Active"
     },
     {
-        id: "productsCheck3",
-        productName: "InfinityGlow LED Desk Lamp",
-        price: "$324.77",
-        income: "$21.10k",
-        sales: "8,245",
-        view: "33,415",
-        click: "25,430",
-        clickPercentage: "91.43%",
-        status: "Unactive"
+        accountId: "792345",
+        mainPassword: "Ft3D$5pYUHN",
+        investorPassword: "Ft3D$5pYUHN",
+        type: "Real",
+        server: "FXTradingPlatform-Server",
+        balance: 500,
+        equity: 500,
+        liveStatus: "Active"
     },
     {
-        id: "productsCheck4",
-        productName: "PowerPulse Wireless Earbuds",
-        price: "$99.00",
-        income: "$374",
-        sales: "2,987",
-        view: "41,123",
-        click: "46,963",
-        clickPercentage: "79.21%",
-        status: "Active"
+        accountId: "795678",
+        mainPassword: "Lw8E!9mQASZ",
+        investorPassword: "Lw8E!9mQASZ",
+        type: "Real",
+        server: "GlobalForexExchange-Server",
+        balance: 1000,
+        equity: 1000,
+        liveStatus: "Disabled"
     },
     {
-        id: "productsCheck5",
-        productName: "AdventureQuest Outdoor Backpack",
-        price: "$107.00",
-        income: "$8.22",
-        sales: "2,541",
-        view: "14,789",
-        click: "12,584",
-        clickPercentage: "39.04%",
-        status: "Unactive"
+        accountId: "798901",
+        mainPassword: "Rj1K@4sPLXC",
+        investorPassword: "Rj1K@4sPLXC",
+        type: "Demo",
+        server: "DemoServer2",
+        balance: 50000,
+        equity: 50000,
+        liveStatus: "Active"
     },
     {
-        id: "productsCheck6",
-        productName: "FitLifePro Fitness Tracker",
-        price: "$111.99",
-        income: "$42.2k",
-        sales: "44,201",
-        view: "40,888",
-        click: "14,520",
-        clickPercentage: "68.41%",
-        status: "Active"
+        accountId: "802234",
+        mainPassword: "Bp7V#3qAZSX",
+        investorPassword: "Bp7V#3qAZSX",
+        type: "Real",
+        server: "InvestmentBankingPlatform-Server",
+        balance: 2000,
+        equity: 2000,
+        liveStatus: "Active"
     },
     {
-        id: "productsCheck7",
-        productName: "ChefMaster Pro Cookware Set",
-        price: "$107.00",
-        income: "$8.22",
-        sales: "2,541",
-        view: "14,789",
-        click: "12,584",
-        clickPercentage: "39.04%",
-        status: "Unactive"
+        accountId: "805567",
+        mainPassword: "Yz6U!2wELNU",
+        investorPassword: "Yz6U!2wELNU",
+        type: "Real",
+        server: "CryptoTradingPlatform-Server",
+        balance: 3000,
+        equity: 3000,
+        liveStatus: "Active"
     },
     {
-        id: "productsCheck8",
-        productName: "PetPalace Pet Accessories",
-        price: "$1,542.99",
-        income: "$12.36k",
-        sales: "3,217",
-        view: "21,451",
-        click: "16,287",
-        clickPercentage: "39.56%",
-        status: "Active"
+        accountId: "808890",
+        mainPassword: "Hx4M$8nJKIV",
+        investorPassword: "Hx4M$8nJKIV",
+        type: "Demo",
+        server: "DemoServer3",
+        balance: 100000,
+        equity: 100000,
+        liveStatus: "Disabled"
     },
     {
-        id: "productsCheck9",
-        productName: "MusicMuse Premium Headphones",
-        price: "$99.00",
-        income: "$374",
-        sales: "2,987",
-        view: "41,123",
-        click: "46,963",
-        clickPercentage: "79.21%",
-        status: "Active"
+        accountId: "812123",
+        mainPassword: "Qr9S#6fVGHB",
+        investorPassword: "Qr9S#6fVGHB",
+        type: "Real",
+        server: "StockTradingPlatform-Server",
+        balance: 5000,
+        equity: 5000,
+        liveStatus: "Disabled"
     },
     {
-        id: "productsCheck9",
-        productName: "WellnessWonders Yoga Mat",
-        price: "$324.77",
-        income: "$21.10k",
-        sales: "8,245",
-        view: "33,415",
-        click: "25,430",
-        clickPercentage: "91.43%",
-        status: "Unactive"
+        accountId: "815456",
+        mainPassword: "Xc2B!5gZQWE",
+        investorPassword: "Xc2B!5gZQWE",
+        type: "Real",
+        server: "CommodityTradingPlatform-Server",
+        balance: 8000,
+        equity: 8000,
+        liveStatus: "Active"
     },
     {
-        id: "productsCheck10",
-        productName: "SmartTech Pro-4K Ultra HD TV",
-        price: "$1,542.99",
-        income: "$12.36k",
-        sales: "3,217",
-        view: "21,451",
-        click: "16,287",
-        clickPercentage: "39.56%",
-        status: "Active"
+        accountId: "818789",
+        mainPassword: "Op3A$7rTYUI",
+        investorPassword: "Op3A$7rTYUI",
+        type: "Demo",
+        server: "DemoServer4",
+        balance: 200000,
+        equity: 200000,
+        liveStatus: "Active"
     },
     {
-        id: "productsCheck11",
-        productName: "LuxeLeather Vintage Messenger Bag",
-        price: "$699.99",
-        income: "$22.88k",
-        sales: "7,321",
-        view: "32,151",
-        click: "27,485",
-        clickPercentage: "87.33%",
-        status: "Active"
+        accountId: "822012",
+        mainPassword: "Nm6X#9hLWCD",
+        investorPassword: "Nm6X#9hLWCD",
+        type: "Real",
+        server: "ForexTradingPlatform-Server",
+        balance: 10000,
+        equity: 10000,
+        liveStatus: "Active"
     },
+    {
+        accountId: "825345",
+        mainPassword: "Zb1Y@4pCKML",
+        investorPassword: "Zb1Y@4pCKML",
+        type: "Real",
+        server: "BinaryOptionsPlatform-Server",
+        balance: 20000,
+        equity: 20000,
+        liveStatus: "Active"
+    }
 ];
+
 
 const ProductOrdersData = [
     {
@@ -676,9 +676,9 @@ const EmailPerformanceData = [
 ];
 
 export {
-    ProductsStatisticsData,
     ProductOrdersData,
     widgetsData,
+    AccountsStatsData,
     widgetsData2,
     EmployeePerformanceData, RecentPayrollData, UpcomingInterviewData, UpcomingScheduledData, activeFriendsData, storyData, MessageData, PopularEventsData, UpcomingBirthdayData, EmailPerformanceData
 };

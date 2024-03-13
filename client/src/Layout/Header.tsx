@@ -9,6 +9,7 @@ import {
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import { useAuthStore } from "../store/useAuthStore";
 
 //import images
 import userProfile from "assets/images/users/user-profile.png";
@@ -121,15 +122,9 @@ const Header = () => {
       window.removeEventListener("resize", handleResizeLayout);
     };
   }, [layoutType, dispatch]);
+  
+  const {user} = useAuthStore();
 
-  const selectProperties = createSelector(
-    (state: any) => state.Profile,
-    (profile) => ({
-      user: profile.user,
-    })
-  );
-
-  const { user } = useSelector(selectProperties);
 
   return (
     <React.Fragment>
@@ -234,10 +229,10 @@ const Header = () => {
                       </div>
                       <div>
                         <h6 className="mb-1 text-15">
-                          {user.username || "admin"}
+                          {user?.name || ""}
                         </h6>
                         <p className="text-slate-500 dark:text-zink-300">
-                          CEO & Founder
+                          User
                         </p>
                       </div>
                     </a>
@@ -253,13 +248,16 @@ const Header = () => {
                       </li>
 
                       <li className="pt-2 mt-2 border-t border-slate-200 dark:border-zink-500">
-                        <a
+                        <button
                           className="block ltr:pr-4 rtl:pl-4 py-1.5 text-base font-medium transition-all duration-200 ease-linear text-slate-600 dropdown-item hover:text-custom-500 focus:text-custom-500 dark:text-zink-200 dark:hover:text-custom-500 dark:focus:text-custom-500"
-                          href={process.env.PUBLIC_URL + "/logout"}
+                          onClick={() => {
+                            useAuthStore.getState().setUser(null);
+                            localStorage.removeItem("token");
+                          }}
                         >
                           <LogOut className="inline-block size-4 ltr:mr-2 rtl:ml-2"></LogOut>{" "}
                           Sign Out
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </Dropdown.Content>
