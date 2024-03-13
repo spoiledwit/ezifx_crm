@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import AuthIcon from "pages/AuthenticationInner/AuthIcon";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import { register } from "helpers/auth";
 import logo from "assets/images/logo.webp";
+import AnimationButton from "components/UIElement/UiButtons/AnimationButton";
 
 const Register = () => {
   document.title = "Register | EziFx CRM";
@@ -50,10 +53,18 @@ const Register = () => {
     password: string
   ) => {
     try {
-      const data = await register(name, email, password);
-      console.log(data);
-    } catch (error) {
-      console.error(error);
+      setLoading(true);
+      await register(name, email, password);
+      toast.success("Account created successfully");
+    } catch (error: any) {
+      if (!error.response) {
+        return toast.error("Network error. Please try again.");
+      }
+      if (typeof error.response.data === "string") {
+        return toast.error(error.response.data);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -61,7 +72,7 @@ const Register = () => {
     <React.Fragment>
       <div className="relative">
         <AuthIcon />
-
+        <Toaster />
         <div className="mb-0 w-screen lg:w-[500px] card shadow-lg border-none shadow-slate-100 relative">
           <div className="!px-10 !py-12 card-body">
             <Link to="/">
@@ -106,6 +117,7 @@ const Register = () => {
                 <input
                   type="text"
                   id="name-field"
+                  disabled={loading}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   name="name"
@@ -123,6 +135,7 @@ const Register = () => {
                 <input
                   type="text"
                   id="email-field"
+                  disabled={loading}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   name="email"
@@ -140,6 +153,7 @@ const Register = () => {
                 <input
                   type="password"
                   id="password"
+                  disabled={loading}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   name="password"
@@ -148,14 +162,13 @@ const Register = () => {
                 />
               </div>
               <div className="mt-10">
-                <button
+                <AnimationButton
+                  label="Register"
+                  loading={loading}
+                  loadingText="Registering..."
                   onClick={() => handleRegister(name, email, password)}
-                  disabled={loading}
-                  type="submit"
-                  className="w-full text-white transition-all duration-200 ease-linear btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
-                >
-                  {loading ? "Loading..." : "Register"}
-                </button>
+                  className="w-full justify-center"
+                />
               </div>
               <div className="mt-10 text-center">
                 <p className="mb-0 text-slate-500 dark:text-zink-200">

@@ -2,7 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import BreadCrumb from "Common/BreadCrumb";
 import CountUp from "react-countup";
 import PhotosUploader from "components/Forms/ImageUploader";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
+import { useAuthStore } from "store/useAuthStore";
 
 // icons
 import {
@@ -24,45 +25,56 @@ import Modal from "Common/Components/Modal";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { ToastContainer } from "react-toastify";
+import axios from "axios";
 
 const Deposits = () => {
-  const [dataList, setDataList] = useState<any>([]);
-  const [data, setData] = useState<any>([
-    {
-      depositId: "TWT5015100365",
-      depositDate: "2021-08-25",
-      paymentMethod: "Bank Transfer",
-      amount: "5000",
-      status: "Approved",
-    },
-    {
-      depositId: "TWT5015100366",
-      depositDate: "2021-08-25",
-      paymentMethod: "Bank Transfer",
-      amount: "5000",
-      status: "Pending",
-    },
-    {
-      depositId: "TWT5015100367",
-      depositDate: "2021-08-25",
-      paymentMethod: "Bank Transfer",
-      amount: "5000",
-      status: "Rejected",
-    },
-  ]);
-  const [images, setImages] = useState<any>([]);
-  const [accounts, setAccounts] = useState<any>([1213124, 123213]);
 
+  const { user } = useAuthStore();
+  const [creatingDeposit, setCreatingDeposit] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [dataList, setDataList] = useState<any>([]);
+  const [data, setData] = useState<any>([]);
+  const [images, setImages] = useState<any>([]);
   const [show, setShow] = useState<boolean>(false);
 
   useEffect(() => {
+    handleGetDeposits();
+  }, []);
+
+  const handleGetDeposits = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${process.env.REACT_APP_BASE_URI}/deposit`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setDataList(res.data);
+      setData(res.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getDepositNumberByStatus = (status: string) => {
+    let total = 0;
+    dataList.forEach((deposit: any) => {
+      if (deposit.status === status) {
+        total += deposit.amount;
+      }
+    });
+    return total;
+  };
+
+  useEffect(() => {
     if (images.length > 0) {
-      validation.setFieldValue("paymentProof", images[0]);    
+      validation.setFieldValue("paymentProof", images[0]);
     } else {
       validation.setFieldValue("paymentProof", "");
     }
-  }
-  , [images]);
+  }, [images]);
 
   // validation
   const validation: any = useFormik({
@@ -82,14 +94,38 @@ const Deposits = () => {
       paymentProof: Yup.string().required("Please Upload Payment Proof"),
     }),
 
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const newData = {
-        ...values,
+        ...values
       };
-      console.log(newData);
-      toast.success("Deposit Made Successfully");
-      setImages([]);
-      toggle();
+      setCreatingDeposit(true);
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_BASE_URI}/deposit`,
+          {
+            ...newData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        handleGetDeposits();
+        toast.success("Deposit made successfully!");
+        toggle();
+        validation.resetForm();
+        setImages([]);
+      } catch (error: any) {
+        if (!error.response) {
+          return toast.error("Network error. Please try again.");
+        }
+        if (typeof error.response.data === "string") {
+          return toast.error(error.response.data);
+        }
+      } finally {
+        setCreatingDeposit(false);
+      }
     },
   });
 
@@ -195,7 +231,7 @@ const Deposits = () => {
       },
       {
         header: "Deposit ID",
-        accessorKey: "depositId",
+        accessorKey: "_id",
         enableColumnFilter: false,
         enableSorting: false,
         cell: (cell: any) => (
@@ -211,7 +247,7 @@ const Deposits = () => {
       },
       {
         header: "Deposit Date",
-        accessorKey: "depositDate",
+        accessorKey: "createdAt",
         enableColumnFilter: false,
       },
       {
@@ -280,7 +316,7 @@ const Deposits = () => {
               <div className="grow">
                 <h5 className="mb-1 text-16">
                   <CountUp
-                    end={15876}
+                    end={getDepositNumberByStatus("Approved")}
                     separator=","
                     className="counter-value"
                   />
@@ -300,10 +336,11 @@ const Deposits = () => {
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
-                  <CountUp end={1548} separator="," className="counter-value" />
+                  <CountUp end={getDepositNumberByStatus("Pending")}
+                  separator="," className="counter-value" />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Pending Deposits
+                  Pending Deposit Amount
                 </p>
               </div>
             </div>
@@ -318,7 +355,7 @@ const Deposits = () => {
               <div className="grow">
                 <h5 className="mb-1 text-16">
                   <CountUp
-                    end={30914}
+                    end={getDepositNumberByStatus("Approved")}
                     separator=","
                     className="counter-value"
                   />
@@ -338,10 +375,11 @@ const Deposits = () => {
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
-                  <CountUp end={3863} separator="," className="counter-value" />
+                  <CountUp end={getDepositNumberByStatus("Rejected")}
+                  separator="," className="counter-value" />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Cancelled Deposits
+                  Rejected Deposit Amount
                 </p>
               </div>
             </div>
@@ -525,7 +563,7 @@ const Deposits = () => {
                   value={validation.values.accountNumber || ""}
                 >
                   <option value="">Select Account</option>
-                  {accounts.map((account: any, index: any) => (
+                  {user?.accounts.map((account: any, index: any) => (
                     <option key={index} value={account}>
                       {account}
                     </option>

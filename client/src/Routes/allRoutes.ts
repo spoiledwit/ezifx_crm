@@ -12,16 +12,17 @@ import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
 import Register from "pages/Authentication/Register";
 
-
 interface RouteObject {
   path: string;
   component: React.ComponentType<any>;
   exact?: boolean;
 }
 
-const authProtectedRoutes: Array<RouteObject> = [
+let authProtectedRoutes: Array<RouteObject> = [
+
   // Dashboard
   { path: "/", component: Dashboard },
+
   { path: "/dashboard", component: Dashboard },
 
   // Deposits

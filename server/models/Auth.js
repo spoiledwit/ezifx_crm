@@ -11,6 +11,17 @@ const AuthSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    profilePic: {
+      type: String,
+    },
+    hasKYC: {
+      type: Boolean,
+      default: false,
+    },
+    kycRequest: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Kyc",
+    },
     hashedPassword: {
       type: String,
       required: true,
@@ -40,6 +51,11 @@ const AuthSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    accounts: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     timestamps: true,

@@ -3,15 +3,46 @@ import React, { useMemo, useState } from "react";
 import { AccountsStatsData } from "Common/data";
 import { CheckCircle2, Search, XCircle } from "lucide-react";
 import filterDataBySearch from "Common/filterDataBySearch";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
+import axios from "axios";
 
 const AccountsStatistics = () => {
-  const [data, setData] = useState(AccountsStatsData);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    handleFetchAccounts();
+  }, []);
+  const handleFetchAccounts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URI}/account`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setData(response.data);
+    } catch (error: any) {
+      if (!error.response) {
+        return toast.error("Network error. Please try again.");
+      }
+      if (typeof error.response.data === "string") {
+        return toast.error(error.response.data);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Search Data
   const filterSearchData = (e: any) => {
     const search = e.target.value;
     const keysToSearch = ["accountId", "type"];
-    filterDataBySearch(AccountsStatsData, search, keysToSearch, setData);
+    // filterDataBySearch(AccountsStatsData, search, keysToSearch, setData);
   };
 
   const columns = useMemo(

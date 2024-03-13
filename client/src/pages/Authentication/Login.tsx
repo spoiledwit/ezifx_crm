@@ -32,6 +32,8 @@ const Login = () => {
       if (remember) {
         localStorage.setItem("token", data.token);
       }
+
+      localStorage.setItem("token", data.token);
       navigate("/");
     } catch (error:any) {
       if (typeof error.response === "undefined") {

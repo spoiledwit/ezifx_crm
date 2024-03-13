@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import BreadCrumb from "Common/BreadCrumb";
 import CountUp from "react-countup";
 import { toast } from "react-hot-toast";
+import { useAuthStore } from "store/useAuthStore";
 
 // icons
 import {
@@ -23,36 +24,73 @@ import Modal from "Common/Components/Modal";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { ToastContainer } from "react-toastify";
+import axios from "axios";
 
 const Withdrawals = () => {
+  const { user } = useAuthStore();
   const [dataList, setDataList] = useState<any>([]);
   const [data, setData] = useState<any>([
-    {
-      withdrawalId: "TWT5015100365",
-      withdrawalDate: "2021-08-25",
-      paymentMethod: "Bank Transfer",
-      amount: "5000",
-      status: "Approved",
-    },
-    {
-      withdrawalId: "TWT5015100366",
-      withdrawalDate: "2021-08-25",
-      paymentMethod: "Bank Transfer",
-      amount: "5000",
-      status: "Pending",
-    },
-    {
-      withdrawalId: "TWT5015100367",
-      withdrawalDate: "2021-08-25",
-      paymentMethod: "Bank Transfer",
-      amount: "5000",
-      status: "Rejected",
-    },
+    // {
+    //   withdrawalId: "TWT5015100365",
+    //   withdrawalDate: "2021-08-25",
+    //   paymentMethod: "Bank Transfer",
+    //   amount: "5000",
+    //   status: "Approved",
+    // },
+    // {
+    //   withdrawalId: "TWT5015100366",
+    //   withdrawalDate: "2021-08-25",
+    //   paymentMethod: "Bank Transfer",
+    //   amount: "5000",
+    //   status: "Pending",
+    // },
+    // {
+    //   withdrawalId: "TWT5015100367",
+    //   withdrawalDate: "2021-08-25",
+    //   paymentMethod: "Bank Transfer",
+    //   amount: "5000",
+    //   status: "Rejected",
+    // },
   ]);
-  const [images, setImages] = useState<any>([]);
-  const [accounts, setAccounts] = useState<any>([1213124, 123213]);
 
+  const [creatingWithdrawal, setCreatingWithdrawal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [images, setImages] = useState<any>([]);
   const [show, setShow] = useState<boolean>(false);
+
+  useEffect(() => {
+    handleGetWithdrawals();
+  }, []);
+
+  const handleGetWithdrawals = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASE_URI}/withdrawal`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setDataList(res.data);
+      setData(res.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getWithdrawalNumberByStatus = (status: string) => {
+    let total = 0;
+    dataList.forEach((withdrawal: any) => {
+      if (withdrawal.status === status) {
+        total += withdrawal.amount;
+      }
+    });
+    return total;
+  };
 
   useEffect(() => {
     if (images.length > 0) {
@@ -78,14 +116,37 @@ const Withdrawals = () => {
       amount: Yup.string().required("Please Enter Amount"),
     }),
 
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const newData = {
         ...values,
       };
-      console.log(newData);
-      toast.success("Withdrawal Made Successfully");
-      setImages([]);
-      toggle();
+      setCreatingWithdrawal(true);
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_BASE_URI}/withdrawal`,
+          {
+            ...newData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        handleGetWithdrawals();
+        toast.success("Withdrawal Request made successfully!");
+        toggle();
+        validation.resetForm();
+      } catch (error: any) {
+        if (!error.response) {
+          return toast.error("Network error. Please try again.");
+        }
+        if (typeof error.response.data === "string") {
+          return toast.error(error.response.data);
+        }
+      } finally {
+        setCreatingWithdrawal(false);
+      }
     },
   });
 
@@ -191,7 +252,7 @@ const Withdrawals = () => {
       },
       {
         header: "Withdrawal ID",
-        accessorKey: "withdrawalId",
+        accessorKey: "_id",
         enableColumnFilter: false,
         enableSorting: false,
         cell: (cell: any) => (
@@ -207,7 +268,7 @@ const Withdrawals = () => {
       },
       {
         header: "Withdrawal Date",
-        accessorKey: "withdrawalDate",
+        accessorKey: "createdAt",
         enableColumnFilter: false,
       },
       {
@@ -276,7 +337,7 @@ const Withdrawals = () => {
               <div className="grow">
                 <h5 className="mb-1 text-16">
                   <CountUp
-                    end={15876}
+                    end={getWithdrawalNumberByStatus("Approved")}
                     separator=","
                     className="counter-value"
                   />
@@ -296,7 +357,11 @@ const Withdrawals = () => {
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
-                  <CountUp end={1548} separator="," className="counter-value" />
+                  <CountUp
+                    end={getWithdrawalNumberByStatus("Pending")}
+                    separator=","
+                    className="counter-value"
+                  />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
                   Pending Withdrawals
@@ -314,7 +379,7 @@ const Withdrawals = () => {
               <div className="grow">
                 <h5 className="mb-1 text-16">
                   <CountUp
-                    end={30914}
+                    end={getWithdrawalNumberByStatus("Approved")}
                     separator=","
                     className="counter-value"
                   />
@@ -334,7 +399,11 @@ const Withdrawals = () => {
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
-                  <CountUp end={3863} separator="," className="counter-value" />
+                  <CountUp
+                    end={getWithdrawalNumberByStatus("Rejected")}
+                    separator=","
+                    className="counter-value"
+                  />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
                   Rejected Withdrawals
@@ -521,7 +590,7 @@ const Withdrawals = () => {
                   value={validation.values.accountNumber || ""}
                 >
                   <option value="">Select Account</option>
-                  {accounts.map((account: any, index: any) => (
+                  {user?.accounts.map((account: any, index: any) => (
                     <option key={index} value={account}>
                       {account}
                     </option>

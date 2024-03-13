@@ -3,15 +3,30 @@ import React, { useMemo, useState } from "react";
 import { AccountsStatsData } from "Common/data";
 import { CheckCircle2, Search, XCircle } from "lucide-react";
 import filterDataBySearch from "Common/filterDataBySearch";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
+import axios from "axios";
 
-const AccountsStatistics = () => {
-  const [data, setData] = useState(AccountsStatsData);
+const AccountsStatistics = ({
+  data,
+  setData,
+  loading,
+  setLoading,
+  handleFetchAccounts,
+}: {
+  data: any;
+  setData: any;
+  loading: any;
+  setLoading: any;
+  handleFetchAccounts: any;
+}) => {
 
+  
   // Search Data
   const filterSearchData = (e: any) => {
     const search = e.target.value;
     const keysToSearch = ["accountId", "type"];
-    filterDataBySearch(AccountsStatsData, search, keysToSearch, setData);
+    // filterDataBySearch(AccountsStatsData, search, keysToSearch, setData);
   };
 
   const columns = useMemo(

@@ -1,7 +1,42 @@
 import React from 'react';
 import { Kanban, ListFilter, CircleDollarSign, ArrowDown, ArrowUp } from 'lucide-react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import CountUp from 'react-countup';
+import toast from 'react-hot-toast';
+
 const Widgets = () => {
+
+    const [data, setData] = useState({
+        totalDeposit: 0,
+        totalWithdrawal: 0,
+        totalBalance: 0,
+    });
+
+    useEffect(()=>{
+        handleGetStats();
+    }, [])
+
+    const handleGetStats = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URI}/stats/totalDW`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+            });
+            const { totalDeposit, totalWithdrawal, totalBalance } = response.data;
+            setData({ totalDeposit, totalWithdrawal, totalBalance });
+        } catch (error: any) {
+            if (!error.response) {
+                return toast.error('Network error. Please try again.');
+            }
+            if (typeof error.response.data === 'string') {
+                return toast.error(error.response.data);
+            }
+            toast.error('An error occurred. Please try again.');
+        }
+    };
+
     return (
         <React.Fragment>
             <div className="order-1 md:col-span-6 lg:col-span-3 col-span-12 2xl:order-1 bg-green-100 dark:bg-green-500/20 card 2xl:col-span-2 group-data-[skin=bordered]:border-green-500/20 relative overflow-hidden">
@@ -11,7 +46,7 @@ const Widgets = () => {
                         <ArrowDown />
                     </div>
                     <h5 className="mt-5 mb-2">
-                        <CountUp end={15876} className="counter-value" />$
+                        <CountUp end={data.totalDeposit} className="counter-value" />$
                     </h5>
                     <p className="text-slate-500 dark:text-slate-200">Total Deposit</p>
                 </div>
@@ -23,7 +58,7 @@ const Widgets = () => {
                     <ArrowUp />
                     </div>
                     <h5 className="mt-5 mb-2">
-                        <CountUp end={103.15} decimals={2} className="counter-value" />
+                        <CountUp end={data.totalWithdrawal} decimals={2} className="counter-value" />
                         $</h5>
                     <p className="text-slate-500 dark:text-slate-200">Total Withdrawal</p>
                 </div>
@@ -36,7 +71,7 @@ const Widgets = () => {
                         <CircleDollarSign />
                     </div>
                     <h5 className="mt-5 mb-2">
-                    <CountUp className="counter-value" end={29} duration={3} />$
+                    <CountUp className="counter-value" end={data.totalBalance} duration={3} />$
                         </h5>
                     <p className="text-slate-500 dark:text-slate-200">Total Trading Account Balance</p>
                 </div>

@@ -12,6 +12,7 @@ type UserType = {
   zip?: string;
   country?: string;
   isVerified: boolean;
+  kycRequest: boolean;
   hasKYC: boolean;
   createdAt?: string;
   updatedAt?: string;

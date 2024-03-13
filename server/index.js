@@ -4,6 +4,11 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
+import accountRoutes from "./routes/account.js";
+import statsRoutes from "./routes/stats.js";
+import depositRoutes from "./routes/deposit.js";
+import withdrawalRoutes from "./routes/withdrawal.js";
+import kycRoutes from "./routes/kycRoutes.js";
 
 dotenv.config();
 
@@ -39,9 +44,11 @@ db.on("disconnected", () => {
 
 // ROUTES
 app.use("/auth", authRoutes);
-
-
-//Setting up s3
+app.use("/account", accountRoutes);
+app.use("/stats", statsRoutes);
+app.use("/deposit", depositRoutes);
+app.use("/withdrawal", withdrawalRoutes);
+app.use("/kyc", kycRoutes);
 
 app.get("/", (req, res)=>{
   res.send("Server is running!");

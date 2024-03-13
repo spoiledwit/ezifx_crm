@@ -8,10 +8,47 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { ToastContainer } from "react-toastify";
 import AccountsStatistics from "./AccountsStatistics";
+import { useEffect } from "react";
+import { useAuthStore } from "store/useAuthStore";
+
+import axios from "axios";
 
 const Accounts = () => {
   const [show, setShow] = useState<boolean>(false);
   const [showDemo, setShowDemo] = useState<boolean>(false);
+  const {setUser, user} = useAuthStore();
+
+  const [creatingAccount, setCreatingAccount] = useState<boolean>(false);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    handleFetchAccounts();
+  }, []);
+
+  const handleFetchAccounts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URI}/account`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setData(response.data);
+    } catch (error: any) {
+      if (!error.response) {
+        return toast.error("Network error. Please try again.");
+      }
+      if (typeof error.response.data === "string") {
+        return toast.error(error.response.data);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // validation for real account
   const validation: any = useFormik({
@@ -25,13 +62,44 @@ const Accounts = () => {
       leverage: Yup.number().required("Leverage is required"),
     }),
 
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const newData = {
-        ...values,
+        ...values, type: "Real"
       };
-      console.log(newData);
-      toast.success("Account Created Successfully");
-      toggle();
+      setCreatingAccount(true);
+      try {
+        const res = await axios.post(
+          `${process.env.REACT_APP_BASE_URI}/account`,
+          {
+            ...newData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        // adding account.accountId to user accounts array
+
+        //@ts-ignore
+        setUser({
+          ...user,
+          //@ts-ignore
+          accounts: [...user.accounts, res.data.accountId],
+        });
+        handleFetchAccounts();
+        toast.success("Account Created Successfully");
+        toggle();
+      } catch (error: any) {
+        if (!error.response) {
+          return toast.error("Network error. Please try again.");
+        }
+        if (typeof error.response.data === "string") {
+          return toast.error(error.response.data);
+        }
+      } finally {
+        setCreatingAccount(false);
+      }
     },
   });
 
@@ -56,18 +124,41 @@ const Accounts = () => {
       leverage: Yup.number().required("Leverage is required"),
     }),
 
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const newData = {
-        ...values,
+        ...values, type: "Demo"
       };
-      console.log(newData);
-      toast.success("Account Created Successfully");
-      toggleDemo();
+      setCreatingAccount(true);
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_BASE_URI}/account`,
+          {
+            ...newData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        handleFetchAccounts();
+        toast.success("Account Created Successfully");
+        toggleDemo();
+      } catch (error: any) {
+        if (!error.response) {
+          return toast.error("Network error. Please try again.");
+        }
+        if (typeof error.response.data === "string") {
+          return toast.error(error.response.data);
+        }
+      } finally {
+        setCreatingAccount(false);
+      }
     },
-  }); 
+  });
 
   const toggleDemo = useCallback(() => {
-    console.log(showDemo)
+    console.log(showDemo);
     if (showDemo) {
       setShowDemo(false);
     } else {
@@ -80,9 +171,7 @@ const Accounts = () => {
     <React.Fragment>
       <BreadCrumb title="All Accounts" pageTitle="Accounts" />
       <ToastContainer closeButton={false} limit={1} />
-      <div
-      className="flex items-center justify-end gap-2"
-      >
+      <div className="flex items-center justify-end gap-2">
         <div className="flex justify-end mb-2">
           <button
             className="btn bg-custom-500 text-white hover:bg-custom-600 focus:bg-custom-600 active:bg-custom-600 dark:bg-custom-500/80 dark:hover:bg-custom-600/80 dark:focus:bg-custom-600/80 dark:active:bg-custom-600/80"
@@ -100,8 +189,13 @@ const Accounts = () => {
           </button>
         </div>
       </div>
-
-      <AccountsStatistics />
+      <AccountsStatistics
+        data={data}
+        setData={setData}
+        loading={loading}
+        setLoading={setLoading}
+        handleFetchAccounts={handleFetchAccounts}
+      />
       {/* Real Account Modal */}
       <Modal
         show={show}
@@ -185,9 +279,12 @@ const Accounts = () => {
               </button>
               <button
                 type="submit"
+                disabled={creatingAccount}
                 className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
               >
-                {"Create an Account"}
+                {creatingAccount
+                  ? "Creating Account..."
+                  : "Create a Real Account"}
               </button>
             </div>
           </form>
@@ -276,9 +373,12 @@ const Accounts = () => {
               </button>
               <button
                 type="submit"
+                disabled={creatingAccount}
                 className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
               >
-                {"Create a Demo Account"}
+                {creatingAccount
+                  ? "Creating Account..."
+                  : "Create a Demo Account"}
               </button>
             </div>
           </form>
