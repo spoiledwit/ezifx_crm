@@ -82,7 +82,7 @@ const Register = () => {
                 Create your free account
               </h4>
               <p className="text-slate-500 dark:text-zink-200">
-                Get your free Tailwick account now
+                Get your account now
               </p>
             </div>
 
