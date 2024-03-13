@@ -1,9 +1,11 @@
-import SignUpForm from "components/Forms/Validation/BalanceTransferForm";
+import BalanceTransferForm from "components/Forms/Validation/BalanceTransferForm";
 
 const BalanceTransferPage = () => {
   return (
-    <div>
-        <SignUpForm />
+    <div
+    className="pt-12"
+    >
+        <BalanceTransferForm />
     </div>
   )
 }

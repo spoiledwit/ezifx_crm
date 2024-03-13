@@ -54,16 +54,16 @@ const menuData: any = [
     parentId: 2,
   },
   {
-    id: "refferral",
-    label: "Refferral",
+    id: "referral",
+    label: "Referral",
     icon: <Users />,
-    link: "#",
+    link: "/referral",
     parentId: 2,
   },
   {
     id: "Transactions",
     label: "Transactions",
-    link: "/#",
+    link: "/transactions",
     icon: <Archive />,
   },
   {
@@ -73,7 +73,7 @@ const menuData: any = [
   {
     id: "supportTickets",
     label: "Support Tickets",
-    link: "/#",
+    link: "/support",
     icon: <AlertTriangle />,
   },
 ];

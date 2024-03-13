@@ -5,6 +5,12 @@ type UserType = {
   password: string;
   role: string;
   accounts: string[];
+  profilePic?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
   isVerified: boolean;
   hasKYC: boolean;
   createdAt?: string;
