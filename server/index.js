@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
-import stripeRoutes from "./routes/stripeRoutes.js"
 
 dotenv.config();
 
@@ -14,7 +13,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:5173", "http://localhost:5174", "https://ezifx-crm.vercel.app"],
+    origin: ["http://localhost:5173", "http://localhost:5174", "https://ezifx-crm.vercel.app", "http://localhost:3000"],
   }), 
 );
 
