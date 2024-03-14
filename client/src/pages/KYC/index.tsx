@@ -46,7 +46,7 @@ const KycPage = () => {
       cnicImage: "",
     },
     validationSchema: Yup.object({
-      cnicImage: Yup.string().required("CNIC Image is required"),
+      cnicImage: Yup.string().required("Image is required"),
     }),
     onSubmit: async (values) => {
       try {
@@ -122,11 +122,11 @@ const KycPage = () => {
             <div className="flex justify-center mt-10">
               <AnimationButton
                 loading={loading}
-                label="Do KYC"
+                label="Complete KYC"
                 onClick={() => {
                   formik.handleSubmit();
                 }}
-                loadingText="Uploading..."
+                loadingText="Verifying..."
                 className="w-full max-w-[250px] justify-center"
               />
             </div>
