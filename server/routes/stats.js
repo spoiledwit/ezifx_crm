@@ -1,4 +1,4 @@
-import { getTotalDW } from "../controllers/stats.js";
+import { getTotalDW } from "../controllers/Stats.js";
 import express from "express";
 import verifyToken from "../middlewares/verifyToken.js";
 
