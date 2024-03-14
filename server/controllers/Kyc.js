@@ -19,7 +19,6 @@ export const createKyc = async (req, res) => {
         return_portrait_image: true,
       },
     };
-    // making a request to the OCR API using fetch
     const response = await fetch(options.url, {
       method: options.method,
       headers: options.headers,
