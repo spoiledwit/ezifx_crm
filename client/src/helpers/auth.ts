@@ -14,11 +14,13 @@ export const logout = async () => {
   localStorage.removeItem("token");
 };
 
-export const register = async (name:string, email: string, password: string) => {
+export const register = async (name:string, email: string, password: string, phone:string, referralCode:string) => {
   const response = await axios.post(
     `${process.env.REACT_APP_BASE_URI}/auth/register`,
     {
       name,
+      phone,
+      referralCode,
       email,
       password,
     }

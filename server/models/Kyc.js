@@ -9,7 +9,11 @@ const kycSchema = new mongoose.Schema({
         type: String,
         default: "pending"
     },
-    cnicImage:{
+    image:{
+        type: String,
+        required: true
+    },
+    identityType:{
         type: String,
         required: true
     },

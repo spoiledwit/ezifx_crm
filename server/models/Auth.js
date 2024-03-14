@@ -6,6 +6,13 @@ const AuthSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    phone: {
+      type:String,
+      required: true,
+    },
+    referralCode: {
+      type: String,
+    },
     email: {
       type: String,
       required: true,
@@ -17,10 +24,6 @@ const AuthSchema = new mongoose.Schema(
     hasKYC: {
       type: Boolean,
       default: false,
-    },
-    kycRequest: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Kyc",
     },
     hashedPassword: {
       type: String,

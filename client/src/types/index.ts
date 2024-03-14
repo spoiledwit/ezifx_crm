@@ -12,7 +12,8 @@ type UserType = {
   zip?: string;
   country?: string;
   isVerified: boolean;
-  kycRequest: boolean;
+  phone: string;
+  referralCode?: string;
   hasKYC: boolean;
   createdAt?: string;
   updatedAt?: string;

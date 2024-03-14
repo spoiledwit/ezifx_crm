@@ -11,13 +11,8 @@ export const register = async (req, res) => {
       name,
       email,
       password,
-      birthday,
-      state,
-      country,
-      postalCode,
-      phoneNumber,
-      address,
-      city,
+      phone,
+      referralCode,
     } = req.body;
 
     // Check if the user exists
@@ -35,13 +30,8 @@ export const register = async (req, res) => {
       name,
       email,
       hashedPassword: encryptedPassword,
-      birthday,
-      state,
-      country,
-      city,
-      postalCode,
-      phoneNumber,
-      address,
+      phone,
+      referralCode,
     });
 
     console.log("sending email");

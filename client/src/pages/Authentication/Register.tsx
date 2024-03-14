@@ -13,6 +13,8 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [referralCode, setReferralCode] = useState("");
   const [loading, setLoading] = useState(false);
 
   React.useEffect(() => {
@@ -53,8 +55,11 @@ const Register = () => {
     password: string
   ) => {
     try {
+      if (!name || !email || !password || !phone) {
+        return toast.error("Please fill the fields.");
+      }
       setLoading(true);
-      await register(name, email, password);
+      await register(name, email, password, phone, referralCode);
       toast.success("Account created successfully");
     } catch (error: any) {
       if (!error.response) {
@@ -160,6 +165,46 @@ const Register = () => {
                   className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                   placeholder="Enter password"
                 />
+              </div>
+              <div
+              className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0"
+              >
+                <span>
+                  <label
+                    htmlFor="phone"
+                    className="inline-block mb-2 text-base font-medium"
+                  >
+                    Phone
+                  </label>
+                  <input
+                    type="text"
+                    id="phone"
+                    disabled={loading}
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    name="phone"
+                    className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
+                    placeholder="Enter phone"
+                  />
+                </span>
+                <span>
+                  <label
+                    htmlFor="referralCode"
+                    className="inline-block mb-2 text-base font-medium"
+                  >
+                    Referral Code (Optional)
+                  </label>
+                  <input
+                    type="string"
+                    id="referralCode"
+                    disabled={loading}
+                    value={referralCode}
+                    onChange={(e) => setReferralCode(e.target.value)}
+                    name="referralCode"
+                    className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
+                    placeholder="Enter referral code"
+                  />
+                </span>
               </div>
               <div className="mt-10">
                 <AnimationButton
