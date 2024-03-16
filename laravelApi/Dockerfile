@@ -2,6 +2,7 @@ FROM php:8.1-fpm
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
+    libonig-dev \
     build-essential \
     libpng-dev \
     libjpeg62-turbo-dev \
