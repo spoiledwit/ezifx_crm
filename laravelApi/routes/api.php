@@ -27,6 +27,10 @@ Route::get('/', function () {
     return response()->json(['message' => 'Welcome to the API']);
 });
 
+Route::get('/ping', function () {
+    return response()->json(['message' => 'pong']);
+});
+
 Route::middleware(['auth.apikey'])->group(function () {
     // A route to be pinged to check if the API is up
     Route::get('/ping', function () {
