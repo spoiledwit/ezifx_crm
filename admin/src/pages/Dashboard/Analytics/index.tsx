@@ -1,7 +1,6 @@
 import React from 'react';
 import BreadCrumb from 'Common/BreadCrumb';
 import Widgets from './Widgets';
-import DailyVisit from './DailyVisit';
 import AccountsStatistics from './AccountsStatistics';
 
 const Analytics = () => {
@@ -12,7 +11,6 @@ const Analytics = () => {
       <div className="grid grid-cols-12 gap-x-5">
         <Widgets />
         <AccountsStatistics />
-        <DailyVisit />
       </div>
     </React.Fragment>
   );

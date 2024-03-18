@@ -128,7 +128,7 @@ const Login = () => {
                 Welcome Back !
               </h4>
               <p className="text-slate-500 dark:text-zink-200">
-                Sign in to continue to EZIFX CRM.
+                Sign in to continue to Admin.
               </p>
             </div>
 
@@ -214,17 +214,7 @@ const Login = () => {
                 />
               </div>
             </form>
-            <div className="mt-10 text-center">
-              <p className="mb-0 text-slate-500 dark:text-zink-200">
-                Don't have an account?{" "}
-                <Link
-                  to="/register"
-                  className="font-semibold underline transition-all duration-150 ease-linear text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500"
-                >
-                  Signup
-                </Link>{" "}
-              </p>
-            </div>
+           
           </div>
         </div>
       </div>

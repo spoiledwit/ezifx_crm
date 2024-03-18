@@ -4,13 +4,12 @@ import Withdrawals from "pages/Withdrawals/Withdrawals";
 import BalanceTransferPage from "pages/BalanceTransfer";
 import Referral from "pages/Referrals";
 import Transactions from "pages/Transactions";
-import Accounts from "pages/Accounts";
+import UsersTable from "pages/Users/ListView";
 import Support from "pages/Support/Support";
 
 import UserProfile from "pages/UserProfile";
 import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
-import Register from "pages/Authentication/Register";
 
 interface RouteObject {
   path: string;
@@ -41,7 +40,7 @@ let authProtectedRoutes: Array<RouteObject> = [
   { path: "/transactions", component: Transactions },
 
   // Accounts
-  { path: "/accounts", component: Accounts },
+  { path: "/users", component: UsersTable },
 
   // Support
   { path: "/support", component: Support },
@@ -52,7 +51,6 @@ let authProtectedRoutes: Array<RouteObject> = [
 
 const publicRoutes = [
   // authentication
-  { path: "/register", component: Register },
   { path: "/login", component: Login },
   { path: "/logout", component: Logout },
 ];

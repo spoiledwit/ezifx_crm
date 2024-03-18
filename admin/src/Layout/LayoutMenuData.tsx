@@ -20,13 +20,13 @@ const menuData: any = [
     icon: <Activity />,
   },
   {
-    label: "Account",
+    label: "Users",
     isTitle: true,
   },
   {
     id: "accounts",
-    label: "Accounts",
-    link: "/accounts",
+    label: "Users",
+    link: "/users",
     icon: <Users />,
   },
   {

@@ -86,14 +86,14 @@ export const createKyc = async (req, res) => {
       return res.status(400).send("USA passport is not valid");
     }
 
-    // user.hasKYC = true;
-    // await user.save();
-    // await Kyc.create({
-    //   image: cnicImage,
-    //   userId,
-    //   kycStatus: "approved",
-    //   identityType: "passport",
-    // });
+    user.hasKYC = true;
+    await user.save();
+    await Kyc.create({
+      image: cnicImage,
+      userId,
+      kycStatus: "approved",
+      identityType: "passport",
+    });
     res.status(201).json({ data });
   } catch (error) {
     console.log(error);
