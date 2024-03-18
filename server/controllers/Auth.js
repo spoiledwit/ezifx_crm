@@ -12,7 +12,7 @@ export const register = async (req, res) => {
       email,
       password,
       phone,
-      referralCode,
+      referralCode
     } = req.body;
 
     // Check if the user exists

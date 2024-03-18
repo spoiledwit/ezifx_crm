@@ -17,12 +17,23 @@ export const createWithdrawal = async (req, res) => {
       return res.status(400).send("You do not have access to this account");
     }
 
-    if (account.type.toLowerCase() === "demo") {
-      return res.status(400).send("You cannot withdraw from a demo account");
-    }
-
     if (account.balance < amount) {
       return res.status(400).send("Insufficient funds");
+    }
+
+    if (account.type.toLowerCase() === "demo") {
+      account.balance -= amount;
+      await account.save();
+      const withdrawal = new Withdrawal({
+        paymentMethod,
+        status: "Approved",
+        amount,
+        accountId: account._id,
+        userId,
+      });
+  
+      await withdrawal.save();
+      return res.status(201).json(withdrawal);
     }
 
     const withdrawal = new Withdrawal({

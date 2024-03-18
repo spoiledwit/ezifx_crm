@@ -11,8 +11,8 @@ const WithdrawalSchema = new mongoose.Schema(
       required: true,
     },
     accountId: {
-      type: Number,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Account",
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,

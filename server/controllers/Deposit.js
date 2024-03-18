@@ -24,6 +24,12 @@ export const createDeposit = async (req, res) => {
       userId,
     });
     await newDeposit.save();
+    if (account.type.toLowerCase() === "demo") {
+      account.balance += amount;
+      newDeposit.status = "Approved";
+      await newDeposit.save();
+      await account.save();
+    }
     res.status(200).json(newDeposit);
   } catch (error) {
     res.status(500).json({ message: error.message });
