@@ -18,7 +18,7 @@ const AccountsStatistics = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URI}/account`,
+        `${process.env.REACT_APP_BASE_URI}/account/all`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -1,6 +1,12 @@
 import Deposit from "../models/Deposit.js";
 import Account from "../models/Account.js";
 import AuthModel from "../models/Auth.js";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const laravelUrl = process.env.LARAVEL_URL;
+const apiKey = process.env.LARAVEL_API_KEY;
 
 export const createDeposit = async (req, res) => {
   try {
@@ -25,8 +31,25 @@ export const createDeposit = async (req, res) => {
     });
     await newDeposit.save();
     if (account.type.toLowerCase() === "demo") {
-      account.balance += amount;
+      account.balance += parseInt(amount);
       newDeposit.status = "Approved";
+      // making a request to laravel server to update the balance
+      const res = await fetch(`${laravelUrl}/api/make-deposit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'X-API-KEY': `${apiKey}`
+        },
+        body: JSON.stringify({
+          login: account.accountId,
+          amount,
+        }),
+      });
+      const result = await res.json();
+      console.log(result);
+      if (result.error) {
+        return res.status(400).send(result.error);
+      }
       await newDeposit.save();
       await account.save();
     }
@@ -42,6 +65,71 @@ export const getAllDeposits = async (req, res) => {
     const deposits = await Deposit.find({ userId });
     res.status(200).json(deposits);
   } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getAllDepositsAdmin = async (req, res) => {
+  try {
+    const deposits = await Deposit.find();
+    res.status(200).json(deposits);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getDepositAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deposit = await Deposit.findById(id);
+    res.status(200).json(deposit);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const rejectDeposit = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deposit = await Deposit.findById(id);
+    deposit.status = "Rejected";
+    await deposit.save();
+    res.status(200).json(deposit);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const approveDeposit = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deposit = await Deposit.findById(id);
+    const account = await Account.findById(deposit.accountId);
+
+    // making a request to laravel server to update the balance
+    const response = await fetch(`${laravelUrl}/api/make-deposit`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        'X-API-KEY': `${apiKey}`
+      },
+      body: JSON.stringify({
+        login: account.accountId,
+        amount: deposit.amount,
+      }),
+    });
+    const result = await response.json();
+    if (result.error) {
+      return res.status(400).send(result.error);
+    }
+    deposit.status = "Approved";
+    await deposit.save();
+    account.balance += parseInt(deposit.amount);
+    await account.save();
+    res.status(200).json(deposit);
+  }
+  catch (error) {
     res.status(500).json({ message: error.message });
   }
 };

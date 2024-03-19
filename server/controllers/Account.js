@@ -2,9 +2,23 @@ import Account from "../models/Account.js";
 import AuthModel from "../models/Auth.js";
 import Deposit from "../models/Deposit.js";
 import Withdrawal from "../models/Withdrawal.js";
-import crypto from "crypto";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const laravelUrl = process.env.LARAVEL_URL;
+const apiKey = process.env.LARAVEL_API_KEY;
 
 export const getUserAccounts = async (req, res) => {
+  try {
+    const accounts = await Account.find();
+    res.status(200).json(accounts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getMyAccounts = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await AuthModel.findById(userId);
@@ -20,17 +34,45 @@ export const createAccount = async (req, res) => {
     const userId = req.userId;
     const user = await AuthModel.findById(userId);
     const { leverage, accountType, balance, type } = req.body;
-    const mainPassword = crypto.randomBytes(4).toString("hex");
-    const investorPassword = crypto.randomBytes(4).toString("hex");
-    const accountId = Math.floor(100000 + Math.random() * 900000);
+    const mainPassword = "B+M3IrPk";
+    const investorPassword = "B+M3IrPk";
+    if (!user) {
+      return res.status(400).send("User not found");
+    }
+    // Calling Larave API to create account
+    const data = {
+      name: user.name,
+      email: user.email,
+      group: accountType === "real" ? "real/Standard" : "demo",
+      leverage: leverage.toString(),
+      phone: user.phone,
+      main_password: mainPassword,
+      investor_password: investorPassword,
+      phone_password: "B+M3IrPk",
+    }
+
+    // making a post request to the laravel server
+    const response = await fetch(`${laravelUrl}/api/create-user`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-KEY': `${apiKey}`
+      },
+      body: JSON.stringify(data)
+    });
+    const result = await response.json();
+    if (result.error) {
+      return res.status(400).send(result.error);
+    }
+    const accountId = result.login;
     const newAccount = new Account({
       accountId: accountId,
       mainPassword: mainPassword,
       investorPassword: investorPassword,
       accountType: accountType,
       server: "EZICapitalManagement-Server",
-      balance,
-      equity: balance,
+      balance:0,
+      equity: 0,
       type,
       leverage,
     });

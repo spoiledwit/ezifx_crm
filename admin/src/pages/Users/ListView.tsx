@@ -3,158 +3,55 @@ import BreadCrumb from "Common/BreadCrumb";
 import { Link } from "react-router-dom";
 import { Dropdown } from "Common/Components/Dropdown";
 import TableContainer from "Common/TableContainer";
-import Flatpickr from "react-flatpickr";
-import moment from "moment";
-import Select from "react-select";
 import { UserListViewData } from "Common/data";
+import { toast } from "react-hot-toast";
 
 // Icons
 import {
   Search,
-  Eye,
   Trash2,
-  Plus,
   MoreHorizontal,
-  FileEdit,
   CheckCircle,
   Loader,
-  X,
   Download,
-  SlidersHorizontal,
-  ImagePlus,
 } from "lucide-react";
-import Modal from "Common/Components/Modal";
-import DeleteModal from "Common/DeleteModal";
-
-// Images
-import dummyImg from "assets/images/users/user-dummy-img.jpg";
-
-// Formik
-import * as Yup from "yup";
-import { useFormik } from "formik";
-
 import { ToastContainer } from "react-toastify";
 import filterDataBySearch from "Common/filterDataBySearch";
+import axios from "axios";
 
 const UsersTable = () => {
   const [userList, setUserList] = useState(UserListViewData);
 
   const [user, setUser] = useState<any>([]);
   const [eventData, setEventData] = useState<any>();
-
+  const [deleting, setDeleting] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
   const [isEdit, setIsEdit] = useState<boolean>(false);
+
+  useEffect(() => {
+    handleFetchUsers();
+  }, []);
 
   useEffect(() => {
     setUser(userList);
   }, [userList]);
 
-  // Delete Modal
-  const [deleteModal, setDeleteModal] = useState<boolean>(false);
-  const deleteToggle = () => setDeleteModal(!deleteModal);
-
-  // Delete Data
-  const onClickDelete = (cell: any) => {
-    setDeleteModal(true);
-    if (cell.id) {
-      setEventData(cell);
+  // fetch data
+  const handleFetchUsers = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASE_URI}/auth/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setUserList(res.data);
+    } catch (error) {
+      console.log(error);
     }
   };
-
-  const handleDelete = () => {
-    // if (eventData) {
-    //     dispatch(onDeleteUserList(eventData.id));
-    //     setDeleteModal(false);
-    // }
-  };
-  //
-
-  // Update Data
-  const handleUpdateDataClick = (ele: any) => {
-    setEventData({ ...ele });
-    setIsEdit(true);
-    setShow(true);
-  };
-
-  // validation
-  const validation: any = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
-    enableReinitialize: true,
-
-    initialValues: {
-      img: (eventData && eventData.img) || "",
-      userId: (eventData && eventData.userId) || "",
-      name: (eventData && eventData.name) || "",
-      designation: (eventData && eventData.designation) || "",
-      location: (eventData && eventData.location) || "",
-      email: (eventData && eventData.email) || "",
-      phoneNumber: (eventData && eventData.phoneNumber) || "",
-      joiningDate: (eventData && eventData.joiningDate) || "",
-      status: (eventData && eventData.status) || "",
-    },
-    validationSchema: Yup.object({
-      img: Yup.string().required("Please Add Image"),
-      name: Yup.string().required("Please Enter Name"),
-      designation: Yup.string().required("Please Enter Designation"),
-      location: Yup.string().required("Please Enter Location"),
-      email: Yup.string().required("Please Enter Email"),
-      phoneNumber: Yup.string().required("Please Enter Phone Number"),
-      joiningDate: Yup.string().required("Please Enter Joining Date"),
-      status: Yup.string().required("Please Enter Status"),
-    }),
-
-    onSubmit: (values) => {
-      if (isEdit) {
-        const updateUser = {
-          id: eventData ? eventData.id : 0,
-          ...values,
-        };
-        // update user
-        // dispatch(onUpdateUserList(updateUser));
-      } else {
-        const newUser = {
-          ...values,
-          id: (Math.floor(Math.random() * (30 - 20)) + 20).toString(),
-          userId:
-            "#TW15000" +
-            (Math.floor(Math.random() * (30 - 20)) + 20).toString(),
-        };
-        // save new user
-        // dispatch(onAddUserList(newUser));
-      }
-      toggle();
-    },
-  });
-
-  // Image
-  const [selectedImage, setSelectedImage] = useState<any>();
-  const handleImageChange = (event: any) => {
-    const fileInput = event.target;
-    if (fileInput.files && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        validation.setFieldValue("img", e.target.result);
-        setSelectedImage(e.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  //
-  const toggle = useCallback(() => {
-    if (show) {
-      setShow(false);
-      setEventData("");
-      setIsEdit(false);
-      setSelectedImage("");
-    } else {
-      setShow(true);
-      setEventData("");
-      setSelectedImage("");
-      validation.resetForm();
-    }
-  }, [show, validation]);
 
   // Search Data
   const filterSearchData = (e: any) => {
@@ -166,32 +63,25 @@ const UsersTable = () => {
   // columns
   const Status = ({ item }: any) => {
     switch (item) {
-      case "Verified":
+      case true:
         return (
           <span className="px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent inline-flex items-center status">
             <CheckCircle className="size-3 mr-1.5" />
-            {item}
+            Verified
           </span>
         );
-      case "Waiting":
+      case false:
         return (
-          <span className="px-2.5 py-0.5 inline-flex items-center text-xs font-medium rounded border bg-slate-100 border-transparent text-slate-500 dark:bg-slate-500/20 dark:text-zink-200 dark:border-transparent status">
+          <span className="px-2.5 py-0.5 inline-flex items-center text-xs font-medium rounded border bg-orange-100 border-transparent text-orange-500 dark:bg-orange-500/20 dark:text-orange-200 dark:border-transparent status">
             <Loader className="size-3 mr-1.5" />
-            {item}
-          </span>
-        );
-      case "Rejected":
-        return (
-          <span className="px-2.5 py-0.5 inline-flex items-center text-xs font-medium rounded border bg-red-100 border-transparent text-red-500 dark:bg-red-500/20 dark:border-transparent status">
-            <X className="size-3 mr-1.5" />
-            {item}
+            Pending
           </span>
         );
       default:
         return (
           <span className="px-2.5 py-0.5 text-xs font-medium rounded border bg-green-100 border-transparent text-green-500 dark:bg-green-500/20 dark:border-transparent inline-flex items-center status">
             <CheckCircle className="size-3 mr-1.5" />
-            {item}
+            Unknown
           </span>
         );
     }
@@ -225,7 +115,7 @@ const UsersTable = () => {
       },
       {
         header: "User ID",
-        accessorKey: "userId",
+        accessorKey: "_id",
         enableColumnFilter: false,
         cell: (cell: any) => (
           <Link
@@ -271,123 +161,41 @@ const UsersTable = () => {
         ),
       },
       {
-        header: "Location",
-        accessorKey: "location",
-        enableColumnFilter: false,
-      },
-      {
         header: "Email",
         accessorKey: "email",
         enableColumnFilter: false,
       },
       {
         header: "Phone Number",
-        accessorKey: "phoneNumber",
+        accessorKey: "phone",
         enableColumnFilter: false,
       },
       {
         header: "Joining Date",
-        accessorKey: "joiningDate",
+        accessorKey: "createdAt",
         enableColumnFilter: false,
       },
       {
-        header: "Status",
-        accessorKey: "status",
+        header: "Email Verification Status",
+        accessorKey: "approved",
         enableColumnFilter: false,
         enableSorting: true,
         cell: (cell: any) => <Status item={cell.getValue()} />,
       },
       {
-        header: "Action",
+        header: "KYC Status",
+        accessorKey: "hasKYC",
         enableColumnFilter: false,
         enableSorting: true,
-        cell: (cell: any) => (
-          <Dropdown className="relative">
-            <Dropdown.Trigger
-              className="flex items-center justify-center size-[30px] p-0 text-slate-500 btn bg-slate-100 hover:text-white hover:bg-slate-600 focus:text-white focus:bg-slate-600 focus:ring focus:ring-slate-100 active:text-white active:bg-slate-600 active:ring active:ring-slate-100 dark:bg-slate-500/20 dark:text-slate-400 dark:hover:bg-slate-500 dark:hover:text-white dark:focus:bg-slate-500 dark:focus:text-white dark:active:bg-slate-500 dark:active:text-white dark:ring-slate-400/20"
-              id="usersAction1"
-            >
-              <MoreHorizontal className="size-3" />
-            </Dropdown.Trigger>
-            <Dropdown.Content
-              placement="right-end"
-              className="absolute z-50 py-2 mt-1 ltr:text-left rtl:text-right list-none bg-white rounded-md shadow-md min-w-[10rem] dark:bg-zink-600"
-              aria-labelledby="usersAction1"
-            >
-              <li>
-                <Link
-                  className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200"
-                  to="/pages-account"
-                >
-                  <Eye className="inline-block size-3 ltr:mr-1 rtl:ml-1" />{" "}
-                  <span className="align-middle">Overview</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  data-modal-target="addUserModal"
-                  className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200"
-                  to="#!"
-                  onClick={() => {
-                    const data = cell.row.original;
-                    handleUpdateDataClick(data);
-                  }}
-                >
-                  <FileEdit className="inline-block size-3 ltr:mr-1 rtl:ml-1" />{" "}
-                  <span className="align-middle">Edit</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200"
-                  to="#!"
-                  onClick={() => {
-                    const orderData = cell.row.original;
-                    onClickDelete(orderData);
-                  }}
-                >
-                  <Trash2 className="inline-block size-3 ltr:mr-1 rtl:ml-1" />{" "}
-                  <span className="align-middle">Delete</span>
-                </Link>
-              </li>
-            </Dropdown.Content>
-          </Dropdown>
-        ),
+        cell: (cell: any) => <Status item={cell.getValue()} />,
       },
     ],
     []
   );
 
-  const options = [
-    { value: "Select Status", label: "Select Status" },
-    { value: "Verified", label: "Verified" },
-    { value: "Waiting", label: "Waiting" },
-    { value: "Rejected", label: "Rejected" },
-    { value: "Hidden", label: "Hidden" },
-  ];
-
-  const handleChange = (selectedOption: any) => {
-    if (
-      selectedOption.value === "Select Status" ||
-      selectedOption.value === "Hidden"
-    ) {
-      setUser(userList);
-    } else {
-      const filteredUsers = userList.filter(
-        (data: any) => data.status === selectedOption.value
-      );
-      setUser(filteredUsers);
-    }
-  };
-
   return (
     <React.Fragment>
       <BreadCrumb title="Users" pageTitle="Users" />
-      <DeleteModal
-        show={deleteModal}
-        onHide={deleteToggle}
-        onDelete={handleDelete}
-      />
       <ToastContainer closeButton={false} limit={1} />
       <div className="grid grid-cols-1 gap-x-5 xl:grid-cols-12">
         <div className="xl:col-span-12">
@@ -395,16 +203,6 @@ const UsersTable = () => {
             <div className="card-body">
               <div className="flex items-center">
                 <h6 className="text-15 grow">Users List</h6>
-                <div className="shrink-0">
-                  <button
-                    type="button"
-                    className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
-                    onClick={toggle}
-                  >
-                    <Plus className="inline-block size-4" />{" "}
-                    <span className="align-middle">Add User</span>
-                  </button>
-                </div>
               </div>
             </div>
             <div className="!py-3.5 card-body border-y border-dashed border-slate-200 dark:border-zink-500">
@@ -420,16 +218,7 @@ const UsersTable = () => {
                     />
                     <Search className="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600" />
                   </div>
-                  <div className="xl:col-span-2">
-                    <Select
-                      className="border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                      options={options}
-                      isSearchable={false}
-                      defaultValue={options[0]}
-                      onChange={(event: any) => handleChange(event)}
-                      id="choices-single-default"
-                    />
-                  </div>
+
                   <div className="xl:col-span-3 xl:col-start-10">
                     <div className="flex gap-2 xl:justify-end">
                       <div>
@@ -478,7 +267,7 @@ const UsersTable = () => {
       </div>
 
       {/* User Modal  */}
-      <Modal
+      {/* <Modal
         show={show}
         onHide={toggle}
         id="defaultModal"
@@ -720,7 +509,7 @@ const UsersTable = () => {
             </div>
           </form>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
     </React.Fragment>
   );
 };

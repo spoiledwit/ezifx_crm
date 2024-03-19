@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import BreadCrumb from "Common/BreadCrumb";
 import CountUp from "react-countup";
+import PhotosUploader from "components/Forms/ImageUploader";
 import { toast } from "react-hot-toast";
 import { useAuthStore } from "store/useAuthStore";
 
@@ -8,9 +9,8 @@ import { useAuthStore } from "store/useAuthStore";
 import {
   Loader,
   Search,
-  ArrowUp,
+  ArrowDown,
   CircleDollarSign,
-  Plus,
   MoreHorizontal,
   Eye,
 } from "lucide-react";
@@ -28,33 +28,10 @@ import axios from "axios";
 
 const Withdrawals = () => {
   const { user } = useAuthStore();
-  const [dataList, setDataList] = useState<any>([]);
-  const [data, setData] = useState<any>([
-    // {
-    //   withdrawalId: "TWT5015100365",
-    //   withdrawalDate: "2021-08-25",
-    //   paymentMethod: "Bank Transfer",
-    //   amount: "5000",
-    //   status: "Approved",
-    // },
-    // {
-    //   withdrawalId: "TWT5015100366",
-    //   withdrawalDate: "2021-08-25",
-    //   paymentMethod: "Bank Transfer",
-    //   amount: "5000",
-    //   status: "Pending",
-    // },
-    // {
-    //   withdrawalId: "TWT5015100367",
-    //   withdrawalDate: "2021-08-25",
-    //   paymentMethod: "Bank Transfer",
-    //   amount: "5000",
-    //   status: "Rejected",
-    // },
-  ]);
-
   const [creatingWithdrawal, setCreatingWithdrawal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [dataList, setDataList] = useState<any>([]);
+  const [data, setData] = useState<any>([]);
   const [images, setImages] = useState<any>([]);
   const [show, setShow] = useState<boolean>(false);
 
@@ -66,7 +43,7 @@ const Withdrawals = () => {
     try {
       setLoading(true);
       const res = await axios.get(
-        `${process.env.REACT_APP_BASE_URI}/withdrawal`,
+        `${process.env.REACT_APP_BASE_URI}/withdrawal/all`, 
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -84,9 +61,9 @@ const Withdrawals = () => {
 
   const getWithdrawalNumberByStatus = (status: string) => {
     let total = 0;
-    dataList.forEach((withdrawal: any) => {
-      if (withdrawal.status === status) {
-        total += withdrawal.amount;
+    dataList.forEach((Withdrawal: any) => {
+      if (Withdrawal.status === status) {
+        total += Withdrawal.amount;
       }
     });
     return total;
@@ -109,11 +86,13 @@ const Withdrawals = () => {
       accountNumber: "",
       paymentMethod: "",
       amount: "",
+      paymentProof: "",
     },
     validationSchema: Yup.object({
       accountNumber: Yup.string().required("Please Enter Account Number"),
       paymentMethod: Yup.string().required("Please Enter Payment Method"),
       amount: Yup.string().required("Please Enter Amount"),
+      paymentProof: Yup.string().required("Please Upload Payment Proof"),
     }),
 
     onSubmit: async (values) => {
@@ -123,7 +102,7 @@ const Withdrawals = () => {
       setCreatingWithdrawal(true);
       try {
         await axios.post(
-          `${process.env.REACT_APP_BASE_URI}/withdrawal`,
+          `${process.env.REACT_APP_BASE_URI}/Withdrawal`,
           {
             ...newData,
           },
@@ -134,9 +113,10 @@ const Withdrawals = () => {
           }
         );
         handleGetWithdrawals();
-        toast.success("Withdrawal Request made successfully!");
+        toast.success("Withdrawal made successfully!");
         toggle();
         validation.resetForm();
+        setImages([]);
       } catch (error: any) {
         if (!error.response) {
           return toast.error("Network error. Please try again.");
@@ -163,7 +143,7 @@ const Withdrawals = () => {
   // Search Data
   const filterSearchData = (e: any) => {
     const search = e.target.value;
-    const keysToSearch = ["depositId", "paymentMethod", "amount", "status"];
+    const keysToSearch = ["WithdrawalId", "paymentMethod", "amount", "status"];
     const searchResult = dataList.filter((item: any) => {
       return keysToSearch.some((key) => {
         return (
@@ -184,13 +164,13 @@ const Withdrawals = () => {
   const toggleTab = (tab: any, type: any) => {
     if (activeTab !== tab) {
       setActiveTab(tab);
-      let filteredDeposits = dataList;
+      let filteredWithdrawals = dataList;
       if (type !== "all") {
-        filteredDeposits = dataList.filter(
-          (deposit: any) => deposit.status === type
+        filteredWithdrawals = dataList.filter(
+          (Withdrawal: any) => Withdrawal.status === type
         );
       }
-      setData(filteredDeposits);
+      setData(filteredWithdrawals);
     }
   };
 
@@ -308,13 +288,15 @@ const Withdrawals = () => {
             >
               <li>
                 <Link
-                  to="/apps-ecommerce-order-overview"
+                  to={`/withdrawals/${cell.row.original._id}`}
                   className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200"
                 >
                   <Eye className="inline-block size-3 ltr:mr-1 rtl:ml-1" />{" "}
                   <span className="align-middle">Overview</span>
                 </Link>
+                
               </li>
+             
             </Dropdown.Content>
           </Dropdown>
         ),
@@ -325,7 +307,7 @@ const Withdrawals = () => {
 
   return (
     <React.Fragment>
-      <BreadCrumb title="Withdrawals History" pageTitle="Withdrawals" />
+      <BreadCrumb title="All Withdrawals" pageTitle="Withdrawals" />
       <ToastContainer closeButton={false} limit={1} />
       <div className="grid grid-cols-1 gap-x-5 md:grid-cols-2 2xl:grid-cols-12">
         <div className="2xl:col-span-2 2xl:row-span-1">
@@ -364,7 +346,7 @@ const Withdrawals = () => {
                   />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Pending Withdrawals
+                  Total Approval Pending
                 </p>
               </div>
             </div>
@@ -374,7 +356,7 @@ const Withdrawals = () => {
           <div className="card">
             <div className="flex items-center gap-3 card-body">
               <div className="flex items-center justify-center size-12 text-green-500 rounded-md text-15 bg-green-50 dark:bg-green-500/20 shrink-0">
-                <ArrowUp />
+                <ArrowDown />
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
@@ -385,7 +367,7 @@ const Withdrawals = () => {
                   />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Successfully Withdrawals
+                  Total Approved
                 </p>
               </div>
             </div>
@@ -395,7 +377,7 @@ const Withdrawals = () => {
           <div className="card">
             <div className="flex items-center gap-3 card-body">
               <div className="flex items-center justify-center size-12 text-red-500 rounded-md text-15 bg-red-50 dark:bg-red-500/20 shrink-0">
-                <ArrowUp />
+                <ArrowDown />
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
@@ -406,7 +388,7 @@ const Withdrawals = () => {
                   />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Rejected Withdrawals
+                  Total Rejected
                 </p>
               </div>
             </div>
@@ -427,20 +409,6 @@ const Withdrawals = () => {
                   onChange={(e) => filterSearchData(e)}
                 />
                 <Search className="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600" />
-              </div>
-            </div>
-            <div className="lg:col-span-2 lg:col-start-11">
-              <div className="ltr:lg:text-right rtl:lg:text-left">
-                <Link
-                  to="#!"
-                  data-modal-target="addOrderModal"
-                  type="button"
-                  className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
-                  onClick={toggle}
-                >
-                  <Plus className="inline-block size-4" />{" "}
-                  <span className="align-middle">Withdraw</span>
-                </Link>
               </div>
             </div>
           </div>
@@ -484,7 +452,7 @@ const Withdrawals = () => {
                   toggleTab("3", "Approved");
                 }}
               >
-                <ArrowUp className="inline-block size-4 ltr:mr-1 rtl:ml-1" />{" "}
+                <ArrowDown className="inline-block size-4 ltr:mr-1 rtl:ml-1" />{" "}
                 <span className="align-middle">Approved</span>
               </Link>
             </li>
@@ -498,7 +466,7 @@ const Withdrawals = () => {
                   toggleTab("4", "Rejected");
                 }}
               >
-                <ArrowUp className="inline-block size-4 ltr:mr-1 rtl:ml-1 " />{" "}
+                <ArrowDown className="inline-block size-4 ltr:mr-1 rtl:ml-1 " />{" "}
                 <span className="align-middle">Rejected</span>
               </Link>
             </li>
@@ -523,8 +491,8 @@ const Withdrawals = () => {
                 <Search className="size-6 mx-auto text-sky-500 fill-sky-100 dark:sky-500/20" />
                 <h5 className="mt-2 mb-1">Sorry! No Result Found</h5>
                 <p className="mb-0 text-slate-500 dark:text-zink-200">
-                  We've searched all withdrawals, but we did not find any
-                  withdrawals for your search.
+                  We've searched all Withdrawals, but we did not find any Withdrawals
+                  for your search.
                 </p>
               </div>
             </div>
@@ -545,7 +513,7 @@ const Withdrawals = () => {
           className="flex items-center justify-between p-4 border-b dark:border-zink-500"
           closeButtonClass="transition-all duration-200 ease-linear text-slate-400 hover:text-red-500"
         >
-          <Modal.Title className="text-16">{"Withdraw"}</Modal.Title>
+          <Modal.Title className="text-16">{"Make a Withdrawal"}</Modal.Title>
         </Modal.Header>
         <Modal.Body className="max-h-[calc(theme('height.screen')_-_180px)] p-4 overflow-y-auto">
           <form
@@ -623,6 +591,21 @@ const Withdrawals = () => {
                   <p className="text-red-400">{validation.errors.amount}</p>
                 ) : null}
               </div>
+              <div className="xl:col-span-12">
+                <label
+                  htmlFor="fileUpload"
+                  className="inline-block mb-2 text-base font-medium"
+                >
+                  Upload Payment Proof
+                </label>
+                <PhotosUploader
+                  maxPhotos={1}
+                  addedPhotos={images}
+                  onChange={(photos: any) => {
+                    setImages(photos);
+                  }}
+                />
+              </div>
             </div>
             <div className="flex justify-end gap-2 mt-4">
               <button
@@ -636,7 +619,7 @@ const Withdrawals = () => {
                 type="submit"
                 className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
               >
-                {"Withdraw"}
+                {"Make a Withdrawal"}
               </button>
             </div>
           </form>

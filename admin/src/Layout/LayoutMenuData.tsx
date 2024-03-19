@@ -46,13 +46,7 @@ const menuData: any = [
     link: "/withdrawals",
     parentId: 2,
   },
-  {
-    id: "balanceTransfer",
-    label: "Balance Transfer",
-    icon: <ArrowRight />,
-    link: "/balance-transfer",
-    parentId: 2,
-  },
+ 
   {
     id: "referral",
     label: "Referral",
@@ -62,7 +56,7 @@ const menuData: any = [
   },
   {
     id: "Transactions",
-    label: "Transactions",
+    label: "Admin Transactions",
     link: "/transactions",
     icon: <Archive />,
   },

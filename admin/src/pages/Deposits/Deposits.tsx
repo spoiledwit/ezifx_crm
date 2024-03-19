@@ -28,7 +28,6 @@ import { ToastContainer } from "react-toastify";
 import axios from "axios";
 
 const Deposits = () => {
-
   const { user } = useAuthStore();
   const [creatingDeposit, setCreatingDeposit] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -44,11 +43,14 @@ const Deposits = () => {
   const handleGetDeposits = async () => {
     try {
       setLoading(true);
-      const res = await axios.get(`${process.env.REACT_APP_BASE_URI}/deposit`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASE_URI}/deposit/all`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       setDataList(res.data);
       setData(res.data);
     } catch (error) {
@@ -96,7 +98,7 @@ const Deposits = () => {
 
     onSubmit: async (values) => {
       const newData = {
-        ...values
+        ...values,
       };
       setCreatingDeposit(true);
       try {
@@ -287,13 +289,15 @@ const Deposits = () => {
             >
               <li>
                 <Link
-                  to="/apps-ecommerce-order-overview"
+                  to={`/deposits/${cell.row.original._id}`}
                   className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200"
                 >
                   <Eye className="inline-block size-3 ltr:mr-1 rtl:ml-1" />{" "}
                   <span className="align-middle">Overview</span>
                 </Link>
+                
               </li>
+             
             </Dropdown.Content>
           </Dropdown>
         ),
@@ -336,11 +340,14 @@ const Deposits = () => {
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
-                  <CountUp end={getDepositNumberByStatus("Pending")}
-                  separator="," className="counter-value" />
+                  <CountUp
+                    end={getDepositNumberByStatus("Pending")}
+                    separator=","
+                    className="counter-value"
+                  />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Pending Deposit Amount
+                  Total Approval Pending
                 </p>
               </div>
             </div>
@@ -361,7 +368,7 @@ const Deposits = () => {
                   />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Successfully Deposited
+                  Total Approved
                 </p>
               </div>
             </div>
@@ -375,11 +382,14 @@ const Deposits = () => {
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
-                  <CountUp end={getDepositNumberByStatus("Rejected")}
-                  separator="," className="counter-value" />
+                  <CountUp
+                    end={getDepositNumberByStatus("Rejected")}
+                    separator=","
+                    className="counter-value"
+                  />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Rejected Deposit Amount
+                  Total Rejected
                 </p>
               </div>
             </div>
@@ -400,20 +410,6 @@ const Deposits = () => {
                   onChange={(e) => filterSearchData(e)}
                 />
                 <Search className="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600" />
-              </div>
-            </div>
-            <div className="lg:col-span-2 lg:col-start-11">
-              <div className="ltr:lg:text-right rtl:lg:text-left">
-                <Link
-                  to="#!"
-                  data-modal-target="addOrderModal"
-                  type="button"
-                  className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
-                  onClick={toggle}
-                >
-                  <Plus className="inline-block size-4" />{" "}
-                  <span className="align-middle">Make a Deposit</span>
-                </Link>
               </div>
             </div>
           </div>

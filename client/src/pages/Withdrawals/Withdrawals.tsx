@@ -30,28 +30,7 @@ const Withdrawals = () => {
   const { user } = useAuthStore();
   const [dataList, setDataList] = useState<any>([]);
   const [data, setData] = useState<any>([
-    // {
-    //   withdrawalId: "TWT5015100365",
-    //   withdrawalDate: "2021-08-25",
-    //   paymentMethod: "Bank Transfer",
-    //   amount: "5000",
-    //   status: "Approved",
-    // },
-    // {
-    //   withdrawalId: "TWT5015100366",
-    //   withdrawalDate: "2021-08-25",
-    //   paymentMethod: "Bank Transfer",
-    //   amount: "5000",
-    //   status: "Pending",
-    // },
-    // {
-    //   withdrawalId: "TWT5015100367",
-    //   withdrawalDate: "2021-08-25",
-    //   paymentMethod: "Bank Transfer",
-    //   amount: "5000",
-    //   status: "Rejected",
-    // },
-  ]);
+]);
 
   const [creatingWithdrawal, setCreatingWithdrawal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -633,10 +612,11 @@ const Withdrawals = () => {
                 Cancel
               </button>
               <button
+                disabled={creatingWithdrawal}
                 type="submit"
                 className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
               >
-                {"Withdraw"}
+                {creatingWithdrawal ? "Creating..." : "Create"}
               </button>
             </div>
           </form>

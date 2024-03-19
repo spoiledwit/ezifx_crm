@@ -6,6 +6,8 @@ import Referral from "pages/Referrals";
 import Transactions from "pages/Transactions";
 import UsersTable from "pages/Users/ListView";
 import Support from "pages/Support/Support";
+import Deposit from "pages/Deposits/Deposit";
+import Withdrawal from "pages/Withdrawals/Withdrawal";
 
 import UserProfile from "pages/UserProfile";
 import Login from "pages/Authentication/Login";
@@ -27,11 +29,14 @@ let authProtectedRoutes: Array<RouteObject> = [
   // Deposits
   { path: "/deposits", component: Deposits },
 
+  // Deposit
+  { path: "/deposits/:id", component: Deposit },
+
   // Withdrawals
   { path: "/withdrawals", component: Withdrawals },
 
-  // Balance Transfer
-  { path: "/balance-transfer", component: BalanceTransferPage },
+  // Withdrawal
+  { path: "/withdrawals/:id", component: Withdrawal },
 
   // Referral
   { path: "/referral", component: Referral },

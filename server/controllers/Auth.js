@@ -7,13 +7,7 @@ dotenv.config();
 // Register
 export const register = async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      password,
-      phone,
-      referralCode
-    } = req.body;
+    const { name, email, password, phone, referralCode } = req.body;
 
     // Check if the user exists
     const oldUser = await AuthModel.findOne({ email });
@@ -117,18 +111,36 @@ export const getUser = async (req, res) => {
 
 export const verify = async (req, res) => {
   try {
-      const user = await AuthModel.findById(req.params.id);
+    const user = await AuthModel.findById(req.params.id);
 
-      if (!user) {
-          return res.status(404).send("User doesn't exist");
-      }
+    if (!user) {
+      return res.status(404).send("User doesn't exist");
+    }
 
-      user.approved = true;
+    user.approved = true;
 
-      await user.save();
+    await user.save();
 
-      res.redirect(process.env.FRONTEND_URI);
+    res.redirect(process.env.FRONTEND_URI);
   } catch (error) {
-      res.status(404).json({ message: error.message });
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await AuthModel.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const user = await AuthModel.findByIdAndDelete(req.params.id);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
   }
 }

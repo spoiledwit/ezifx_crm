@@ -49,18 +49,18 @@ export const getAdminStats = async (req, res) => {
     deposits.forEach((deposit) => {
       totalDeposit += deposit.amount;
       if (deposit.status === "Pending") {
-        pendingDeposit++;
+        pendingDeposit+= deposit.amount;
       } else if (deposit.status === "Rejected") {
-        rejectedDeposit++;
+        rejectedDeposit+= deposit.amount;
       }
     });
     const withdrawals = await Withdrawal.find();
     withdrawals.forEach((withdrawal) => {
       totalWithdrawal += withdrawal.amount;
       if (withdrawal.status === "Pending") {
-        pendingWithdrawal++;
+        pendingWithdrawal+= withdrawal.amount;
       } else if (withdrawal.status === "Rejected") {
-        rejectedWithdrawal++;
+        rejectedWithdrawal+= withdrawal.amount;
       }
     });
 
