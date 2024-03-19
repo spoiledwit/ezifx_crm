@@ -20,7 +20,7 @@ import filterDataBySearch from "Common/filterDataBySearch";
 import axios from "axios";
 
 const UsersTable = () => {
-  const [userList, setUserList] = useState(UserListViewData);
+  const [userList, setUserList] = useState([]);
 
   const [user, setUser] = useState<any>([]);
   const [eventData, setEventData] = useState<any>();
