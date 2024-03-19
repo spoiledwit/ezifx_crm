@@ -2,6 +2,7 @@ import Account from "../models/Account.js";
 import AuthModel from "../models/Auth.js";
 import Deposit from "../models/Deposit.js";
 import Withdrawal from "../models/Withdrawal.js";
+import crypto from "crypto";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -29,13 +30,33 @@ export const getMyAccounts = async (req, res) => {
   }
 };
 
+const passwordGenerator = () => {
+  const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+  const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const numbers = '0123456789';
+  const specialChars = '#@!';
+  const allChars = lowercase + uppercase + numbers + specialChars;
+  let password = '';
+  password += lowercase[crypto.randomInt(0, lowercase.length)];
+  password += uppercase[crypto.randomInt(0, uppercase.length)];
+  password += numbers[crypto.randomInt(0, numbers.length)];
+  password += specialChars[crypto.randomInt(0, specialChars.length)];
+
+  for (let i = 4; i < 12; i++) {
+    password += allChars[crypto.randomInt(0, allChars.length)];
+  }
+
+  return password;
+};
 export const createAccount = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await AuthModel.findById(userId);
     const { leverage, accountType, balance, type } = req.body;
-    const mainPassword = "B+M3IrPk";
-    const investorPassword = "B+M3IrPk";
+    const mainPassword = passwordGenerator();
+    const investorPassword = passwordGenerator();
+    const phonePassword = passwordGenerator();
+    
     if (!user) {
       return res.status(400).send("User not found");
     }
@@ -48,7 +69,7 @@ export const createAccount = async (req, res) => {
       phone: user.phone,
       main_password: mainPassword,
       investor_password: investorPassword,
-      phone_password: "B+M3IrPk",
+      phone_password: phonePassword
     }
 
     // making a post request to the laravel server
