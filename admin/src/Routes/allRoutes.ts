@@ -1,17 +1,18 @@
-import Dashboard from "pages/Dashboard/Analytics";
-import Deposits from "pages/Deposits/Deposits";
-import Withdrawals from "pages/Withdrawals/Withdrawals";
 import BalanceTransferPage from "pages/BalanceTransfer";
+import Dashboard from "pages/Dashboard/Analytics";
+import Deposit from "pages/Deposits/Deposit";
+import Deposits from "pages/Deposits/Deposits";
 import Referral from "pages/Referrals";
+import Support from "pages/Support/Support";
 import Transactions from "pages/Transactions";
 import UsersTable from "pages/Users/ListView";
-import Support from "pages/Support/Support";
-import Deposit from "pages/Deposits/Deposit";
 import Withdrawal from "pages/Withdrawals/Withdrawal";
+import Withdrawals from "pages/Withdrawals/Withdrawals";
 
-import UserProfile from "pages/UserProfile";
 import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
+import UserProfile from "pages/UserProfile";
+import UserDetails from "pages/Users/UserDetails";
 
 interface RouteObject {
   path: string;
@@ -47,6 +48,9 @@ let authProtectedRoutes: Array<RouteObject> = [
   // Accounts
   { path: "/users", component: UsersTable },
 
+  // get UserId
+  { path: "/user-details/:id", component: UserDetails },
+
   // Support
   { path: "/support", component: Support },
   
@@ -61,3 +65,4 @@ const publicRoutes = [
 ];
 
 export { authProtectedRoutes, publicRoutes };
+
