@@ -12,6 +12,8 @@ import * as Yup from "yup";
 // import AccountsStatistics from "./AccountsStatistics";
 
 import axios from "axios";
+import { Shield, ShieldCheck, ShieldMinus } from "lucide-react";
+import CountUp from "react-countup";
 import AccountsStatistics from "../Accounts/AccountsStatistics";
 
 const AccountList = () => {
@@ -180,12 +182,89 @@ const AccountList = () => {
     }
   }, [showDemo, validationDemo]);
 
-  console.log("uuuuuu", validation.errors);
+
+  const getCountsByStatus = (status: string) => {
+    let total = 0;
+    data?.forEach((account: any) => {
+      if (account.type === status) {
+        total ++;
+      }
+    });
+    return total;
+  };
 
   return (
     <React.Fragment>
       <BreadCrumb title="All Accounts" pageTitle="Accounts" />
       <ToastContainer closeButton={false} limit={1} />
+
+      <div className="grid grid-cols-1 gap-x-5 md:grid-cols-2 2xl:grid-cols-12">
+        <div className="2xl:col-span-2 2xl:row-span-1">
+          <div className="card">
+            <div className="flex items-center gap-3 card-body">
+              <div className="flex items-center justify-center size-12 rounded-md text-15 bg-custom-50 text-custom-500 dark:bg-custom-500/20 shrink-0">
+                <Shield />
+              </div>
+              <div className="grow">
+                <h5 className="mb-1 text-16">
+                  <CountUp
+                    end={data?.length}
+                    separator=","
+                    className="counter-value"
+                  />
+                </h5>
+                <p className="text-slate-500 dark:text-zink-200">
+                  Total Accounts
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="2xl:col-span-2 2xl:row-span-1">
+          <div className="card">
+            <div className="flex items-center gap-3 card-body">
+              <div className="flex items-center justify-center size-12 text-yellow-500 rounded-md text-15 bg-yellow-50 dark:bg-yellow-500/20 shrink-0">
+                <ShieldCheck />
+              </div>
+              <div className="grow">
+                <h5 className="mb-1 text-16">
+                  <CountUp
+                    end={getCountsByStatus("real")}
+                    separator=","
+                    className="counter-value"
+                  />
+                </h5>
+                <p className="text-slate-500 dark:text-zink-200">
+                  Total Real Accounts
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="2xl:col-span-2 2xl:row-span-1">
+          <div className="card">
+            <div className="flex items-center gap-3 card-body">
+              <div className="flex items-center justify-center size-12 text-green-500 rounded-md text-15 bg-green-50 dark:bg-green-500/20 shrink-0">
+                <ShieldMinus />
+              </div>
+              <div className="grow">
+                <h5 className="mb-1 text-16">
+                  <CountUp
+                    end={getCountsByStatus("demo")}
+                    separator=","
+                    className="counter-value"
+                  />
+                </h5>
+                <p className="text-slate-500 dark:text-zink-200">
+                  Total Demo Accounts
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
       {/* <div className="flex items-center justify-end gap-2">
         <div className="flex justify-end mb-2">
           <button
