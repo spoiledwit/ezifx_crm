@@ -62,7 +62,7 @@ export const createDeposit = async (req, res) => {
 export const getAllDeposits = async (req, res) => {
   try {
     const userId = req.userId;
-    const deposits = await Deposit.find({ userId }).sort('-createdAt');
+    const deposits = await Deposit.find({ userId }).populate({path:"accountId", select: "accountId"}).sort('-createdAt');
     res.status(200).json(deposits);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -71,7 +71,7 @@ export const getAllDeposits = async (req, res) => {
 
 export const getAllDepositsAdmin = async (req, res) => {
   try {
-    const deposits = await Deposit.find();
+    const deposits = await Deposit.find().populate("accountId").sort("-createdAt");
     res.status(200).json(deposits);
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -22,7 +22,7 @@ export const getUserAccounts = async (req, res) => {
 export const getMyAccounts = async (req, res) => {
   try {
     const userId = req.userId;
-    const user = await AuthModel.findById(userId)
+    const user = await AuthModel.findById(userId);
     const accounts = await Account.find({ accountId: { $in: user.accounts } });
     res.status(200).json(accounts);
   } catch (error) {
@@ -31,12 +31,12 @@ export const getMyAccounts = async (req, res) => {
 };
 
 const passwordGenerator = () => {
-  const lowercase = 'abcdefghijklmnopqrstuvwxyz';
-  const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const numbers = '0123456789';
-  const specialChars = '#@!';
+  const lowercase = "abcdefghijklmnopqrstuvwxyz";
+  const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+  const specialChars = "#@!";
   const allChars = lowercase + uppercase + numbers + specialChars;
-  let password = '';
+  let password = "";
   password += lowercase[crypto.randomInt(0, lowercase.length)];
   password += uppercase[crypto.randomInt(0, uppercase.length)];
   password += numbers[crypto.randomInt(0, numbers.length)];
@@ -56,7 +56,7 @@ export const createAccount = async (req, res) => {
     const mainPassword = passwordGenerator();
     const investorPassword = passwordGenerator();
     const phonePassword = passwordGenerator();
-    
+
     if (!user) {
       return res.status(400).send("User not found");
     }
@@ -69,17 +69,17 @@ export const createAccount = async (req, res) => {
       phone: user.phone,
       main_password: mainPassword,
       investor_password: investorPassword,
-      phone_password: phonePassword
-    }
+      phone_password: phonePassword,
+    };
 
     // making a post request to the laravel server
     const response = await fetch(`${laravelUrl}/api/create-user`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'X-API-KEY': `${apiKey}`
+        "Content-Type": "application/json",
+        "X-API-KEY": `${apiKey}`,
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
     const result = await response.json();
     if (result.error) {
@@ -92,7 +92,7 @@ export const createAccount = async (req, res) => {
       investorPassword: investorPassword,
       accountType: accountType,
       server: "EZICapitalManagement-Server",
-      balance:0,
+      balance: 0,
       equity: 0,
       type,
       leverage,
@@ -121,14 +121,29 @@ export const getUserAccount = async (req, res) => {
   }
 };
 
+export const getAccountDetails = async (req, res) => {
+  try {
+    const { accountId } = req.params;
+    const account = await Account.findById(accountId);
+
+    if (!account) return res.status(404).json({ message: "Account not found" });
+
+    res.status(200).json(account);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getTransactions = async (req, res) => {
   try {
     const accountId = req.params.accountId;
     const account = await Account.findOne({
-      accountId
-    })
+      accountId,
+    });
     const deposits = await Deposit.find({ accountId: account._id.toString() });
-    const withdrawals = await Withdrawal.find({ accountId: account._id.toString() });
+    const withdrawals = await Withdrawal.find({
+      accountId: account._id.toString(),
+    });
     let transactions = [];
     deposits.forEach((deposit) => {
       transactions.push({

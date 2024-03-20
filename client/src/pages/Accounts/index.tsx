@@ -64,19 +64,19 @@ const Accounts = () => {
         .when("accountType", (accountType: any) => {
           console.log("iiiii", accountType);
           if (accountType == "zero" || accountType == "ecn") {
-            return Yup.number().min(
+            return Yup.number().max(
               1000,
-              "Leverage must be greater than or equal to 1000"
+              "Leverage must be less than or equal to 1000"
             );
           } else if (accountType == "pro" || accountType == "prime") {
-            return Yup.number().min(
+            return Yup.number().max(
               500,
-              "Leverage must be greater than or equal to 500"
+              "Leverage must be less than or equal to 500"
             );
           }
           return Yup.number().min(
-            100,
-            "Leverage must be greater than or equal to 100"
+            1,
+            "Leverage must be greater than or equal to 1"
           );
         }),
     }),

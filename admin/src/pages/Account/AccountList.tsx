@@ -62,24 +62,6 @@ const AccountList = () => {
       accountType: Yup.string().required("Account Type is required"),
       leverage: Yup.number()
         .required("Leverage is required")
-        .when("accountType", (accountType: any) => {
-          console.log("iiiii", accountType);
-          if (accountType == "zero" || accountType == "ecn") {
-            return Yup.number().max(
-              1000,
-              "Leverage must be greater than or equal to 1000"
-            );
-          } else if (accountType == "pro" || accountType == "prime") {
-            return Yup.number().max(
-              500,
-              "Leverage must be greater than or equal to 500"
-            );
-          }
-          return Yup.number().min(
-            1,
-            "Leverage must be greater than or equal to 1"
-          );
-        }),
     }),
 
     onSubmit: async (values) => {
@@ -87,6 +69,14 @@ const AccountList = () => {
         ...values,
         type: "Real",
       };
+      if ((values.accountType === "pro" || values.accountType === "prime") && values.leverage >500 ) {
+       return toast.error("Leverage must be less than or equal to 500");
+
+
+      }
+      if ((values.accountType === "ecn" || values.accountType === "zero") && values.leverage >1000 ) {
+       return toast.error("Leverage must be less than or equal to 1000");
+      }
       setCreatingAccount(true);
       try {
         const res = await axios.post(

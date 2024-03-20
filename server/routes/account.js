@@ -1,5 +1,5 @@
 import express from "express";
-import { createAccount, getUserAccounts, getUserAccount, getTransactions, getMyAccounts } from "../controllers/Account.js";
+import { createAccount, getAccountDetails, getMyAccounts, getTransactions, getUserAccount, getUserAccounts } from "../controllers/Account.js";
 import verifyAdmin from "../middlewares/verifyAdmin.js";
 import verifyToken from "../middlewares/verifyToken.js";
 
@@ -10,5 +10,6 @@ router.get("/all", verifyToken, verifyAdmin, getUserAccounts);
 router.get("/:accountId/transactions", verifyToken, getTransactions);
 router.post("/", verifyToken, createAccount);
 router.get("/:accountId", verifyToken, getUserAccount);
+router.get("/details/:accountId", verifyToken, verifyAdmin, getAccountDetails);
 
 export default router;

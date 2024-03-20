@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useAuthStore } from "store/useAuthStore";
 
-const Deposit = () => {
+const AccountDetails = () => {
   const { id } = useParams();
   const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,7 @@ const Deposit = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_BASE_URI}/deposit/${id}`,
+        `${process.env.REACT_APP_BASE_URI}/account/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -147,4 +147,4 @@ const Deposit = () => {
   );
 };
 
-export default Deposit;
+export default AccountDetails;

@@ -10,6 +10,7 @@ import Withdrawal from "pages/Withdrawals/Withdrawal";
 import Withdrawals from "pages/Withdrawals/Withdrawals";
 
 import AccountList from "pages/Account/AccountList";
+import AccountDetails from "pages/Accounts/AccountDetails";
 import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
 import UserProfile from "pages/UserProfile";
@@ -50,6 +51,7 @@ let authProtectedRoutes: Array<RouteObject> = [
   { path: "/users", component: UsersTable },
   
   { path: "/accounts", component: AccountList },
+  { path: "/account/details/:id", component: AccountDetails },
 
   // get UserId
   { path: "/user-details/:id", component: UserDetails },

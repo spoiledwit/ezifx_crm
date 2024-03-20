@@ -237,7 +237,7 @@ const Deposits = () => {
         cell: (cell: any) => (
           <>
             <Link
-              to="/apps-ecommerce-order-overview"
+              to={`/deposits/${cell.row.original._id}`}
               className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
             >
               {cell.getValue()}
@@ -246,37 +246,22 @@ const Deposits = () => {
         ),
       },
       {
-        header: "User ID",
-        accessorKey: "userId",
+        header: "Deposited To Account",
+        accessorKey: "accountId.accountId",
         enableColumnFilter: false,
         enableSorting: false,
-        cell: (cell: any) => (
-          <>
-            <Link
-              to="#!"
-              className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
-            >
-              {cell.getValue()}
-            </Link>
-          </>
-        ),
+        // cell: (cell: any) => (
+        //   <>
+        //     <Link
+        //       to={`/account/${cell.row.original._id}`}
+        //       className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
+        //     >
+        //       {cell.getValue()}
+        //     </Link>
+        //   </>
+        // ),
       },
-      {
-        header: "Account ID",
-        accessorKey: "accountId",
-        enableColumnFilter: false,
-        enableSorting: false,
-        cell: (cell: any) => (
-          <>
-            <Link
-              to="#!"
-              className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
-            >
-              {cell.getValue()}
-            </Link>
-          </>
-        ),
-      },
+     
       {
         header: "Deposit Date",
         accessorKey: "createdAt",

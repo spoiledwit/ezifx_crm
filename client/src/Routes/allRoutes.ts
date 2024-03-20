@@ -8,6 +8,7 @@ import Support from "pages/Support/Support";
 import Transactions from "pages/Transactions";
 import Withdrawals from "pages/Withdrawals/Withdrawals";
 
+import AccountDetails from "pages/Accounts/AccountDetails";
 import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
 import Register from "pages/Authentication/Register";
@@ -46,6 +47,7 @@ let authProtectedRoutes: Array<RouteObject> = [
 
   // Accounts
   { path: "/accounts", component: Accounts },
+  { path: "/account/:id", component: AccountDetails },
 
   // Support
   { path: "/support", component: Support },
@@ -62,3 +64,4 @@ const publicRoutes = [
 ];
 
 export { authProtectedRoutes, publicRoutes };
+
