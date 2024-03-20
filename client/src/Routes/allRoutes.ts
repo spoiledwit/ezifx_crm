@@ -1,16 +1,17 @@
-import Dashboard from "pages/Dashboard/Analytics";
-import Deposits from "pages/Deposits/Deposits";
-import Withdrawals from "pages/Withdrawals/Withdrawals";
-import BalanceTransferPage from "pages/BalanceTransfer";
-import Referral from "pages/Referrals";
-import Transactions from "pages/Transactions";
 import Accounts from "pages/Accounts";
+import BalanceTransferPage from "pages/BalanceTransfer";
+import Dashboard from "pages/Dashboard/Analytics";
+import Deposit from "pages/Deposits/Deposit";
+import Deposits from "pages/Deposits/Deposits";
+import Referral from "pages/Referrals";
 import Support from "pages/Support/Support";
+import Transactions from "pages/Transactions";
+import Withdrawals from "pages/Withdrawals/Withdrawals";
 
-import UserProfile from "pages/UserProfile";
 import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
 import Register from "pages/Authentication/Register";
+import UserProfile from "pages/UserProfile";
 
 interface RouteObject {
   path: string;
@@ -27,6 +28,9 @@ let authProtectedRoutes: Array<RouteObject> = [
 
   // Deposits
   { path: "/deposits", component: Deposits },
+
+  // Deposit
+  { path: "/deposits/:id", component: Deposit },
 
   // Withdrawals
   { path: "/withdrawals", component: Withdrawals },
