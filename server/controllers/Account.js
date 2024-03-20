@@ -52,7 +52,7 @@ export const createAccount = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await AuthModel.findById(userId);
-    const { leverage, accountType, balance, type } = req.body;
+    const { leverage, accountType, type } = req.body;
     const mainPassword = passwordGenerator();
     const investorPassword = passwordGenerator();
     const phonePassword = passwordGenerator();

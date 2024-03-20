@@ -90,6 +90,7 @@ const Accounts = () => {
         handleFetchAccounts();
         toast.success("Account Created Successfully");
         toggle();
+        window.location.reload();
       } catch (error: any) {
         if (!error.response) {
           return toast.error("Network error. Please try again.");
