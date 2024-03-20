@@ -1,7 +1,7 @@
-import Deposit from "../models/Deposit.js";
+import dotenv from "dotenv";
 import Account from "../models/Account.js";
 import AuthModel from "../models/Auth.js";
-import dotenv from "dotenv";
+import Deposit from "../models/Deposit.js";
 
 dotenv.config();
 
@@ -62,7 +62,7 @@ export const createDeposit = async (req, res) => {
 export const getAllDeposits = async (req, res) => {
   try {
     const userId = req.userId;
-    const deposits = await Deposit.find({ userId });
+    const deposits = await Deposit.find({ userId }).sort('-createdAt');
     res.status(200).json(deposits);
   } catch (error) {
     res.status(500).json({ message: error.message });

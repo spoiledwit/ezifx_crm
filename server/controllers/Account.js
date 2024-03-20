@@ -1,9 +1,9 @@
+import crypto from "crypto";
+import dotenv from "dotenv";
 import Account from "../models/Account.js";
 import AuthModel from "../models/Auth.js";
 import Deposit from "../models/Deposit.js";
 import Withdrawal from "../models/Withdrawal.js";
-import crypto from "crypto";
-import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -22,7 +22,7 @@ export const getUserAccounts = async (req, res) => {
 export const getMyAccounts = async (req, res) => {
   try {
     const userId = req.userId;
-    const user = await AuthModel.findById(userId);
+    const user = await AuthModel.findById(userId)
     const accounts = await Account.find({ accountId: { $in: user.accounts } });
     res.status(200).json(accounts);
   } catch (error) {

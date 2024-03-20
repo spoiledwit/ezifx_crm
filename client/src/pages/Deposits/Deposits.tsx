@@ -1,31 +1,31 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
 import BreadCrumb from "Common/BreadCrumb";
-import CountUp from "react-countup";
 import PhotosUploader from "components/Forms/ImageUploader";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import CountUp from "react-countup";
 import { toast } from "react-hot-toast";
 import { useAuthStore } from "store/useAuthStore";
 
 // icons
+import TableContainer from "Common/TableContainer";
 import {
-  Loader,
-  Search,
   ArrowDown,
   CircleDollarSign,
-  Plus,
-  MoreHorizontal,
   Eye,
+  Loader,
+  MoreHorizontal,
+  Plus,
+  Search,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import TableContainer from "Common/TableContainer";
 
 import { Dropdown } from "Common/Components/Dropdown";
 import Modal from "Common/Components/Modal";
 
 // Formik
-import * as Yup from "yup";
+import axios from "axios";
 import { useFormik } from "formik";
 import { ToastContainer } from "react-toastify";
-import axios from "axios";
+import * as Yup from "yup";
 
 const Deposits = () => {
 
@@ -232,6 +232,38 @@ const Deposits = () => {
       {
         header: "Deposit ID",
         accessorKey: "_id",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cell: any) => (
+          <>
+            <Link
+              to="/apps-ecommerce-order-overview"
+              className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
+            >
+              {cell.getValue()}
+            </Link>
+          </>
+        ),
+      },
+      {
+        header: "User ID",
+        accessorKey: "userId",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cell: any) => (
+          <>
+            <Link
+              to="#!"
+              className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
+            >
+              {cell.getValue()}
+            </Link>
+          </>
+        ),
+      },
+      {
+        header: "Account ID",
+        accessorKey: "accountId",
         enableColumnFilter: false,
         enableSorting: false,
         cell: (cell: any) => (
