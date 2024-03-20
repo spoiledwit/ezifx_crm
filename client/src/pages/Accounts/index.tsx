@@ -1,22 +1,22 @@
-import React, { useCallback, useState } from "react";
 import BreadCrumb from "Common/BreadCrumb";
-import { toast } from "react-hot-toast";
 import Modal from "Common/Components/Modal";
+import React, { useCallback, useState } from "react";
+import { toast } from "react-hot-toast";
 
 // Formik
-import * as Yup from "yup";
 import { useFormik } from "formik";
-import { ToastContainer } from "react-toastify";
-import AccountsStatistics from "./AccountsStatistics";
 import { useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 import { useAuthStore } from "store/useAuthStore";
+import * as Yup from "yup";
+import AccountsStatistics from "./AccountsStatistics";
 
 import axios from "axios";
 
 const Accounts = () => {
   const [show, setShow] = useState<boolean>(false);
   const [showDemo, setShowDemo] = useState<boolean>(false);
-  const {setUser, user} = useAuthStore();
+  const { setUser, user } = useAuthStore();
 
   const [creatingAccount, setCreatingAccount] = useState<boolean>(false);
   const [data, setData] = useState([]);
@@ -59,12 +59,32 @@ const Accounts = () => {
     },
     validationSchema: Yup.object({
       accountType: Yup.string().required("Account Type is required"),
-      leverage: Yup.number().required("Leverage is required"),
+      leverage: Yup.number()
+        .required("Leverage is required")
+        .when("accountType", (accountType: any) => {
+          console.log("iiiii", accountType);
+          if (accountType == "zero" || accountType == "ecn") {
+            return Yup.number().min(
+              1000,
+              "Leverage must be greater than or equal to 1000"
+            );
+          } else if (accountType == "pro" || accountType == "prime") {
+            return Yup.number().min(
+              500,
+              "Leverage must be greater than or equal to 500"
+            );
+          }
+          return Yup.number().min(
+            100,
+            "Leverage must be greater than or equal to 100"
+          );
+        }),
     }),
 
     onSubmit: async (values) => {
       const newData = {
-        ...values, type: "Real"
+        ...values,
+        type: "Real",
       };
       setCreatingAccount(true);
       try {
@@ -127,7 +147,8 @@ const Accounts = () => {
 
     onSubmit: async (values) => {
       const newData = {
-        ...values, type: "Demo"
+        ...values,
+        type: "Demo",
       };
       setCreatingAccount(true);
       try {
@@ -167,6 +188,8 @@ const Accounts = () => {
       validationDemo.resetForm();
     }
   }, [showDemo, validationDemo]);
+
+  console.log("uuuuuu", validation.errors);
 
   return (
     <React.Fragment>
@@ -240,7 +263,7 @@ const Accounts = () => {
                   <option value="pro">PRO</option>
                   <option value="zero">ZERO</option>
                   <option value="ecn">ECN</option>
-                  <option value="ecn">PRIME</option>
+                  <option value="prime">PRIME</option>
                 </select>
                 {validation.touched.accountType &&
                 validation.errors.accountType ? (
