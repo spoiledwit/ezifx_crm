@@ -1,11 +1,12 @@
 import {
-  Users,
   Activity,
   AlertTriangle,
   Archive,
   ArrowDown,
   ArrowRight,
   ArrowUp,
+  ShieldCheck,
+  Users,
 } from "lucide-react";
 
 const menuData: any = [
@@ -28,6 +29,12 @@ const menuData: any = [
     label: "Users",
     link: "/users",
     icon: <Users />,
+  },
+  {
+    id: "accounts-list",
+    label: "Accounts",
+    link: "/accounts",
+    icon: <ShieldCheck />,
   },
   {
     label: "Trade",
@@ -73,3 +80,4 @@ const menuData: any = [
 ];
 
 export { menuData };
+

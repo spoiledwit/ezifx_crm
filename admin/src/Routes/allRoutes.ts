@@ -9,6 +9,7 @@ import UsersTable from "pages/Users/ListView";
 import Withdrawal from "pages/Withdrawals/Withdrawal";
 import Withdrawals from "pages/Withdrawals/Withdrawals";
 
+import AccountList from "pages/Account/AccountList";
 import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
 import UserProfile from "pages/UserProfile";
@@ -47,6 +48,8 @@ let authProtectedRoutes: Array<RouteObject> = [
 
   // Accounts
   { path: "/users", component: UsersTable },
+  
+  { path: "/accounts", component: AccountList },
 
   // get UserId
   { path: "/user-details/:id", component: UserDetails },
