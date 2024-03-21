@@ -420,7 +420,7 @@ const Support = () => {
                 <Search className="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600" />
               </div>
             </div>
-            <div className="lg:col-span-2 lg:col-start-11">
+            {/* <div className="lg:col-span-2 lg:col-start-11">
               <div className="ltr:lg:text-right rtl:lg:text-left">
                 <Link
                   to="#!"
@@ -433,7 +433,7 @@ const Support = () => {
                   <span className="align-middle">Open a Ticket</span>
                 </Link>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <ul className="flex flex-wrap w-full mt-5 text-sm font-medium text-center text-gray-500 nav-tabs">
