@@ -1,37 +1,40 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
 import BreadCrumb from "Common/BreadCrumb";
-import CountUp from "react-countup";
-import { useAuthStore } from "store/useAuthStore";
 import PhotosUploader from "components/Forms/ImageUploader";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import CountUp from "react-countup";
 import { toast } from "react-hot-toast";
+import { useAuthStore } from "store/useAuthStore";
 
 // icons
+import TableContainer from "Common/TableContainer";
 import {
-  Loader,
-  Search,
   ArrowDown,
   CircleDollarSign,
-  Plus,
-  MoreHorizontal,
   Eye,
-  TicketCheck,
+  Loader,
+  MoreHorizontal,
+  Plus,
+  Search,
   Ticket,
+  TicketCheck,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import TableContainer from "Common/TableContainer";
 
 import { Dropdown } from "Common/Components/Dropdown";
 import Modal from "Common/Components/Modal";
 
 // Formik
-import * as Yup from "yup";
+import axios from "axios";
 import { useFormik } from "formik";
 import { ToastContainer } from "react-toastify";
+import * as Yup from "yup";
 
 const Support = () => {
 
   const {user} = useAuthStore();
   const [dataList, setDataList] = useState<any>([]);
+  const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState<any>([{
     _id: "1",
     openedDate: "2021-10-10",
@@ -49,6 +52,30 @@ const Support = () => {
   }]);
   const [images, setImages] = useState<any>([]);
   const [show, setShow] = useState<boolean>(false);
+
+  useEffect(() => {
+    handleFetchTickets();
+  }, []);
+
+  const handleFetchTickets = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASE_URI}/ticket/userTickets`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      setDataList(res.data);
+      setData(res.data);
+    } catch (error) {
+      toast.error("An error occurred while fetching deposit");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (images.length > 0) {
@@ -80,15 +107,42 @@ const Support = () => {
       attachments: Yup.array().required("Attachments is Required"). min(1, "At least one attachment is required"),
     }),
 
-    onSubmit: (values) => {
+
+    onSubmit: async (values) => {
       const newData = {
-        ...values,
+        ...values
       };
-      console.log(newData);
-      toast.success("Ticket Opened Successfully");
-      setImages([]);
-      toggle();
+      setIsSubmiting(true);
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_BASE_URI}/ticket/create`,
+          {
+            ...newData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        handleFetchTickets();
+        toast.success("Ticket created successfully!");
+        toggle();
+        validation.resetForm();
+        setImages([]);
+      } catch (error: any) {
+        if (!error.response) {
+          return toast.error("Network error. Please try again.");
+        }
+        if (typeof error.response.data === "string") {
+          return toast.error(error.response.data);
+        }
+      } finally {
+        setIsSubmiting(false);
+      }
     },
+
+  
   });
 
   const toggle = useCallback(() => {
@@ -136,22 +190,29 @@ const Support = () => {
 
   // columns
   const Status = ({ item }: any) => {
+    console.log('ppppppppppp', item)
     switch (item) {
-      case "Closed":
+      case "Low":
         return (
           <span className="delivery_status px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-green-100 border-green-200 text-green-500 dark:bg-green-500/20 dark:border-green-500/20">
             {item}
           </span>
         );
-      case "Opened":
+      case "Medium":
         return (
           <span className="delivery_status px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-yellow-100 border-yellow-200 text-yellow-500 dark:bg-yellow-500/20 dark:border-yellow-500/20">
             {item}
           </span>
         );
-      default:
+      case "Opened":
         return (
           <span className="delivery_status px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-green-100 border-green-200 text-green-500 dark:bg-green-500/20 dark:border-green-500/20">
+            {item}
+          </span>
+        );
+      default:
+        return (
+          <span className="delivery_status px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-red-100 border-red-200 text-red-500 dark:bg-red-500/20 dark:border-red-500/20">
             {item}
           </span>
         );
@@ -202,7 +263,7 @@ const Support = () => {
       },
       {
         header: "Opened Date",
-        accessorKey: "openedDate",
+        accessorKey: "createdAt",
         enableColumnFilter: false,
       },
       {
@@ -219,14 +280,17 @@ const Support = () => {
         header: "Priority",
         accessorKey: "priority",
         enableColumnFilter: false,
+        cell: (cell: any) => <Status item={cell.getValue()} />,
+
       },
       {
         header: "Status",
         accessorKey: "status",
         enableColumnFilter: false,
-        enableSorting: true,
         cell: (cell: any) => <Status item={cell.getValue()} />,
+
       },
+      
       {
         header: "Action",
         enableColumnFilter: false,
@@ -270,6 +334,16 @@ const Support = () => {
     }
   }, [images])
 
+  const getCountByStatus = (status: string) => {
+    let total = 0;
+    dataList.forEach((item: any) => {
+      if (item.status === status) {
+        total ++
+      }
+    });
+    return total;
+  };
+
   return (
     <React.Fragment>
       <BreadCrumb title="Support Tickets" pageTitle="Support" />
@@ -283,10 +357,14 @@ const Support = () => {
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
-                  <CountUp end={2} separator="," className="counter-value" />
+                  <CountUp
+                    end={getCountByStatus("Opened")}
+                    separator=","
+                    className="counter-value"
+                  />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Closed Support Tickets
+                Opened Support Tickets
                 </p>
               </div>
             </div>
@@ -300,10 +378,14 @@ const Support = () => {
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
-                  <CountUp end={6} separator="," className="counter-value" />
+                  <CountUp
+                    end={getCountByStatus("Closed")}
+                    separator=","
+                    className="counter-value"
+                  />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Opened Support Tickets
+                Closed Support Tickets
                 </p>
               </div>
             </div>
@@ -415,8 +497,7 @@ const Support = () => {
         </div>
       </div>
 
-      {/* Order Modal */}
-
+      {/* Create a new Ticket Modal Form */}
       <Modal
         show={show}
         onHide={toggle}

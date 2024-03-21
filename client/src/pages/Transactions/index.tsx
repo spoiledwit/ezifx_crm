@@ -394,7 +394,7 @@ const Transactions = () => {
                 }}
               >
                 <CircleDollarSign className="inline-block size-4 ltr:mr-1 rtl:ml-1" />{" "}
-                <span className="align-middle">All Deposits</span>
+                <span className="align-middle">All Transactions</span>
               </Link>
             </li>
             <li className={`group ${activeTab === "2" && "active"}`}>
