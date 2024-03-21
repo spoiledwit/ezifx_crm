@@ -23,7 +23,7 @@ export const createTicket = async (req, res) => {
       priority,
       attachments,
       paymentProof,
-      messages: { content: message, senderId: userId },
+      messages: [{ content: message, senderId: userId }],
     });
     await ticket.save();
 

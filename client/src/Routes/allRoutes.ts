@@ -13,6 +13,7 @@ import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
 import Register from "pages/Authentication/Register";
 import UserProfile from "pages/UserProfile";
+import WithdrawalDetails from "pages/Withdrawals/WithdrawalDetails";
 
 interface RouteObject {
   path: string;
@@ -35,6 +36,7 @@ let authProtectedRoutes: Array<RouteObject> = [
 
   // Withdrawals
   { path: "/withdrawals", component: Withdrawals },
+  { path: "/withdrawal-details/:id", component: WithdrawalDetails },
 
   // Balance Transfer
   { path: "/balance-transfer", component: BalanceTransferPage },

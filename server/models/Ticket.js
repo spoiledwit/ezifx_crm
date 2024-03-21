@@ -62,9 +62,7 @@ const TicketSchema = new mongoose.Schema(
       required: true,
     },
 
-    messages: MessageSchema,
-
-    replies: [ReplySchema]
+    messages: [MessageSchema],
   },
   {
     timestamps: true,

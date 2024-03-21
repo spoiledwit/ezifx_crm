@@ -238,7 +238,7 @@ const Withdrawals = () => {
         cell: (cell: any) => (
           <>
             <Link
-              to="#!"
+              to={`/withdrawals/${cell.row.original._id}`}
               className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
             >
               {cell.getValue()}
