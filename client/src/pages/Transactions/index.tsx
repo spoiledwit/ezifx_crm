@@ -60,10 +60,10 @@ const Transactions = () => {
     }
   };
 
-  const getDepositNumberByStatus = (status: string) => {
+  const getCountByStatus = (status: string) => {
     let total = 0;
-    dataList.forEach((deposit: any) => {
-      if (deposit.status === status) {
+    dataList.forEach((item: any) => {
+      if (item.type === status) {
         total ++
       }
     });
@@ -307,13 +307,13 @@ const Transactions = () => {
               <div className="grow">
                 <h5 className="mb-1 text-16">
                   <CountUp
-                    end={getDepositNumberByStatus("Approved")}
+                    end={data?.length}
                     separator=","
                     className="counter-value"
                   />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Total Deposits
+                  Total Transactions
                 </p>
               </div>
             </div>
@@ -328,13 +328,13 @@ const Transactions = () => {
               <div className="grow">
                 <h5 className="mb-1 text-16">
                   <CountUp
-                    end={getDepositNumberByStatus("Pending")}
+                    end={getCountByStatus("deposit")}
                     separator=","
                     className="counter-value"
                   />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Pending Deposit Amount
+                   Deposit
                 </p>
               </div>
             </div>
@@ -349,39 +349,19 @@ const Transactions = () => {
               <div className="grow">
                 <h5 className="mb-1 text-16">
                   <CountUp
-                    end={getDepositNumberByStatus("Approved")}
+                    end={getCountByStatus("withdrawal")}
                     separator=","
                     className="counter-value"
                   />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Successfully Deposited
+                Withdrawal
                 </p>
               </div>
             </div>
           </div>
         </div>
-        <div className="2xl:col-span-2 2xl:row-span-1">
-          <div className="card">
-            <div className="flex items-center gap-3 card-body">
-              <div className="flex items-center justify-center size-12 text-red-500 rounded-md text-15 bg-red-50 dark:bg-red-500/20 shrink-0">
-                <ArrowDown />
-              </div>
-              <div className="grow">
-                <h5 className="mb-1 text-16">
-                  <CountUp
-                    end={getDepositNumberByStatus("Rejected")}
-                    separator=","
-                    className="counter-value"
-                  />
-                </h5>
-                <p className="text-slate-500 dark:text-zink-200">
-                  Rejected Deposit Amount
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+       
       </div>
 
       <div className="card" id="ordersTable">

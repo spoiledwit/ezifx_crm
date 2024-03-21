@@ -199,3 +199,33 @@ export const getAllUserTransactions = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllTransactions = async (req, res) => {
+  try {   
+    const deposits = await Deposit.find().populate({path: "userId", select: "name"});
+    const withdrawals = await Withdrawal.find().populate({path: "userId", select: "name"});
+    let transactions = [];
+    deposits.forEach((deposit) => {
+      transactions.push({
+        type: "deposit",
+        status: deposit.status,
+        amount: deposit.amount,
+        date: deposit.createdAt,
+        userId: deposit.userId
+      });
+    });
+    withdrawals.forEach((withdrawal) => {
+      transactions.push({
+        type: "withdrawal",
+        status: withdrawal.status,
+        amount: withdrawal.amount,
+        date: withdrawal.createdAt,
+        userId: withdrawal.userId
+      });
+    });
+    transactions.sort((a, b) => b.date - a.date);
+    res.status(200).json(transactions);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
