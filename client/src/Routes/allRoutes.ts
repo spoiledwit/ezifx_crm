@@ -12,6 +12,7 @@ import AccountDetails from "pages/Accounts/AccountDetails";
 import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
 import Register from "pages/Authentication/Register";
+import SupportDetails from "pages/Support/SupportDetails";
 import UserProfile from "pages/UserProfile";
 import WithdrawalDetails from "pages/Withdrawals/WithdrawalDetails";
 
@@ -53,6 +54,7 @@ let authProtectedRoutes: Array<RouteObject> = [
 
   // Support
   { path: "/support", component: Support },
+  { path: "/support/:id", component: SupportDetails },
   
   // profile
   { path: "/user-profile", component: UserProfile },

@@ -48,3 +48,18 @@ export const getUserTicket = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+export const getTicketDetails = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const ticket = await Ticket.findById(id);
+
+    if (!ticket) {
+      return res.status(400).send("Not Found");
+    }
+
+    res.status(200).json(ticket);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
