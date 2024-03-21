@@ -30,26 +30,28 @@ import { ToastContainer } from "react-toastify";
 import * as Yup from "yup";
 
 const Support = () => {
-
-  const {user} = useAuthStore();
+  const { user } = useAuthStore();
   const [dataList, setDataList] = useState<any>([]);
   const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false)
-  const [data, setData] = useState<any>([{
-    _id: "1",
-    openedDate: "2021-10-10",
-    subject: "Test",
-    lastReply: "2021-10-10",
-    priority: "High",
-    status: "Closed",
-  }, {
-    _id: "2",
-    openedDate: "2021-10-10",
-    subject: "Test",
-    lastReply: "2021-10-10",
-    priority: "High",
-    status: "Opened",
-  }]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<any>([
+    {
+      _id: "1",
+      openedDate: "2021-10-10",
+      subject: "Test",
+      lastReply: "2021-10-10",
+      priority: "High",
+      status: "Closed",
+    },
+    {
+      _id: "2",
+      openedDate: "2021-10-10",
+      subject: "Test",
+      lastReply: "2021-10-10",
+      priority: "High",
+      status: "Opened",
+    },
+  ]);
   const [images, setImages] = useState<any>([]);
   const [show, setShow] = useState<boolean>(false);
 
@@ -104,13 +106,14 @@ const Support = () => {
       subject: Yup.string().required("Subject is Required"),
       priority: Yup.string().required("Priority is Required"),
       message: Yup.string().required("Message is Required"),
-      attachments: Yup.array().required("Attachments is Required"). min(1, "At least one attachment is required"),
+      attachments: Yup.array()
+        .required("Attachments is Required")
+        .min(1, "At least one attachment is required"),
     }),
-
 
     onSubmit: async (values) => {
       const newData = {
-        ...values
+        ...values,
       };
       setIsSubmiting(true);
       try {
@@ -141,8 +144,6 @@ const Support = () => {
         setIsSubmiting(false);
       }
     },
-
-  
   });
 
   const toggle = useCallback(() => {
@@ -190,7 +191,7 @@ const Support = () => {
 
   // columns
   const Status = ({ item }: any) => {
-    console.log('ppppppppppp', item)
+    console.log("ppppppppppp", item);
     switch (item) {
       case "Low":
         return (
@@ -281,16 +282,14 @@ const Support = () => {
         accessorKey: "priority",
         enableColumnFilter: false,
         cell: (cell: any) => <Status item={cell.getValue()} />,
-
       },
       {
         header: "Status",
         accessorKey: "status",
         enableColumnFilter: false,
         cell: (cell: any) => <Status item={cell.getValue()} />,
-
       },
-      
+
       {
         header: "Action",
         enableColumnFilter: false,
@@ -326,19 +325,19 @@ const Support = () => {
     []
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     if (images.length > 0) {
       validation.setFieldValue("attachments", images);
     } else {
       validation.setFieldValue("attachments", []);
     }
-  }, [images])
+  }, [images]);
 
   const getCountByStatus = (status: string) => {
     let total = 0;
     dataList.forEach((item: any) => {
       if (item.status === status) {
-        total ++
+        total++;
       }
     });
     return total;
@@ -364,7 +363,7 @@ const Support = () => {
                   />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                Opened Support Tickets
+                  Opened Support Tickets
                 </p>
               </div>
             </div>
@@ -385,7 +384,7 @@ const Support = () => {
                   />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                Closed Support Tickets
+                  Closed Support Tickets
                 </p>
               </div>
             </div>
@@ -619,7 +618,7 @@ const Support = () => {
                 <textarea
                   id="messageInput"
                   className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                 placeholder="Message"
+                  placeholder="Message"
                   name="message"
                   onChange={validation.handleChange}
                   value={validation.values.message || ""}
@@ -644,11 +643,10 @@ const Support = () => {
                   }}
                 />
               </div>
-            
             </div>
             {validation.touched.attachments && validation.errors.attachments ? (
-                <p className="text-red-400">{validation.errors.attachments}</p>
-              ) : null}
+              <p className="text-red-400">{validation.errors.attachments}</p>
+            ) : null}
             <div className="flex justify-end gap-2 mt-4">
               <button
                 type="reset"
@@ -658,8 +656,9 @@ const Support = () => {
                 Cancel
               </button>
               <button
+                disabled={isSubmiting}
                 type="submit"
-                className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
+                className={`text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 ${isSubmiting ? "cursor-not-allowed": ""}`}
               >
                 {"Open a Ticket"}
               </button>

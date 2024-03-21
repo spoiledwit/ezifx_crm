@@ -12,6 +12,6 @@ router.get("/all/transactions", verifyToken,verifyAdmin, getAllTransactions);
 router.get("/:accountId/transactions", verifyToken, getTransactions);
 router.post("/", verifyToken, createAccount);
 router.get("/:accountId", verifyToken, getUserAccount);
-router.get("/details/:accountId", verifyToken, verifyAdmin, getAccountDetails);
+router.get("/details/:accountId", verifyToken, getAccountDetails);
 
 export default router;
