@@ -15,14 +15,14 @@ export const createTicket = async (req, res) => {
   try {
     const userId = req.userId;
 
-    const { subject, message, priority, attachments, paymentProof } = req.body;
+    const { subject, message, priority, attachments } = req.body;
 
     const ticket = new Ticket({
       userId,
       subject,
       priority,
       attachments,
-      paymentProof,
+      latestMessage: message,
       messages: [{ content: message, senderId: userId }],
     });
     await ticket.save();

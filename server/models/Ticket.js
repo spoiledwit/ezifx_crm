@@ -59,6 +59,15 @@ const TicketSchema = new mongoose.Schema(
     ],
 
     messages: [MessageSchema],
+
+    latestMessage: {
+      type: String,
+      required: true,
+    },
+    latestReply: {
+      type: String,
+    },
+
   },
   {
     timestamps: true,

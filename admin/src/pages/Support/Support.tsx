@@ -286,8 +286,8 @@ const Support = () => {
         enableColumnFilter: false,
       },
       {
-        header: "Last Reply",
-        accessorKey: "lastReply",
+        header: "Last Message",
+        accessorKey: "latestMessage",
         enableColumnFilter: false,
       },
       {
@@ -323,7 +323,7 @@ const Support = () => {
             >
               <li>
                 <Link
-                  to={`/user-details/${cell.row.original.userId}`}
+                  to={`/support/${cell.row.original._id}`}
                   className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200"
                 >
                   <Eye className="inline-block size-3 ltr:mr-1 rtl:ml-1" />{" "}
