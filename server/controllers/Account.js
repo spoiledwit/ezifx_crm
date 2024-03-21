@@ -167,3 +167,35 @@ export const getTransactions = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getAllUserTransactions = async (req, res) => {
+  try {
+    const userId = req.userId;
+   
+    const deposits = await Deposit.find({ userId: userId });
+    const withdrawals = await Withdrawal.find({
+      userId: userId,
+    });
+    let transactions = [];
+    deposits.forEach((deposit) => {
+      transactions.push({
+        type: "deposit",
+        status: deposit.status,
+        amount: deposit.amount,
+        date: deposit.createdAt,
+      });
+    });
+    withdrawals.forEach((withdrawal) => {
+      transactions.push({
+        type: "withdrawal",
+        status: withdrawal.status,
+        amount: withdrawal.amount,
+        date: withdrawal.createdAt,
+      });
+    });
+    transactions.sort((a, b) => b.date - a.date);
+    res.status(200).json(transactions);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
