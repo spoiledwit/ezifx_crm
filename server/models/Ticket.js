@@ -35,7 +35,7 @@ const TicketSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Auth",
       required: true,
     },
     priority: {
@@ -57,10 +57,6 @@ const TicketSchema = new mongoose.Schema(
         required: true,
       },
     ],
-    paymentProof: {
-      type: String,
-      required: true,
-    },
 
     messages: [MessageSchema],
   },

@@ -1,54 +1,80 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
 import BreadCrumb from "Common/BreadCrumb";
-import CountUp from "react-countup";
-import { useAuthStore } from "store/useAuthStore";
 import PhotosUploader from "components/Forms/ImageUploader";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import CountUp from "react-countup";
 import { toast } from "react-hot-toast";
+import { useAuthStore } from "store/useAuthStore";
 
 // icons
+import TableContainer from "Common/TableContainer";
 import {
-  Loader,
-  Search,
   ArrowDown,
   CircleDollarSign,
-  Plus,
-  MoreHorizontal,
   Eye,
-  TicketCheck,
+  Loader,
+  MoreHorizontal,
+  Plus,
+  Search,
   Ticket,
+  TicketCheck,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import TableContainer from "Common/TableContainer";
 
 import { Dropdown } from "Common/Components/Dropdown";
 import Modal from "Common/Components/Modal";
 
 // Formik
-import * as Yup from "yup";
+import axios from "axios";
 import { useFormik } from "formik";
 import { ToastContainer } from "react-toastify";
+import * as Yup from "yup";
 
 const Support = () => {
-
-  const {user} = useAuthStore();
+  const { user } = useAuthStore();
   const [dataList, setDataList] = useState<any>([]);
-  const [data, setData] = useState<any>([{
-    _id: "1",
-    openedDate: "2021-10-10",
-    subject: "Test",
-    lastReply: "2021-10-10",
-    priority: "High",
-    status: "Closed",
-  }, {
-    _id: "2",
-    openedDate: "2021-10-10",
-    subject: "Test",
-    lastReply: "2021-10-10",
-    priority: "High",
-    status: "Opened",
-  }]);
+  const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<any>([
+    {
+      _id: "1",
+      openedDate: "2021-10-10",
+      subject: "Test",
+      lastReply: "2021-10-10",
+      priority: "High",
+      status: "Closed",
+    },
+    {
+      _id: "2",
+      openedDate: "2021-10-10",
+      subject: "Test",
+      lastReply: "2021-10-10",
+      priority: "High",
+      status: "Opened",
+    },
+  ]);
   const [images, setImages] = useState<any>([]);
   const [show, setShow] = useState<boolean>(false);
+
+  useEffect(() => {
+    handleFetchTickets();
+  }, []);
+
+  const handleFetchTickets = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${process.env.REACT_APP_BASE_URI}/ticket`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setDataList(res.data);
+      setData(res.data);
+    } catch (error) {
+      toast.error("An error occurred while fetching deposit");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (images.length > 0) {
@@ -77,17 +103,43 @@ const Support = () => {
       subject: Yup.string().required("Subject is Required"),
       priority: Yup.string().required("Priority is Required"),
       message: Yup.string().required("Message is Required"),
-      attachments: Yup.array().required("Attachments is Required"). min(1, "At least one attachment is required"),
+      attachments: Yup.array()
+        .required("Attachments is Required")
+        .min(1, "At least one attachment is required"),
     }),
 
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const newData = {
         ...values,
       };
-      console.log(newData);
-      toast.success("Ticket Opened Successfully");
-      setImages([]);
-      toggle();
+      setIsSubmiting(true);
+      try {
+        await axios.post(
+          `${process.env.REACT_APP_BASE_URI}/ticket/create`,
+          {
+            ...newData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        handleFetchTickets();
+        toast.success("Ticket created successfully!");
+        toggle();
+        validation.resetForm();
+        setImages([]);
+      } catch (error: any) {
+        if (!error.response) {
+          return toast.error("Network error. Please try again.");
+        }
+        if (typeof error.response.data === "string") {
+          return toast.error(error.response.data);
+        }
+      } finally {
+        setIsSubmiting(false);
+      }
     },
   });
 
@@ -136,22 +188,29 @@ const Support = () => {
 
   // columns
   const Status = ({ item }: any) => {
+    console.log("ppppppppppp", item);
     switch (item) {
-      case "Closed":
+      case "Low":
         return (
           <span className="delivery_status px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-green-100 border-green-200 text-green-500 dark:bg-green-500/20 dark:border-green-500/20">
             {item}
           </span>
         );
-      case "Opened":
+      case "Medium":
         return (
           <span className="delivery_status px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-yellow-100 border-yellow-200 text-yellow-500 dark:bg-yellow-500/20 dark:border-yellow-500/20">
             {item}
           </span>
         );
-      default:
+      case "Opened":
         return (
           <span className="delivery_status px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-green-100 border-green-200 text-green-500 dark:bg-green-500/20 dark:border-green-500/20">
+            {item}
+          </span>
+        );
+      default:
+        return (
+          <span className="delivery_status px-2.5 py-0.5 text-xs inline-block font-medium rounded border bg-red-100 border-red-200 text-red-500 dark:bg-red-500/20 dark:border-red-500/20">
             {item}
           </span>
         );
@@ -192,7 +251,7 @@ const Support = () => {
         cell: (cell: any) => (
           <>
             <Link
-              to="#!"
+              to={`/support/${cell.row.original._id}`}
               className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
             >
               {cell.getValue()}
@@ -201,8 +260,24 @@ const Support = () => {
         ),
       },
       {
+        header: "User ID",
+        accessorKey: "_id",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cell: any) => (
+          <>
+            <Link
+              to={`/user-details/${cell.row.original.userId}`}
+              className="transition-all duration-150 ease-linear text-custom-500 hover:text-custom-600 user-id"
+            >
+              {cell.getValue()}
+            </Link>
+          </>
+        ),
+      },
+      {
         header: "Opened Date",
-        accessorKey: "openedDate",
+        accessorKey: "createdAt",
         enableColumnFilter: false,
       },
       {
@@ -219,14 +294,15 @@ const Support = () => {
         header: "Priority",
         accessorKey: "priority",
         enableColumnFilter: false,
+        cell: (cell: any) => <Status item={cell.getValue()} />,
       },
       {
         header: "Status",
         accessorKey: "status",
         enableColumnFilter: false,
-        enableSorting: true,
         cell: (cell: any) => <Status item={cell.getValue()} />,
       },
+
       {
         header: "Action",
         enableColumnFilter: false,
@@ -247,7 +323,7 @@ const Support = () => {
             >
               <li>
                 <Link
-                  to="/apps-ecommerce-order-overview"
+                  to={`/user-details/${cell.row.original.userId}`}
                   className="block px-4 py-1.5 text-base transition-all duration-200 ease-linear text-slate-600 hover:bg-slate-100 hover:text-slate-500 focus:bg-slate-100 focus:text-slate-500 dark:text-zink-100 dark:hover:bg-zink-500 dark:hover:text-zink-200 dark:focus:bg-zink-500 dark:focus:text-zink-200"
                 >
                   <Eye className="inline-block size-3 ltr:mr-1 rtl:ml-1" />{" "}
@@ -262,13 +338,23 @@ const Support = () => {
     []
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     if (images.length > 0) {
       validation.setFieldValue("attachments", images);
     } else {
       validation.setFieldValue("attachments", []);
     }
-  }, [images])
+  }, [images]);
+
+  const getCountByStatus = (status: string) => {
+    let total = 0;
+    dataList.forEach((item: any) => {
+      if (item.status === status) {
+        total++;
+      }
+    });
+    return total;
+  };
 
   return (
     <React.Fragment>
@@ -283,10 +369,14 @@ const Support = () => {
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
-                  <CountUp end={2} separator="," className="counter-value" />
+                  <CountUp
+                    end={getCountByStatus("Opened")}
+                    separator=","
+                    className="counter-value"
+                  />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Closed Support Tickets
+                  Opened Support Tickets
                 </p>
               </div>
             </div>
@@ -300,10 +390,14 @@ const Support = () => {
               </div>
               <div className="grow">
                 <h5 className="mb-1 text-16">
-                  <CountUp end={6} separator="," className="counter-value" />
+                  <CountUp
+                    end={getCountByStatus("Closed")}
+                    separator=","
+                    className="counter-value"
+                  />
                 </h5>
                 <p className="text-slate-500 dark:text-zink-200">
-                  Opened Support Tickets
+                  Closed Support Tickets
                 </p>
               </div>
             </div>
@@ -415,8 +509,7 @@ const Support = () => {
         </div>
       </div>
 
-      {/* Order Modal */}
-
+      {/* Create a new Ticket Modal Form */}
       <Modal
         show={show}
         onHide={toggle}
@@ -538,7 +631,7 @@ const Support = () => {
                 <textarea
                   id="messageInput"
                   className="form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                 placeholder="Message"
+                  placeholder="Message"
                   name="message"
                   onChange={validation.handleChange}
                   value={validation.values.message || ""}
@@ -563,11 +656,10 @@ const Support = () => {
                   }}
                 />
               </div>
-            
             </div>
             {validation.touched.attachments && validation.errors.attachments ? (
-                <p className="text-red-400">{validation.errors.attachments}</p>
-              ) : null}
+              <p className="text-red-400">{validation.errors.attachments}</p>
+            ) : null}
             <div className="flex justify-end gap-2 mt-4">
               <button
                 type="reset"
@@ -577,8 +669,11 @@ const Support = () => {
                 Cancel
               </button>
               <button
+                disabled={isSubmiting}
                 type="submit"
-                className="text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
+                className={`text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20 ${
+                  isSubmiting ? "cursor-not-allowed" : ""
+                }`}
               >
                 {"Open a Ticket"}
               </button>
