@@ -22,7 +22,7 @@ const AccountDetails = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_BASE_URI}/account/${id}`,
+        `${process.env.REACT_APP_BASE_URI}/account/details/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -80,7 +80,7 @@ const AccountDetails = () => {
 
   return (
     <React.Fragment>
-      <BreadCrumb title="Deposit" pageTitle="Deposit" />
+      <BreadCrumb title="Account Details" pageTitle="Account Details" />
       <ToastContainer closeButton={false} limit={1} />
       {loading ? <p>Loading...</p> : <> </>}
       {deposit && (
@@ -88,31 +88,22 @@ const AccountDetails = () => {
           <div className="flex justify-between">
             <div>
               <p>
-                <strong>Payment Method:</strong> {deposit.paymentMethod}
+                <strong>Account Id:</strong> {deposit.accountId}
               </p>
               <p>
-                <strong> Amount:</strong> {deposit.amount}
+                <strong> Balance:</strong> {deposit.balance}
               </p>
               <p>
-                <strong>Payment Proof:</strong>{" "}
-                <a
-                  className="text-blue-500"
-                  href={deposit.paymentProof}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View
-                </a>
+                <strong>Type:</strong>
+                {deposit.type}
               </p>
-              {/* <p>
-                <strong>Status:</strong> {deposit.status}
-              </p>
+
               <p>
                 <strong>Created At:</strong> {deposit.createdAt}
               </p>
               <p>
                 <strong> Updated At:</strong> {deposit.updatedAt}
-              </p> */}
+              </p>
             </div>
             {/* {deposit.status === "Pending" ? (
               <div className="flex gap-4 h-fit">

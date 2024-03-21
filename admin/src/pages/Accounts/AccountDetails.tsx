@@ -105,7 +105,7 @@ const AccountDetails = () => {
                 <strong> Updated At:</strong> {deposit.updatedAt}
               </p>
             </div>
-            {deposit.status === "Pending" ? (
+            {/* {deposit.status === "Pending" ? (
               <div className="flex gap-4 h-fit">
                 <button
                   disabled={approving}
@@ -130,7 +130,7 @@ const AccountDetails = () => {
               <div className="bg-green-500 text-white px-4 py-2 rounded-md h-fit">
                 <p className="text-white rounded-md">Approved</p>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       )}

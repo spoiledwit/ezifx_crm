@@ -1,11 +1,11 @@
-import TableContainer from "Common/TableContainer";
-import React, { useMemo, useState } from "react";
-import { AccountsStatsData } from "Common/data";
-import { CheckCircle2, Search, XCircle } from "lucide-react";
-import filterDataBySearch from "Common/filterDataBySearch";
-import toast from "react-hot-toast";
-import { useEffect } from "react";
 import axios from "axios";
+import { AccountsStatsData } from "Common/data";
+import filterDataBySearch from "Common/filterDataBySearch";
+import TableContainer from "Common/TableContainer";
+import { CheckCircle2, Search, XCircle } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 const AccountsStatistics = ({
   data,
@@ -61,6 +61,16 @@ const AccountsStatistics = ({
         accessorKey: "accountId",
         enableColumnFilter: false,
         enableSorting: true,
+        cell: (cell: any) => (
+          <>
+            <Link
+              to={`/account/${cell.row.original._id}`}
+              className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
+            >
+              {cell.getValue()}
+            </Link>
+          </>
+        ),
       },
       {
         header: "Main Password",
