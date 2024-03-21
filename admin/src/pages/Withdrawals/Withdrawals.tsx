@@ -1,30 +1,30 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
 import BreadCrumb from "Common/BreadCrumb";
-import CountUp from "react-countup";
 import PhotosUploader from "components/Forms/ImageUploader";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import CountUp from "react-countup";
 import { toast } from "react-hot-toast";
 import { useAuthStore } from "store/useAuthStore";
 
 // icons
+import TableContainer from "Common/TableContainer";
 import {
-  Loader,
-  Search,
   ArrowDown,
   CircleDollarSign,
-  MoreHorizontal,
   Eye,
+  Loader,
+  MoreHorizontal,
+  Search,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import TableContainer from "Common/TableContainer";
 
 import { Dropdown } from "Common/Components/Dropdown";
 import Modal from "Common/Components/Modal";
 
 // Formik
-import * as Yup from "yup";
+import axios from "axios";
 import { useFormik } from "formik";
 import { ToastContainer } from "react-toastify";
-import axios from "axios";
+import * as Yup from "yup";
 
 const Withdrawals = () => {
   const { user } = useAuthStore();
@@ -239,6 +239,38 @@ const Withdrawals = () => {
           <>
             <Link
               to="#!"
+              className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
+            >
+              {cell.getValue()}
+            </Link>
+          </>
+        ),
+      },
+      {
+        header: "Account ID",
+        accessorKey: "accountId",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cell: any) => (
+          <>
+            <Link
+              to={`/account/details/${cell.row.original.accountId}`}
+              className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
+            >
+              {cell.getValue()}
+            </Link>
+          </>
+        ),
+      },
+      {
+        header: "User ID",
+        accessorKey: "userId",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cell: any) => (
+          <>
+            <Link
+              to={`/user-details/${cell.row.original.userId}`}
               className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
             >
               {cell.getValue()}
