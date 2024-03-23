@@ -62,7 +62,6 @@ const TicketSchema = new mongoose.Schema(
 
     latestMessage: {
       type: String,
-      required: true,
     },
     latestReply: {
       type: String,

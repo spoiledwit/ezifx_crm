@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import AuthModel from "../models/Auth.js";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import AuthModel from "../models/Auth.js";
 dotenv.config();
 // Register
 export const register = async (req, res) => {
@@ -103,6 +103,16 @@ export const login = async (req, res) => {
 export const getUser = async (req, res) => {
   try {
     const user = await AuthModel.findById(req.userId);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const getUserById = async (req, res) => {
+  try {
+    const {userId} = req.params
+    const user = await AuthModel.findById(userId);
     res.status(200).json(user);
   } catch (error) {
     res.status(404).json({ message: error.message });

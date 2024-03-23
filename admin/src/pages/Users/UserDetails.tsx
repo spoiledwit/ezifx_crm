@@ -22,7 +22,7 @@ const UserDetails = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_BASE_URI}/auth/me`,
+        `${process.env.REACT_APP_BASE_URI}/auth/getUserById/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
