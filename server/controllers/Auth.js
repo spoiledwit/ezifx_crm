@@ -36,29 +36,6 @@ export const register = async (req, res) => {
       { expiresIn: "5h" }
     );
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "tbcgulfmarketing@gmail.com",
-        pass: "gyqj dwxp nrmo qobv",
-      },
-    });
-
-    const mailOptions = {
-      from: "tbcgulfmarketing@gmail.com",
-      to: email,
-      subject: "Verify your email address",
-      text: `
-      Hi ${name},
-      Thank you for registering on our website.
-      Please click on the link below to verify your email address.
-      ${process.env.BASE_URI}/auth/verify/${user._id}
-      `,
-    };
-    await transporter.sendMail(mailOptions);
-
-    console.log("email sent!");
-
     res.status(201).json({ user, token });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -103,6 +80,9 @@ export const login = async (req, res) => {
 export const getUser = async (req, res) => {
   try {
     const user = await AuthModel.findById(req.userId);
+    if (!user) {
+      return res.status(404).send("User doesn't exist");
+    }
     res.status(200).json(user);
   } catch (error) {
     res.status(404).json({ message: error.message });

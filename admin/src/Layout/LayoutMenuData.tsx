@@ -3,7 +3,7 @@ import {
   AlertTriangle,
   Archive,
   ArrowDown,
-  ArrowRight,
+  CandlestickChart,
   ArrowUp,
   ShieldCheck,
   Users,
@@ -31,10 +31,16 @@ const menuData: any = [
     icon: <Users />,
   },
   {
+    id: "kyc",
+    label: "KYC Requests",
+    link: "/kycs",
+    icon: <ShieldCheck />,
+  },
+  {
     id: "accounts-list",
     label: "Accounts",
     link: "/accounts",
-    icon: <ShieldCheck />,
+    icon: <CandlestickChart />,
   },
   {
     label: "Trade",

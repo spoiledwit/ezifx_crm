@@ -1,5 +1,6 @@
 import Kyc from "../models/Kyc.js";
 import AuthModel from "../models/Auth.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 const parser = (dobString) => {
   const parts = dobString.split("/");
@@ -95,6 +96,17 @@ export const createKyc = async (req, res) => {
       identityType: "passport",
     });
     res.status(201).json({ data });
+    (async () => {
+      try {
+          const user = await AuthModel.findById(userId);
+          const to = user.email;
+          const subject = "KYC Approved";
+          const text = `Congratulations, ${user.name}! Your KYC has been approved. You can now using the CRM. <br/>`;
+          await sendEmail(to, subject, text);
+      } catch (error) {
+          console.error("Failed to send email:", error);
+      }
+  })();
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
@@ -116,6 +128,17 @@ export const createManualKyc = async (req, res) => {
     }
     const kycData = await Kyc.create({ image, identityType, userId });
     res.status(201).json({ kycData });
+    (async () => {
+      try {
+          const user = await AuthModel.findById(userId);
+          const to = user.email;
+          const subject = "Your KYC Request has been submitted";
+          const text = `Your KYC request has been submitted. Please wait for the approval. <br/>`;
+          await sendEmail(to, subject, text);
+      } catch (error) {
+          console.error("Failed to send email:", error);
+      }
+  })();
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -124,8 +147,69 @@ export const createManualKyc = async (req, res) => {
 export const getKyc = async (req, res) => {
   try {
     const userId = req.userId;
-    const kyc = await Kyc.findOne({ userId });
+    const kyc = await Kyc.findOne({
+      userId,
+    }).sort("-createdAt");
     res.status(200).json(kyc);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getAllKycs = async (req, res) => {
+  try {
+    const kycs = await Kyc.find().populate("userId").sort("-createdAt");
+    res.status(200).json(kycs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const approveKyc = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const kyc = await Kyc.findById(id);
+    kyc.kycStatus = "approved";
+    await kyc.save();
+    const user = await AuthModel.findById(kyc.userId);
+    user.hasKYC = true;
+    await user.save();
+    res.status(200).json(kyc);
+    (async () => {
+      try {
+          const to = user.email;
+          const subject = "KYC Approved";
+          const text = `Your KYC has been approved. You can now use the CRM. <br/>`;
+          await sendEmail(to, subject, text);
+      } catch (error) {
+          console.error("Failed to send email:", error);
+      }
+  })();
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export const rejectKyc = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const kyc = await Kyc.findById(id);
+    kyc.kycStatus = "rejected";
+    await kyc.save();
+    res.status(200).json(kyc);
+    (async () => {
+      try {
+          const user = await AuthModel.findById(kyc.userId);
+          user.hasKYC = false;
+          await user.save();
+          const to = user.email;
+          const subject = "KYC Rejected";
+          const text = `Your KYC has been rejected. Please try again. <br/>`;
+          await sendEmail(to, subject, text);
+      } catch (error) {
+          console.error("Failed to send email:", error);
+      }
+  })();
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -1,6 +1,7 @@
 import Withdrawal from "../models/Withdrawal.js";
 import Account from "../models/Account.js";
 import AuthModel from "../models/Auth.js";
+import { sendEmail } from "../utils/sendEmail.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -108,6 +109,17 @@ export const rejectWithdrawal = async (req, res) => {
     withdrawal.status = "Rejected";
     await withdrawal.save();
     res.status(200).json(withdrawal);
+    (async () => {
+      try {
+          const user = await AuthModel.findById(withdrawal.userId);
+          const to = user.email;
+          const subject = "Withdrawal Rejected";
+          const text = `Your withdrawal ${withdrawal._id} has been rejected. <br/>Amount: ${withdrawal.amount} USD`;
+          await sendEmail(to, subject, text);
+      } catch (error) {
+          console.error("Failed to send email:", error);
+      }
+  })();
   }
   catch (error) {
     res.status(500).json({ message: error.message });
@@ -142,6 +154,17 @@ export const approveWithdrawal = async (req, res) => {
     withdrawal.status = "Approved";
     await withdrawal.save();
     res.status(200).json(withdrawal);
+    (async () => {
+      try {
+          const user = await AuthModel.findById(withdrawal.userId);
+          const to = user.email;
+          const subject = "Withdrawal Approved";
+          const text = `Your withdrawal ${withdrawal._id} has been approved. <br/>Amount: ${withdrawal.amount} USD`;
+          await sendEmail(to, subject, text);
+      } catch (error) {
+          console.error("Failed to send email:", error);
+      }
+  })();
   }
   catch (error) {
     res.status(500).json({ message: error.message });

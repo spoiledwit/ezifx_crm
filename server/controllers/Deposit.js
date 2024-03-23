@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import Account from "../models/Account.js";
 import AuthModel from "../models/Auth.js";
 import Deposit from "../models/Deposit.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 dotenv.config();
 
@@ -95,6 +96,17 @@ export const rejectDeposit = async (req, res) => {
     deposit.status = "Rejected";
     await deposit.save();
     res.status(200).json(deposit);
+    (async () => {
+      try {
+          const user = await AuthModel.findById(deposit.userId);
+          const to = user.email;
+          const subject = "Deposit Rejected";
+          const text = `Your deposit ${deposit._id} has been rejected. <br/>Amount: ${deposit.amount} USD`;
+          await sendEmail(to, subject, text);
+      } catch (error) {
+          console.error("Failed to send email:", error);
+      }
+  })();
   }
   catch (error) {
     res.status(500).json({ message: error.message });
@@ -128,8 +140,20 @@ export const approveDeposit = async (req, res) => {
     account.balance += parseInt(deposit.amount);
     await account.save();
     res.status(200).json(deposit);
+    (async () => {
+      try {
+          const user = await AuthModel.findById(deposit.userId);
+          const to = user.email;
+          const subject = "Deposit Approved";
+          const text = `Your deposit ${deposit._id} has been approved. <br/>Amount: ${deposit.amount} USD`;
+          await sendEmail(to, subject, text);
+      } catch (error) {
+          console.error("Failed to send email:", error);
+      }
+  })();
   }
   catch (error) {
+    console.log(error);
     res.status(500).json({ message: error.message });
   }
 };

@@ -4,19 +4,8 @@ import { authProtectedRoutes, publicRoutes } from "./allRoutes";
 import Layout from "Layout";
 import NonAuthLayout from "Layout/NonLayout";
 import AuthProtected from "./AuthProtected";
-import { useAuthStore } from "store/useAuthStore";
-import KycPage from "pages/KYC";
 
 const RouteIndex = () => {
-  const { user } = useAuthStore();
-
-  if (user && !user.hasKYC) {
-    return (
-      <Routes>
-        <Route path="*" element={<KycPage />} />
-      </Routes>
-    );
-  }
 
   return (
     <React.Fragment>

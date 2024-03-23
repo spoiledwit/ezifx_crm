@@ -1,4 +1,3 @@
-import BalanceTransferPage from "pages/BalanceTransfer";
 import Dashboard from "pages/Dashboard/Analytics";
 import Deposit from "pages/Deposits/Deposit";
 import Deposits from "pages/Deposits/Deposits";
@@ -8,6 +7,7 @@ import Transactions from "pages/Transactions";
 import UsersTable from "pages/Users/ListView";
 import Withdrawal from "pages/Withdrawals/Withdrawal";
 import Withdrawals from "pages/Withdrawals/Withdrawals";
+import Kycs from "pages/KYC/KYCs";
 
 import AccountList from "pages/Account/AccountList";
 import AccountDetails from "pages/Accounts/AccountDetails";
@@ -47,6 +47,9 @@ let authProtectedRoutes: Array<RouteObject> = [
 
   // Transactions
   { path: "/transactions", component: Transactions },
+
+  // KYC
+  { path: "/kycs", component: Kycs },
 
   // Accounts
   { path: "/users", component: UsersTable },

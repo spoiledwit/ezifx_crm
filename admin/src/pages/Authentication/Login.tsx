@@ -65,7 +65,7 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       localStorage.setItem("token", "");
-      console.log(error);
+      console.log(error); 
     } finally {
       setLoading(false);
     }

@@ -4,6 +4,7 @@ import Account from "../models/Account.js";
 import AuthModel from "../models/Auth.js";
 import Deposit from "../models/Deposit.js";
 import Withdrawal from "../models/Withdrawal.js";
+import {sendEmail} from "../utils/sendEmail.js"
 
 dotenv.config();
 
@@ -97,9 +98,14 @@ export const createAccount = async (req, res) => {
       type,
       leverage,
     });
+    console.log(accountType.toLowerCase())
     await newAccount.save();
     user.accounts.push(newAccount.accountId);
     await user.save();
+    const to = user.email;
+    const subject = type.toLowerCase().includes("real") ? "Real Account Created" : "Demo Account Created";
+    const text = `Your account has been created successfully. <br/>Account Login: ${accountId} <br/>Main Password: ${mainPassword} <br/>Investor Password: ${investorPassword} <br/>Phone Password: ${phonePassword}`;
+    sendEmail(to, subject, text);
     res.status(200).json(newAccount);
   } catch (error) {
     res.status(500).json({ message: error.message });

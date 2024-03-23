@@ -1,15 +1,5 @@
-import crypto from "crypto";
-import dotenv from "dotenv";
-import Account from "../models/Account.js";
 import AuthModel from "../models/Auth.js";
-import Deposit from "../models/Deposit.js";
 import Ticket from "../models/Ticket.js";
-import Withdrawal from "../models/Withdrawal.js";
-
-dotenv.config();
-
-const laravelUrl = process.env.LARAVEL_URL;
-const apiKey = process.env.LARAVEL_API_KEY;
 
 export const createTicket = async (req, res) => {
   try {
@@ -48,6 +38,7 @@ export const getUserTicket = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 export const getTicketDetails = async (req, res) => {
   try {
     const { id } = req.params;

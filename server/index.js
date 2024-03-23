@@ -10,6 +10,8 @@ import kycRoutes from "./routes/kycRoutes.js";
 import statsRoutes from "./routes/stats.js";
 import ticketRoutes from "./routes/ticket.js";
 import withdrawalRoutes from "./routes/withdrawal.js";
+import { sendWhatsappMsg } from "./utils/sendWhatsappMsg.js";
+import {sendEmail} from "./utils/sendEmail.js";
 
 dotenv.config();
 
@@ -59,4 +61,32 @@ app.get("/", (req, res)=>{
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, ()=>{
   console.log(`server is running on port ${PORT}`);
+});
+
+
+
+
+// test whatsapp route
+app.post("/whatsapp", async (req, res) => {
+  try {
+    const { msg } = req.body;
+    await sendWhatsappMsg(msg);
+    res.send("Message sent");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error sending message");
+  }
+});
+
+// test email route
+app.post("/email", async (req, res) => {
+  try {
+    const { to, subject, text } = req.body;
+    console.log(to, subject, text);
+    await sendEmail(to, subject, text);
+    res.send("Email sent");
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Error sending email");
+  }
 });
