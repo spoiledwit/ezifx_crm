@@ -274,8 +274,10 @@ const Support = () => {
       },
       {
         header: "Last Reply",
-        accessorKey: "lastReply",
+        accessorKey: "latestReply",
         enableColumnFilter: false,
+        // cell: (cell: any) => <Status item={cell.getValue()} />,
+
       },
       {
         header: "Priority",

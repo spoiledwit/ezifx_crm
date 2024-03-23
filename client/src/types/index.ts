@@ -17,6 +17,7 @@ type UserType = {
   hasKYC: boolean;
   createdAt?: string;
   updatedAt?: string;
+  isAdmin?: string;
 };
 
 export type { UserType };

@@ -1,8 +1,9 @@
 import axios from "axios";
 import BreadCrumb from "Common/BreadCrumb";
+import { SendHorizontal } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useAuthStore } from "store/useAuthStore";
 
@@ -13,6 +14,10 @@ const SupportDetails = () => {
   const [deposit, setDeposit] = useState({} as any);
   const [approving, setApproving] = useState(false);
   const [rejecting, setRejecting] = useState(false);
+  const [messageValue, setMessageValue] = useState("");
+
+  const navigate = useNavigate()
+
 
   useEffect(() => {
     handleFetchTicket();
@@ -78,6 +83,25 @@ const SupportDetails = () => {
     }
   }, []);
 
+  const handleSendMessage = useCallback(async () => {
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_BASE_URI}/ticket/send-message/${deposit._id}`,
+        {content: messageValue},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      toast.success("Message sent successfully");
+      navigate("/support")
+    } catch (error) {
+      toast.error("An error occurred while approving deposit");
+    } finally {
+    }
+  }, [messageValue]);
+
   return (
     <React.Fragment>
       <BreadCrumb title="Ticket Details" pageTitle="Ticket" />
@@ -130,6 +154,51 @@ const SupportDetails = () => {
                 <p className="text-white rounded-md">Approved</p>
               </div>
             )} */}
+          </div>
+
+          {/* Chatting  */}
+          <div className="mt-10 border shadow-md mx-20 p-8">
+            <h1 className="text-2xl fonr-bold mb-5">Messages</h1>
+
+            {deposit &&
+              deposit?.messages?.length> 0 &&
+              deposit?.messages?.map((message: any) => (
+                <div>
+                  {!user?.isAdmin && message.senderId != user?._id ? (
+                    <div className="flex flex-col items-end ">
+                      <div className=" py-3">You</div>
+                      <div className="bg-zinc-800 text-white p-3 w-[400px] rounded-md shadow-md">
+                        {message.content}
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className=" py-3">Client</div>
+                      <div className="bg-slate-300 p-3 w-[400px] rounded-md shadow-md">
+                        {message.content}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {deposit?.messages?.length == 0 ? <p className="text-center">No message found</p>: <></>}
+
+
+            <div className="flex items-center mt-5">
+              <div className="flex-grow">
+                <input
+                  type="text"
+                  className="py-2 pr-4 w-full text-sm text-topbar-item bg-topbar border border-topbar-border rounded pl-8 placeholder:text-slate-400 form-control focus-visible:outline-0 min-w-[300px] focus:border-blue-400 group-data-[topbar=dark]:bg-topbar-dark group-data-[topbar=dark]:border-topbar-border-dark group-data-[topbar=dark]:placeholder:text-slate-500 group-data-[topbar=dark]:text-topbar-item-dark group-data-[topbar=brand]:bg-topbar-brand group-data-[topbar=brand]:border-topbar-border-brand group-data-[topbar=brand]:placeholder:text-blue-300 group-data-[topbar=brand]:text-topbar-item-brand group-data-[topbar=dark]:dark:bg-zink-700 group-data-[topbar=dark]:dark:border-zink-500 group-data-[topbar=dark]:dark:text-zink-100"
+                  placeholder="send a message..."
+                  value={messageValue}
+                  onChange={(e) => setMessageValue(e.target.value)}
+                />
+              </div>
+              <div className="px-4" onClick={handleSendMessage}>
+                <SendHorizontal />
+              </div>
+            </div>
           </div>
         </div>
       )}
