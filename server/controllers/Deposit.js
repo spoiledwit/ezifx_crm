@@ -71,7 +71,7 @@ export const getAllDeposits = async (req, res) => {
 
 export const getAllDepositsAdmin = async (req, res) => {
   try {
-    const deposits = await Deposit.find().populate("accountId").sort("-createdAt");
+    const deposits = await Deposit.find().populate("accountId userId").sort("-createdAt");
     res.status(200).json(deposits);
   } catch (error) {
     res.status(500).json({ message: error.message });

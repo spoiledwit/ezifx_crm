@@ -84,7 +84,7 @@ export const getAllWithdrawals = async (req, res) => {
 
 export const getAllWithdrawalsAdmin = async (req, res) => {
   try {
-    const withdrawals = await Withdrawal.find();
+    const withdrawals = await Withdrawal.find().populate("accountId userId").sort("-createdAt");
     res.status(200).json(withdrawals);
   } catch (error) {
     res.status(500).json({ message: error.message });

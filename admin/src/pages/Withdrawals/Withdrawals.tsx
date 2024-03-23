@@ -248,7 +248,7 @@ const Withdrawals = () => {
       },
       {
         header: "Account ID",
-        accessorKey: "accountId",
+        accessorKey: "accountId.accountId",
         enableColumnFilter: false,
         enableSorting: false,
         cell: (cell: any) => (
@@ -264,13 +264,30 @@ const Withdrawals = () => {
       },
       {
         header: "User ID",
-        accessorKey: "userId",
+        accessorKey: "userId._id",
         enableColumnFilter: false,
         enableSorting: false,
         cell: (cell: any) => (
           <>
             <Link
-              to={`/user-details/${cell.row.original.userId}`}
+              to={`/user-details/${cell.row.original.userId._id}`}
+              className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
+            >
+              {cell.getValue()}
+            </Link>
+          </>
+        ),
+      },
+      {
+        header: "User Name",
+        accessorKey: "userId.name",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cell: any) => (
+          <>
+            {console.log("ppppppppppppp", cell.row.original)}
+            <Link
+              to={`/user-details/${cell.row.original.userId._id}`}
               className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
             >
               {cell.getValue()}

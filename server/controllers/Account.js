@@ -23,7 +23,7 @@ export const getMyAccounts = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await AuthModel.findById(userId);
-    const accounts = await Account.find({ accountId: { $in: user.accounts } });
+    const accounts = await Account.find({ accountId: { $in: user.accounts } }).sort({ createdAt: -1 });
     res.status(200).json(accounts);
   } catch (error) {
     res.status(500).json({ message: error.message });
