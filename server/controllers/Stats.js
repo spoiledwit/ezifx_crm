@@ -8,13 +8,19 @@ export const getTotalDW = async (req, res) => {
     const userId = req.userId;
     const user = await AuthModel.findById(userId);
     const accounts = await Account.find({ accountId: { $in: user.accounts } });
+    const deposits = await Deposit.find({userId});
+    const withdrawals = await Withdrawal.find({userId});
     let totalDeposit = 0;
     let totalWithdrawal = 0;
     let totalBalance = 0;
     accounts.forEach((account) => {
-      totalDeposit += account.totalDeposit;
-      totalWithdrawal += account.totalWithdrawal;
       totalBalance += account.balance;
+    });
+    deposits.forEach((deposit) => {
+      totalDeposit += deposit.amount;
+    });
+    withdrawals.forEach((withdrawal) => {
+      totalWithdrawal += withdrawal.amount;
     });
     res.status(200).json({ totalDeposit, totalWithdrawal, totalBalance });
   } catch (error) {

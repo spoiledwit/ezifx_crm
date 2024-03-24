@@ -1,8 +1,11 @@
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import nodemailer from "nodemailer";
+import Deposit from "../models/Deposit.js";
+import Withdrawal from "../models/Withdrawal.js";
 import AuthModel from "../models/Auth.js";
+import {sendEmail} from "../utils/sendEmail.js"
+
 dotenv.config();
 // Register
 export const register = async (req, res) => {
@@ -92,7 +95,14 @@ export const getUser = async (req, res) => {
 export const getUserById = async (req, res) => {
   try {
     const {userId} = req.params
-    const user = await AuthModel.findById(userId);
+    let user = await AuthModel.findById(userId);
+    const deposits = await Deposit.find({userId});
+    const withdrawals = await Withdrawal.find({userId});
+    const totalDeposit = deposits.reduce((acc, deposit) => acc + deposit.amount, 0);
+    const totalWithdrawal = withdrawals.reduce((acc, withdrawal) => acc + withdrawal.amount, 0);
+    user.toObject();
+    user = {...user._doc, totalDeposit, totalWithdrawal}
+    console.log(user);
     res.status(200).json(user);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -134,3 +144,61 @@ export const deleteUser = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 }
+
+export const enableUser = async (req, res) => {
+  try {
+    const user = await AuthModel.findById(req.params.id);
+    user.isDisabled = false;
+    await user.save();
+    res.status(200).json(user);
+    (async () => {
+      await sendEmail(user.email, "Account Enabled", "Your account has been enabled successfully <br> You can now login to your account.");
+    }
+    )();
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const disableUser = async (req, res) => {
+  try {
+    const user = await AuthModel.findById(req.params.id);
+    user.isDisabled = true;
+    await user.save();
+    res.status(200).json(user);
+    (async () => {
+      await sendEmail(user.email, "Account Disabled", "Your account has been disabled by the admin <br> If you think this is a mistake, please contact us.");
+    }
+    )();
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const user = await AuthModel.findById(req.params.id);
+    user.name = req.body.name;
+    user.email = req.body.email;
+    user.phone = req.body.phone;
+    await user.save();
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const updatePassword = async (req, res) => {
+  try {
+    const user = await AuthModel.findById(req.params.id);
+    user.hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+    await user.save();
+    res.status(200).json(user);
+    (async () => {
+      await sendEmail(user.email, "Password Changed", "Your password has been changed successfully <br> If you did not make this change, please contact us immediately.");
+    }
+    )();
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};

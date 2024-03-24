@@ -5,11 +5,20 @@ const AccountSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Auth",
+    required: true,
+  },
   mainPassword: {
     type: String,
     required: true,
   },
   investorPassword: {
+    type: String,
+    required: true,
+  },
+  phonePassword: {
     type: String,
     required: true,
   },

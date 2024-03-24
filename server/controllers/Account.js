@@ -13,7 +13,7 @@ const apiKey = process.env.LARAVEL_API_KEY;
 
 export const getUserAccounts = async (req, res) => {
   try {
-    const accounts = await Account.find()
+    const accounts = await Account.find().populate("userId").sort({ createdAt: -1 });
     res.status(200).json(accounts);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -91,14 +91,15 @@ export const createAccount = async (req, res) => {
       accountId: accountId,
       mainPassword: mainPassword,
       investorPassword: investorPassword,
+      phonePassword: phonePassword,
       accountType: accountType,
+      userId: userId,
       server: "EZICapitalManagement-Server",
       balance: 0,
       equity: 0,
       type,
       leverage,
     });
-    console.log(accountType.toLowerCase())
     await newAccount.save();
     user.accounts.push(newAccount.accountId);
     await user.save();

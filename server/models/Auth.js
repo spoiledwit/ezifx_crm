@@ -58,6 +58,10 @@ const AuthSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isDisabled: {
+      type: Boolean,
+      default: false,
+    },
     accounts: [
       {
         type: String,
