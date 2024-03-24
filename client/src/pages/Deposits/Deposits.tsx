@@ -62,7 +62,7 @@ const Deposits = () => {
     let total = 0;
     dataList.forEach((deposit: any) => {
       if (deposit.status === status) {
-        total ++
+        total += deposit.amount;
       }
     });
     return total;

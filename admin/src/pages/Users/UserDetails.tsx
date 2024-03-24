@@ -1,18 +1,21 @@
-import axios from "axios";
+import React from "react";
 import BreadCrumb from "Common/BreadCrumb";
-import React, { useCallback, useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import AccountInfo from "./AccountInfo";
+import { Nav } from "Common/Components/Tab/Nav";
+import Tab from "Common/Components/Tab/Tab";
+import PersonalTabs from "./PersonalTabs";
+import ChangePasswordTabs from "./ChangePasswordTabs";
+import PrivacyPolicyTabs from "./PrivacyPolicyTabs";
 import { useParams } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import { useAuthStore } from "store/useAuthStore";
+import { useState } from "react";
+import { useCallback, useEffect } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const UserDetails = () => {
   const { id } = useParams();
-  const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({} as any);
-  const [approving, setApproving] = useState(false);
-  const [rejecting, setRejecting] = useState(false);
 
   useEffect(() => {
     handleFetchUser();
@@ -37,115 +40,71 @@ const UserDetails = () => {
     }
   }, []);
 
-  // const handleApproveDeposit = useCallback(async () => {
-  //   setApproving(true);
-  //   try {
-  //     const res = await axios.put(
-  //       `${process.env.REACT_APP_BASE_URI}/deposit/${id}/approve`,
-  //       {},
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       }
-  //     );
-  //     setData(res.data);
-  //     toast.success("Deposit approved successfully");
-  //   } catch (error) {
-  //     toast.error("An error occurred while approving deposit");
-  //   } finally {
-  //     setApproving(false);
-  //   }
-  // }, []);
-  // const handleDeclineReject = useCallback(async () => {
-  //   setApproving(true);
-  //   try {
-  //     const res = await axios.put(
-  //       `${process.env.REACT_APP_BASE_URI}/deposit/${id}/reject`,
-  //       {},
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       }
-  //     );
-  //     setData(res.data);
-  //     toast.success("Deposit declined successfully");
-  //   } catch (error) {
-  //     toast.error("An error occurred while declining deposit");
-  //   } finally {
-  //     setRejecting(false);
-  //   }
-  // }, []);
-
   return (
     <React.Fragment>
-      <BreadCrumb title="User" pageTitle="user-details" />
-      <ToastContainer closeButton={false} limit={1} />
-      {loading ? <p>Loading...</p> : <> </>}
-      {data && (
-        <div className="bg-white shadow-md rounded-md p-4 w-full">
-          <div className="flex justify-between">
-            <div>
-              <p>
-                <strong>Name:</strong> {data.name}
-              </p>
-              <p>
-                <strong>Phone:</strong> {data.phone}
-              </p>
-              <p>
-                <strong>Email:</strong>{data.email}
-                {/* <a
-                  className="text-blue-500"
-                  href={data.paymentProof}
-                  target="_blank"
-                  rel="noreferrer"
+      <BreadCrumb title="User Details" pageTitle="Users" />
+      <Tab.Container defaultActiveKey="personalTabs">
+        <div className="card">
+          <AccountInfo 
+          user={data}
+          fetchUser={handleFetchUser}
+          className="card-body" />
+          <div className="card-body !py-0">
+            <Nav className="flex flex-wrap w-full text-sm font-medium text-center nav-tabs">
+              <Nav.Item eventKey="personalTabs" className="group">
+                <a
+                  href="#!"
+                  data-tab-toggle
+                  data-target="personalTabs"
+                  className="inline-block px-4 py-2 text-base transition-all duration-300 ease-linear rounded-t-md text-slate-500 dark:text-zink-200 border-b border-transparent group-[.active]:text-custom-500 dark:group-[.active]:text-custom-500 group-[.active]:border-b-custom-500 hover:text-custom-500 dark:hover:text-custom-500 active:text-custom-500 dark:active:text-custom-500 -mb-[1px]"
                 >
-                  View
-                </a> */}
-              </p>
-              {/* <p>
-                <strong>Status:</strong> {data.approved == true ? "Approved": "Rejected"}
-              </p> */}
-              <p>
-                <strong>KYC:</strong> {data.hasKYC == true ? "Yes": "No"}
-              </p>
-              <p>
-                <strong>Created At:</strong> {data.createdAt}
-              </p>
-              <p>
-                <strong> Updated At:</strong> {data.updatedAt}
-              </p>
-            </div>
-            {/* {data.status === "Pending" ? (
-              <div className="flex gap-4 h-fit">
-                <button
-                  disabled={approving}
-                  onClick={handleApproveDeposit}
-                  className="bg-green-500 text-white px-4 py-2 rounded-md"
+                  Personal Info
+                </a>
+              </Nav.Item>
+
+              <Nav.Item eventKey="changePasswordTabs" className="group">
+                <a
+                  href="#!"
+                  data-tab-toggle
+                  data-target="changePasswordTabs"
+                  className="inline-block px-4 py-2 text-base transition-all duration-300 ease-linear rounded-t-md text-slate-500 dark:text-zink-200 border-b border-transparent group-[.active]:text-custom-500 dark:group-[.active]:text-custom-500 group-[.active]:border-b-custom-500 hover:text-custom-500 dark:hover:text-custom-500 active:text-custom-500 dark:active:text-custom-500 -mb-[1px]"
                 >
-                  {approving ? "Approving..." : "Approve"}
-                </button>
-                <button
-                  disabled={rejecting}
-                  onClick={handleDeclineReject}
-                  className="bg-red-500 text-white px-4 py-2 rounded-md"
+                  Change Password
+                </a>
+              </Nav.Item>
+              <Nav.Item eventKey="privacyPolicyTabs" className="group">
+                <a
+                  href="#!"
+                  data-tab-toggle
+                  data-target="privacyPolicyTabs"
+                  className="inline-block px-4 py-2 text-base transition-all duration-300 ease-linear rounded-t-md text-slate-500 dark:text-zink-200 border-b border-transparent group-[.active]:text-custom-500 dark:group-[.active]:text-custom-500 group-[.active]:border-b-custom-500 hover:text-custom-500 dark:hover:text-custom-500 active:text-custom-500 dark:active:text-custom-500 -mb-[1px]"
                 >
-                  {rejecting ? "Declining..." : "Decline"}
-                </button>
-              </div>
-            ) : data.status === "Rejected" ? (
-              <div className="bg-red-500 text-white px-4 py-2 rounded-md h-fit">
-                <p className="text-white rounded-md">Rejected</p>
-              </div>
-            ) : (
-              <div className="bg-green-500 text-white px-4 py-2 rounded-md h-fit">
-                <p className="text-white rounded-md">Approved</p>
-              </div>
-            )} */}
+                  Privacy Policy
+                </a>
+              </Nav.Item>
+            </Nav>
           </div>
         </div>
-      )}
+        <Tab.Content>
+          <Tab.Pane eventKey="personalTabs">
+            <PersonalTabs 
+            fetchUser={handleFetchUser}
+            user={data} />
+          </Tab.Pane>
+          {/* <Tab.Pane eventKey="integrationTabs">
+            <IntegrationTabs />
+          </Tab.Pane> */}
+          <Tab.Pane eventKey="changePasswordTabs">
+            <ChangePasswordTabs 
+            user={data}
+            fetchUser={handleFetchUser}
+            />
+          </Tab.Pane>
+          <Tab.Pane eventKey="privacyPolicyTabs">
+            <PrivacyPolicyTabs />
+          </Tab.Pane>
+        </Tab.Content>
+      </Tab.Container>
     </React.Fragment>
   );
 };

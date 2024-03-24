@@ -15,6 +15,7 @@ type UserType = {
   phone: string;
   referralCode?: string;
   hasKYC: boolean;
+  isDisabled: boolean;
   createdAt?: string;
   updatedAt?: string;
   isAdmin?: string;

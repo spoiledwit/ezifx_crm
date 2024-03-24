@@ -6,6 +6,7 @@ import NonAuthLayout from "Layout/NonLayout";
 import AuthProtected from "./AuthProtected";
 import { useAuthStore } from "store/useAuthStore";
 import KycPage from "pages/KYC";
+import Disabled from "pages/Disabled";
 
 const RouteIndex = () => {
   const { user } = useAuthStore();
@@ -14,6 +15,14 @@ const RouteIndex = () => {
     return (
       <Routes>
         <Route path="*" element={<KycPage />} />
+      </Routes>
+    );
+  }
+
+  if (user && user.isDisabled) {
+    return (
+      <Routes>
+        <Route path="*" element={<Disabled />} />
       </Routes>
     );
   }

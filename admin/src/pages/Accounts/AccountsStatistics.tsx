@@ -13,6 +13,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import * as XLXS from "xlsx";
 
 const AccountsStatistics = ({
   data,
@@ -27,11 +28,12 @@ const AccountsStatistics = ({
   setLoading: any;
   handleFetchAccounts: any;
 }) => {
-  // Search Data
+  // // Search Data
+
   const filterSearchData = (e: any) => {
     const search = e.target.value;
-    const keysToSearch = ["accountId", "type"];
-    // filterDataBySearch(AccountsStatsData, search, keysToSearch, setData);
+    const keysToSearch = ["login", "type"];
+    filterDataBySearch(AccountsStatsData, search, keysToSearch, setData);
   };
 
   const columns = useMemo(
@@ -62,7 +64,7 @@ const AccountsStatistics = ({
         ),
       },
       {
-        header: "Accounts",
+        header: "Login",
         accessorKey: "accountId",
         enableColumnFilter: false,
         enableSorting: true,
@@ -70,6 +72,40 @@ const AccountsStatistics = ({
           <>
             <Link
               to={`/account/details/${cell.row.original._id}`}
+              className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
+            >
+              {cell.getValue()}
+            </Link>
+          </>
+        ),
+      },
+      {
+        header: "User ID",
+        accessorKey: "userId._id",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cell: any) => (
+          <>
+            {console.log("ppppppppppppp", cell.row.original)}
+            <Link
+              to={`/user-details/${cell.row.original.userId._id}`}
+              className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
+            >
+              {cell.getValue()}
+            </Link>
+          </>
+        ),
+      },
+      {
+        header: "User Name",
+        accessorKey: "userId.name",
+        enableColumnFilter: false,
+        enableSorting: false,
+        cell: (cell: any) => (
+          <>
+            {console.log("ppppppppppppp", cell.row.original)}
+            <Link
+              to={`/user-details/${cell.row.original.userId._id}`}
               className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
             >
               {cell.getValue()}
@@ -88,6 +124,11 @@ const AccountsStatistics = ({
         accessorKey: "investorPassword",
         enableColumnFilter: false,
         enableSorting: true,
+      },
+      {
+        header: "Phone Password",
+        accessorKey: "phonePassword",
+        enableColumnFilter: false,
       },
       {
         header: "Type",
@@ -168,6 +209,33 @@ const AccountsStatistics = ({
     ],
     []
   );
+
+  const exportDataToExcel = async () => {
+    const dataExported = data.map((item: any) => {
+      return {
+        "Login": item.accountId,
+        "User ID": item.userId._id,
+        "User Name": item.userId.name,
+        "Main Password": item.mainPassword,
+        "Investor Password": item.investorPassword,
+        "Phone Password": item.phonePassword,
+        "Type": item.type,
+        "Server": item.server,
+        "Balance": item.balance,
+        "Equity": item.equity,
+        "Live Status": item.liveStatus,
+      };
+    }
+    );
+    const fileName = "Accounts Statistics";
+    const exportType = "xls";
+    const ws = XLXS.utils.json_to_sheet(dataExported);
+    const wb = XLXS.utils.book_new();
+    XLXS.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLXS.writeFile(wb, `${fileName}.${exportType}`);
+  };
+
+
   return (
     <React.Fragment>
       <div className="order-11 col-span-12 2xl:order-1 card 2xl:col-span-12">
@@ -178,19 +246,20 @@ const AccountsStatistics = ({
             </div>
             <div className="xl:col-span-3 xl:col-start-10">
               <div className="flex gap-3">
-                <div className="relative grow">
+                {/* <div className="relative grow">
                   <input
                     type="text"
                     className="ltr:pl-8 rtl:pr-8 search form-input border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 disabled:bg-slate-100 dark:disabled:bg-zink-600 disabled:border-slate-300 dark:disabled:border-zink-500 dark:disabled:text-zink-200 disabled:text-slate-500 dark:text-zink-100 dark:bg-zink-700 dark:focus:border-custom-800 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                     placeholder="Search for ..."
                     autoComplete="off"
-                    onChange={(e) => filterSearchData(e)}
+                    // onChange={(e) => filterSearchData(e)}
                   />
                   <Search className="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600"></Search>
-                </div>
+                </div> */}
                 <button
                   type="button"
-                  className="bg-white border-dashed text-custom-500 btn border-custom-500 hover:text-custom-500 hover:bg-custom-50 hover:border-custom-600 focus:text-custom-600 focus:bg-custom-50 focus:border-custom-600 active:text-custom-600 active:bg-custom-50 active:border-custom-600 dark:bg-zink-700 dark:ring-custom-400/20 dark:hover:bg-custom-800/20 dark:focus:bg-custom-800/20 dark:active:bg-custom-800/20"
+                  onClick={exportDataToExcel}
+                  className="bg-white ml-auto border-dashed text-custom-500 btn border-custom-500 hover:text-custom-500 hover:bg-custom-50 hover:border-custom-600 focus:text-custom-600 focus:bg-custom-50 focus:border-custom-600 active:text-custom-600 active:bg-custom-50 active:border-custom-600 dark:bg-zink-700 dark:ring-custom-400/20 dark:hover:bg-custom-800/20 dark:focus:bg-custom-800/20 dark:active:bg-custom-800/20"
                 >
                   <i className="align-baseline ltr:pr-1 rtl:pl-1 ri-download-2-line"></i>{" "}
                   Export

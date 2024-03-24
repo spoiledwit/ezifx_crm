@@ -57,7 +57,7 @@ const UsersTable = () => {
   // Search Data
   const filterSearchData = (e: any) => {
     const search = e.target.value;
-    const keysToSearch = ["name", "designation", "location", "email", "status"];
+    const keysToSearch = ["name", "email", "_id"];
     filterDataBySearch(userList, search, keysToSearch, setUser);
   };
 

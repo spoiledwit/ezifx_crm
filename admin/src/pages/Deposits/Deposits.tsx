@@ -4,6 +4,9 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import CountUp from "react-countup";
 import { toast } from "react-hot-toast";
 import { useAuthStore } from "store/useAuthStore";
+import moment from "moment";
+import * as XLXS from "xlsx";
+import filterDataBySearch from "Common/filterDataBySearch";
 
 // icons
 import TableContainer from "Common/TableContainer";
@@ -64,7 +67,7 @@ const Deposits = () => {
     let total = 0;
     dataList.forEach((deposit: any) => {
       if (deposit.status === status) {
-        total ++
+        total++;
       }
     });
     return total;
@@ -144,16 +147,8 @@ const Deposits = () => {
   // Search Data
   const filterSearchData = (e: any) => {
     const search = e.target.value;
-    const keysToSearch = ["depositId", "paymentMethod", "amount", "status"];
-    const searchResult = dataList.filter((item: any) => {
-      return keysToSearch.some((key) => {
-        return (
-          item[key] &&
-          item[key].toString().toLowerCase().includes(search.toLowerCase())
-        );
-      });
-    });
-    setData(searchResult);
+    const keysToSearch = ["_id", "accountId.accountId", "userId._id", "userId.name", "amount"];
+    filterDataBySearch(dataList, search, keysToSearch, setData);
   };
 
   const [activeTab, setActiveTab] = useState("1");
@@ -254,7 +249,7 @@ const Deposits = () => {
         enableSorting: false,
         cell: (cell: any) => (
           <>
-          {console.log('lllllllllllll', cell)}
+            {console.log("lllllllllllll", cell)}
             <Link
               to={`/account/details/${cell.row.original.accountId._id}`}
               className="transition-all duration-150 ease-linear order_id text-custom-500 hover:text-custom-600"
@@ -302,6 +297,9 @@ const Deposits = () => {
         header: "Deposit Date",
         accessorKey: "createdAt",
         enableColumnFilter: false,
+        cell: (cell: any) => (
+          <span>{moment(cell.getValue()).format("DD-MM-YYYY")}</span>
+        ),
       },
       {
         header: "Payment Method",
@@ -354,6 +352,27 @@ const Deposits = () => {
     ],
     []
   );
+
+  const exportDataToExcel = async () => {
+    const dataExported = data.map((item: any) => {
+      return {
+        "Deposit ID": item._id,
+        "Account ID": item.accountId.accountId,
+        "User ID": item.userId._id,
+        "User Name": item.userId.name,
+        "Deposit Date": moment(item.createdAt).format("DD-MM-YYYY"),
+        "Payment Method": item.paymentMethod,
+        Amount: item.amount,
+        "Deposit Status": item.status,
+      };
+    });
+    const fileName = "Deposits";
+    const exportType = "xls";
+    const ws = XLXS.utils.json_to_sheet(dataExported);
+    const wb = XLXS.utils.book_new();
+    XLXS.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLXS.writeFile(wb, `${fileName}.${exportType}`);
+  };
 
   return (
     <React.Fragment>
@@ -448,7 +467,7 @@ const Deposits = () => {
 
       <div className="card" id="ordersTable">
         <div className="card-body">
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+          <div className="flex">
             <div className="lg:col-span-3">
               <div className="relative">
                 <input
@@ -461,6 +480,11 @@ const Deposits = () => {
                 <Search className="inline-block size-4 absolute ltr:left-2.5 rtl:right-2.5 top-2.5 text-slate-500 dark:text-zink-200 fill-slate-100 dark:fill-zink-600" />
               </div>
             </div>
+            <button 
+            onClick={exportDataToExcel}
+            className="lg:col-span-1 ml-auto btn bg-custom-500 hover:bg-custom-600 focus:bg-custom-600 text-white active:bg-custom-600 dark:bg-custom-500 dark:hover:bg-custom-600 dark:focus:bg-custom-600 dark:active:bg-custom-600">
+              Export
+            </button>
           </div>
 
           <ul className="flex flex-wrap w-full mt-5 text-sm font-medium text-center text-gray-500 nav-tabs">

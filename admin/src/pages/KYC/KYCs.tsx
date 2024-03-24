@@ -1,5 +1,5 @@
 import BreadCrumb from "Common/BreadCrumb";
-import PhotosUploader from "components/Forms/ImageUploader";
+import filterDataBySearch from "Common/filterDataBySearch";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import CountUp from "react-countup";
 import { toast } from "react-hot-toast";
@@ -72,15 +72,7 @@ const Kycs = () => {
   const filterSearchData = (e: any) => {
     const search = e.target.value;
     const keysToSearch = ["_id", "userId._id", "userId.name", "identityType"];
-    const searchResult = dataList.filter((item: any) => {
-      return keysToSearch.some((key) => {
-        return (
-          item[key] &&
-          item[key].toString().toLowerCase().includes(search.toLowerCase())
-        );
-      });
-    });
-    setData(searchResult);
+    filterDataBySearch(dataList, search, keysToSearch, setData);
   };
 
   const [activeTab, setActiveTab] = useState("1");
@@ -321,6 +313,7 @@ const Kycs = () => {
       setRejecting(false);
     }
   };
+  
 
   return (
     <React.Fragment>
