@@ -61,6 +61,7 @@ const Register = () => {
       setLoading(true);
       await register(name, email, password, phone, referralCode);
       toast.success("Account created successfully");
+      window.location.href = "/login";
     } catch (error: any) {
       if (!error.response) {
         return toast.error("Network error. Please try again.");
