@@ -1,10 +1,11 @@
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
-import Deposit from "../models/Deposit.js";
-import Withdrawal from "../models/Withdrawal.js";
 import AuthModel from "../models/Auth.js";
-import {sendEmail} from "../utils/sendEmail.js"
+import Deposit from "../models/Deposit.js";
+import OTPModel from "../models/OTP.js";
+import Withdrawal from "../models/Withdrawal.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 dotenv.config();
 // Register
@@ -94,14 +95,20 @@ export const getUser = async (req, res) => {
 
 export const getUserById = async (req, res) => {
   try {
-    const {userId} = req.params
+    const { userId } = req.params;
     let user = await AuthModel.findById(userId);
-    const deposits = await Deposit.find({userId});
-    const withdrawals = await Withdrawal.find({userId});
-    const totalDeposit = deposits.reduce((acc, deposit) => acc + deposit.amount, 0);
-    const totalWithdrawal = withdrawals.reduce((acc, withdrawal) => acc + withdrawal.amount, 0);
+    const deposits = await Deposit.find({ userId });
+    const withdrawals = await Withdrawal.find({ userId });
+    const totalDeposit = deposits.reduce(
+      (acc, deposit) => acc + deposit.amount,
+      0
+    );
+    const totalWithdrawal = withdrawals.reduce(
+      (acc, withdrawal) => acc + withdrawal.amount,
+      0
+    );
     user.toObject();
-    user = {...user._doc, totalDeposit, totalWithdrawal}
+    user = { ...user._doc, totalDeposit, totalWithdrawal };
     console.log(user);
     res.status(200).json(user);
   } catch (error) {
@@ -143,7 +150,7 @@ export const deleteUser = async (req, res) => {
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
-}
+};
 
 export const enableUser = async (req, res) => {
   try {
@@ -152,9 +159,12 @@ export const enableUser = async (req, res) => {
     await user.save();
     res.status(200).json(user);
     (async () => {
-      await sendEmail(user.email, "Account Enabled", "Your account has been enabled successfully <br> You can now login to your account.");
-    }
-    )();
+      await sendEmail(
+        user.email,
+        "Account Enabled",
+        "Your account has been enabled successfully <br> You can now login to your account."
+      );
+    })();
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -167,9 +177,12 @@ export const disableUser = async (req, res) => {
     await user.save();
     res.status(200).json(user);
     (async () => {
-      await sendEmail(user.email, "Account Disabled", "Your account has been disabled by the admin <br> If you think this is a mistake, please contact us.");
-    }
-    )();
+      await sendEmail(
+        user.email,
+        "Account Disabled",
+        "Your account has been disabled by the admin <br> If you think this is a mistake, please contact us."
+      );
+    })();
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
@@ -195,10 +208,141 @@ export const updatePassword = async (req, res) => {
     await user.save();
     res.status(200).json(user);
     (async () => {
-      await sendEmail(user.email, "Password Changed", "Your password has been changed successfully <br> If you did not make this change, please contact us immediately.");
-    }
-    )();
+      await sendEmail(
+        user.email,
+        "Password Changed",
+        "Your password has been changed successfully <br> If you did not make this change, please contact us immediately."
+      );
+    })();
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
+};
+
+export const sendOtp = async (req, res) => {
+  let { email } = req.body;
+
+  if (!email) {
+    return res.status(400).send("Please Enter Email");
+  }
+
+  try {
+    const presuer = await AuthModel.findOne({ email: email });
+
+    if (presuer) {
+      const OTPDigits = Math.floor(100000 + Math.random() * 900000);
+
+      const existEmail = await OTPModel.findOne({ email: email });
+
+      if (existEmail) {
+        const updateData = await OTPModel.findByIdAndUpdate(
+          { _id: existEmail._id },
+          {
+            otp: OTPDigits,
+          },
+          { new: true }
+        );
+        await updateData.save();
+
+        const to = presuer.email;
+        const subject = "OTP Confirmation";
+        const text = `We have received a request to reset the password for your account. To proceed, please use the following <br/>One Time Passcode (OTP): ${OTPDigits} <br/>This OTP is valid for 5 min`;
+        sendEmail(to, subject, text);
+      } else {
+        const saveOtpData = new OTPModel({
+          email,
+          otp: OTPDigits,
+        });
+
+        await saveOtpData.save();
+
+        const to = presuer.email;
+        const subject = "OTP Confirmation";
+        const text = `We have received a request to reset the password for your account. To proceed, please use the following <br/>One Time Passcode (OTP): ${OTPDigits} <br/>This OTP is valid for 5 min`;
+        sendEmail(to, subject, text);
+      }
+    } else {
+      return res.status(400).json({ error: "The email is incorrect" });
+    }
+  } catch (error) {
+    return res.status(400).json({ error: "Invalid Details", error });
+  }
+
+  return res.status(201).json({
+    success: true,
+    message: "Check your mail box and verify 6 digit code",
+    status: 200,
+  });
+};
+
+export const verifyOtp = async (req, res) => {
+  const { otp } = req.body;
+
+  if (!otp) {
+    return res.status(400).json({ error: "Please Enter 6 digit OTP" });
+  }
+
+  try {
+    const otpverification = await OTPModel.findOne({ otp: otp });
+
+    if (!otpverification) {
+      return res.status(400).json({ error: "Invalid OTP" });
+    }
+
+    if (otpverification.otp === otp) {
+      return res.status(201).json({
+        success: true,
+        message: "OTP Verified",
+        status: 200,
+      });
+    } else {
+      return res.status(400).json({ message: "Invalid OTP", status: 400 });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid Details", error });
+  }
+};
+
+export const sendPasswordResetLink = async (req, res) => {
+  let { email } = req.body;
+
+  if (!email) {
+    return res.status(400).send({ error: "Please Enter Email" });
+  }
+
+  try {
+    const presuer = await AuthModel.findOne({ email: email });
+
+    if (!presuer) {
+      return res.status(400).send({ error: "Incorrect Email" });
+    }
+
+    if (presuer) {
+      // token generate for reset password
+      const token = jwt.sign({ _id: presuer._id }, process.env.JWT_SECRET, {
+        expiresIn: 300, //expire in 5 min
+      });
+
+      const setUserToken = await AuthModel.findByIdAndUpdate(
+        { _id: presuer._id },
+        { verifyToken: token },
+        { new: true }
+      );
+
+      const link = `${process.env.FRONTEND_URI}/reset-password/${presuer._id}/${setUserToken.verifyToken}`;
+
+      const to = presuer.email;
+      const subject = "Password Reset Instructions";
+      const text = `You have requested to reset your password. Please follow the link below to reset your password: </br> Link: ${link} <br/>This Link is valid for 5 min`;
+      sendEmail(to, subject, text);
+    }
+  } catch (error) {
+    return res.status(400).json({ error: "Invalid Details", error });
+  }
+
+  return res.status(201).json({
+    success: true,
+    message: "Check your mail box",
+    status: 200,
+  });
 };

@@ -67,6 +67,10 @@ const AuthSchema = new mongoose.Schema(
         type: String,
       },
     ],
+
+    verifyToken: {
+      type: String
+    }
   },
   {
     timestamps: true,
