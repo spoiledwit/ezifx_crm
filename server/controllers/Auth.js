@@ -346,3 +346,37 @@ export const sendPasswordResetLink = async (req, res) => {
     status: 200,
   });
 };
+
+export const resetPassword = async (req, res) => {
+  const { id, token } = req.params;
+
+  const { password } = req.body;
+
+  if (!password || !id || !token) {
+    return res.status(400).send({ error: "Please Enter all the fields" });
+  }
+
+  try {
+    const validuser = await AuthModel.findOne({ _id: id, verifyToken: token });
+
+    const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (validuser && verifyToken._id) {
+      const newPassword = await bcrypt.hash(password, 10);
+
+      const setNewUserPass = await AuthModel.findByIdAndUpdate(
+        { _id: id },
+        { password: newPassword }
+      );
+
+      setNewUserPass.save();
+      res
+        .status(201)
+        .json({ status: 200, message: "Password has been reset successfully" });
+    } else {
+      res.status(401).json({ status: 401, message: "User does not exist" });
+    }
+  } catch (error) {
+    res.status(401).json({ status: 401, error });
+  }
+};

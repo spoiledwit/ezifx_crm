@@ -7,6 +7,7 @@ import {
     getUserById,
     login,
     register,
+    resetPassword,
     sendOtp,
     sendPasswordResetLink,
     updatePassword,
@@ -29,6 +30,7 @@ router.get("/getUserById/:userId", verifyToken, verifyAdmin, getUserById);
 router.post("/otp", sendOtp);
 router.post("/otp/verify", verifyOtp);
 router.post("/password-reset-link", sendPasswordResetLink);
+router.post("/reset-password/:id/:token", resetPassword);
 
 router.put("/disable/:id", verifyToken, verifyAdmin, disableUser);
 router.put("/enable/:id", verifyToken, verifyAdmin, enableUser);
