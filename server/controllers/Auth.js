@@ -368,12 +368,14 @@ export const resetPassword = async (req, res) => {
     if (validuser && verifyToken._id) {
       const newPassword = await bcrypt.hash(password, 10);
 
-      console.log('pppppppppppppp', newPassword)
-
       const setNewUserPass = await AuthModel.findByIdAndUpdate(
         { _id: id },
-        { hashedPassword: newPassword }
+        { hashedPassword: newPassword, verifyToken: "" }
       );
+
+      console.log("pppppppppppppp", validuser);
+
+      await OTPModel.deleteOne({ email: validuser.email });
 
       setNewUserPass.save();
       res
