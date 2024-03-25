@@ -99,18 +99,15 @@ const Accounts = () => {
             },
           }
         );
-        // adding account.accountId to user accounts array
-
         //@ts-ignore
         setUser({
           ...user,
           //@ts-ignore
-          accounts: [...user.accounts, res.data.accountId],
+          accounts: [...user.accounts, res.data.accountId.toString()],
         });
         handleFetchAccounts();
         toast.success("Account Created Successfully");
         toggle();
-        window.location.reload();
       } catch (error: any) {
         if (!error.response) {
           return toast.error("Network error. Please try again.");
@@ -152,7 +149,7 @@ const Accounts = () => {
       };
       setCreatingAccount(true);
       try {
-        await axios.post(
+        const res = await axios.post(
           `${process.env.REACT_APP_BASE_URI}/account`,
           {
             ...newData,
@@ -163,6 +160,13 @@ const Accounts = () => {
             },
           }
         );
+         //@ts-ignore
+         setUser({
+          ...user,
+          //@ts-ignore
+          accounts: [...user.accounts, res.data.accountId.toString()],
+        });
+       
         handleFetchAccounts();
         toast.success("Account Created Successfully");
         toggleDemo();
@@ -180,7 +184,6 @@ const Accounts = () => {
   });
 
   const toggleDemo = useCallback(() => {
-    console.log(showDemo);
     if (showDemo) {
       setShowDemo(false);
     } else {
@@ -188,8 +191,6 @@ const Accounts = () => {
       validationDemo.resetForm();
     }
   }, [showDemo, validationDemo]);
-
-  console.log("uuuuuu", validation.errors);
 
   return (
     <React.Fragment>

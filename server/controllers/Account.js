@@ -11,6 +11,14 @@ dotenv.config();
 const laravelUrl = process.env.LARAVEL_URL;
 const apiKey = process.env.LARAVEL_API_KEY;
 
+// making a dictionary of key value pairs
+const accountTypeDict = {
+  "ecn": "real\\ECN",
+  "pro": "real\\PRO",
+  "prime":"real\\Prime",
+  "zero": "real\\Zero"
+};
+
 export const getUserAccounts = async (req, res) => {
   try {
     const accounts = await Account.find().populate("userId").sort({ createdAt: -1 });
@@ -61,11 +69,17 @@ export const createAccount = async (req, res) => {
     if (!user) {
       return res.status(400).send("User not found");
     }
-    // Calling Larave API to create account
+
+    let accountGroup = type.toLowerCase().includes("real") ? accountTypeDict[accountType] : "demo\\usd";
+
+    if (!accountGroup) {
+      return res.status(400).send("Invalid account type");
+    }
+    
     const data = {
       name: user.name,
       email: user.email,
-      group: accountType === "real" ? "real/Standard" : "demo",
+      group: accountGroup,
       leverage: leverage.toString(),
       phone: user.phone,
       main_password: mainPassword,
