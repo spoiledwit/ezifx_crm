@@ -27,7 +27,7 @@ router.get("/me", verifyToken, getUser);
 router.get("/verify/:id", verifyToken, verify);
 router.get("/getUserById/:userId", verifyToken, verifyAdmin, getUserById);
 
-router.post("/otp/:userId", sendOtp);
+router.post("/otp/:userId/:token", sendOtp);
 router.post("/otpVerification", verifyOtp);
 router.post("/password-reset-link", sendPasswordResetLink);
 router.post("/reset-password/:id/:token", resetPassword);

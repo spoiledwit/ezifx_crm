@@ -104,15 +104,11 @@ const ResetPassword = () => {
     if (!newPassword) {
       return toast.error("Please enter the new password");
     }
-    if (show) {
-      setShow(false);
-    } else {
-      setShow(true);
-    }
+  
 
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_BASE_URI}/auth/otp/${id}`
+        `${process.env.REACT_APP_BASE_URI}/auth/otp/${id}/${token}`
       );
 
       setShow(true);
@@ -124,13 +120,18 @@ const ResetPassword = () => {
         return toast.error(error.response.data);
       }
 
+      console.log("sssssss", error.response.data.error.message);
+
+
+      if (error.response.data.error.message) {
+        return toast.error("Reset password link is expired");
+      }
       if (error.response.data.error) {
         return toast.error(error.response.data.error);
       }
 
-      console.log("sssssss", error);
 
-      toast.error("Something went wrong, please try again");
+      return toast.error("Somthing went wrong");
     } finally {
       setOtpLoading(false);
     }

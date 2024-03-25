@@ -220,13 +220,17 @@ export const updatePassword = async (req, res) => {
 };
 
 export const sendOtp = async (req, res) => {
-  let { userId } = req.params;
+  let { userId, token } = req.params;
 
-  if (!userId) {
-    return res.status(400).send("Please Enter Email");
+  if (!userId || !token) {
+    return res.status(400).send("UserId or Token is missing");
   }
+ 
+
 
   try {
+    const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
+
     const presuer = await AuthModel.findById(userId);
 
     if (presuer) {
