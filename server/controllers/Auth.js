@@ -220,19 +220,19 @@ export const updatePassword = async (req, res) => {
 };
 
 export const sendOtp = async (req, res) => {
-  let { email } = req.body;
+  let { userId } = req.params;
 
-  if (!email) {
+  if (!userId) {
     return res.status(400).send("Please Enter Email");
   }
 
   try {
-    const presuer = await AuthModel.findOne({ email: email });
+    const presuer = await AuthModel.findById(userId);
 
     if (presuer) {
       const OTPDigits = Math.floor(100000 + Math.random() * 900000);
 
-      const existEmail = await OTPModel.findOne({ email: email });
+      const existEmail = await OTPModel.findOne({ email: presuer?.email });
 
       if (existEmail) {
         const updateData = await OTPModel.findByIdAndUpdate(
@@ -250,7 +250,7 @@ export const sendOtp = async (req, res) => {
         sendEmail(to, subject, text);
       } else {
         const saveOtpData = new OTPModel({
-          email,
+          email: presuer?.email,
           otp: OTPDigits,
         });
 
@@ -262,7 +262,7 @@ export const sendOtp = async (req, res) => {
         sendEmail(to, subject, text);
       }
     } else {
-      return res.status(400).json({ error: "The email is incorrect" });
+      return res.status(400).json({ error: "User not found" });
     }
   } catch (error) {
     return res.status(400).json({ error: "Invalid Details", error });
@@ -278,12 +278,16 @@ export const sendOtp = async (req, res) => {
 export const verifyOtp = async (req, res) => {
   const { otp } = req.body;
 
+  console.log("222222222", otp);
+
   if (!otp) {
     return res.status(400).json({ error: "Please Enter 6 digit OTP" });
   }
 
   try {
     const otpverification = await OTPModel.findOne({ otp: otp });
+
+    console.log("3333333333", otpverification);
 
     if (!otpverification) {
       return res.status(400).json({ error: "Invalid OTP" });
@@ -357,18 +361,18 @@ export const resetPassword = async (req, res) => {
   }
 
   try {
-    const validuser = await AuthModel.findOne({ _id: id, verifyToken: token });
+    const validuser = await AuthModel.findById(id);
 
     const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
-
-    console.log('object', verifyToken)
 
     if (validuser && verifyToken._id) {
       const newPassword = await bcrypt.hash(password, 10);
 
+      console.log('pppppppppppppp', newPassword)
+
       const setNewUserPass = await AuthModel.findByIdAndUpdate(
         { _id: id },
-        { password: newPassword }
+        { hashedPassword: newPassword }
       );
 
       setNewUserPass.save();

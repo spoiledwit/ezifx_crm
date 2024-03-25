@@ -12,12 +12,14 @@ const OTPSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createdAt: { type: Date, expires: 300, default: Date.now } // expires in
+    createdAt: { type: Date, expires: "5min", default: Date.now } // expires in 5min
   },
   {
     timestamps: true,
   }
 );
+
+// OTPSchema.index({ createdAt: 1 }, { expireAfterSeconds: "5min" });
 
 const OTPModel = mongoose.model("OTP", OTPSchema);
 export default OTPModel;

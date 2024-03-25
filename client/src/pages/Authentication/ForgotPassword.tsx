@@ -22,12 +22,11 @@ const ForgotPassword = () => {
   const [alertMsg, setAlertMsg] = React.useState("");
 
   const forgotPassword = async () => {
+    if (!email) {
+      return toast.error("Please enter the email");
+    }
     try {
       setSigning(true);
-      if (!email) {
-        toast.error("Please fill all fields");
-        return;
-      }
 
       const res = await axios.post(
         `${process.env.REACT_APP_BASE_URI}/auth/password-reset-link`,
@@ -44,6 +43,10 @@ const ForgotPassword = () => {
       if (typeof error.response.data === "string") {
         return toast.error(error.response.data);
       }
+      if (error.response.data?.error) {
+        return toast.error(error.response.data.error);
+      }
+      console.log('kkkkkkkkk', error)
       toast.error("Something went wrong, please try again");
     } finally {
       setSigning(false);

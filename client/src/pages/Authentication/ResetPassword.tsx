@@ -4,7 +4,7 @@ import withRouter from "Common/withRouter";
 import AnimationButton from "components/UIElement/UiButtons/AnimationButton";
 import { getUserFromLocalStorage, login } from "helpers/auth";
 import AuthIcon from "pages/AuthenticationInner/AuthIcon";
-import React from "react";
+import React, { useCallback } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "store/useAuthStore";
@@ -24,14 +24,21 @@ const ResetPassword = () => {
 
   const { id, token } = useParams();
 
+  const [show, setShow] = React.useState<boolean>(false);
+  const [otp, setOtp] = React.useState("");
+  const [otpLoading, setOtpLoading] = React.useState<boolean>(false);
+
+  const toggle = useCallback(() => {
+    if (show) {
+      setShow(false);
+    } else {
+      setShow(true);
+    }
+  }, [show]);
+
   const resetPassword = async () => {
-    console.log("iiiiiiiiii", id, token);
     try {
       setSigning(true);
-      if (!newPassword) {
-        toast.error("Please fill all fields");
-        return;
-      }
 
       const res = await axios.post(
         `${process.env.REACT_APP_BASE_URI}/auth/reset-password/${id}/${token}`,
@@ -39,8 +46,8 @@ const ResetPassword = () => {
       );
 
       console.log("sssssss", res);
-      toast.error(res.data.message);
       navigate("/");
+      toast.success(res.data.message);
     } catch (error: any) {
       if (typeof error.response === "undefined") {
         return toast.error("Network Error");
@@ -56,6 +63,77 @@ const ResetPassword = () => {
       toast.error("Something went wrong, please try again");
     } finally {
       setSigning(false);
+    }
+  };
+
+  const verifyOtp = async () => {
+    if (!otp || otp?.length != 6) {
+      return toast.error("Please enter 6 digit code");
+    }
+
+    try {
+      setOtpLoading(true);
+
+      const res = await axios.post(
+        `${process.env.REACT_APP_BASE_URI}/auth/otpVerification`,
+        { otp }
+      );
+
+      //   Resetting the password
+      resetPassword();
+    } catch (error: any) {
+      if (typeof error.response === "undefined") {
+        return toast.error("Network Error");
+      }
+      if (typeof error.response.data === "string") {
+        return toast.error(error.response.data);
+      }
+
+      if (error?.error?.message == "jwt expired") {
+        return toast.error("Reset password link is expired");
+      } else if (error.response.data.error) {
+        return toast.error(error.response.data.error);
+      }
+
+      toast.error("Something went wrong, please try again");
+    } finally {
+      setOtpLoading(false);
+    }
+  };
+
+  const sendOtp = async () => {
+    if (!newPassword) {
+      return toast.error("Please enter the new password");
+    }
+    if (show) {
+      setShow(false);
+    } else {
+      setShow(true);
+    }
+
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_BASE_URI}/auth/otp/${id}`
+      );
+
+      setShow(true);
+    } catch (error: any) {
+      if (typeof error.response === "undefined") {
+        return toast.error("Network Error");
+      }
+      if (typeof error.response.data === "string") {
+        return toast.error(error.response.data);
+      }
+
+      if (error.response.data.error) {
+        return toast.error(error.response.data.error);
+      }
+
+      console.log("sssssss", error);
+
+      toast.error("Something went wrong, please try again");
+    } finally {
+      setOtpLoading(false);
     }
   };
 
@@ -144,7 +222,7 @@ const ResetPassword = () => {
               id="signInForm"
               onSubmit={async (event: any) => {
                 event.preventDefault();
-                await resetPassword();
+                return false;
               }}
             >
               <div className="mb-3">
@@ -179,7 +257,7 @@ const ResetPassword = () => {
                   disabled={signing || loading}
                   loadingText={loading ? "Submitting ..." : "Submit"}
                   label="Submit"
-                  onClick={resetPassword}
+                  onClick={sendOtp}
                 />
               </div>
             </form>
@@ -187,7 +265,16 @@ const ResetPassword = () => {
         </div>
       </div>
 
-      {/* <OTPModal /> */}
+      {show && (
+        <OTPModal
+          show={show}
+          toggle={toggle}
+          resetPassword={verifyOtp}
+          loading={otpLoading}
+          otp={otp}
+          setOtp={setOtp}
+        />
+      )}
     </React.Fragment>
   );
 };
