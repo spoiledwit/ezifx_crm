@@ -18,4 +18,6 @@ router.put("/update/:id", verifyToken, verifyAdmin, updateUser);
 
 router.put("/updatePassword/:id", verifyToken, verifyAdmin, updatePassword);
 
+
+
 export default router;
