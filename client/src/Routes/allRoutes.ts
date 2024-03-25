@@ -9,6 +9,7 @@ import Transactions from "pages/Transactions";
 import Withdrawals from "pages/Withdrawals/Withdrawals";
 
 import AccountDetails from "pages/Accounts/AccountDetails";
+import ForgotPassword from "pages/Authentication/ForgotPassword";
 import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
 import Register from "pages/Authentication/Register";
@@ -65,6 +66,7 @@ const publicRoutes = [
   { path: "/register", component: Register },
   { path: "/login", component: Login },
   { path: "/logout", component: Logout },
+  { path: "/forgotPassword", component: ForgotPassword },
 ];
 
 export { authProtectedRoutes, publicRoutes };

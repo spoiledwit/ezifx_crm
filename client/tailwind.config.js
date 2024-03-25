@@ -339,5 +339,7 @@ module.exports = {
     require("./plugins/prismjs.js"),
     //apps pages
     require("./plugins/apps.js"),
+    // Daisy ui compnent lib
+    // require("daisyui")
   ],
 };

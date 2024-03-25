@@ -1,14 +1,12 @@
-import React from "react";
-import withRouter from "Common/withRouter";
-import { useNavigate } from "react-router-dom";
-import AuthIcon from "pages/AuthenticationInner/AuthIcon";
-import { Link } from "react-router-dom";
 import logo from "assets/images/logo.webp";
-import { login } from "helpers/auth";
-import { useAuthStore } from "store/useAuthStore";
-import { getUserFromLocalStorage } from "helpers/auth";
+import withRouter from "Common/withRouter";
 import AnimationButton from "components/UIElement/UiButtons/AnimationButton";
-import {toast, Toaster} from "react-hot-toast";
+import { getUserFromLocalStorage, login } from "helpers/auth";
+import AuthIcon from "pages/AuthenticationInner/AuthIcon";
+import React from "react";
+import { toast, Toaster } from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "store/useAuthStore";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -35,7 +33,7 @@ const Login = () => {
 
       localStorage.setItem("token", data.token);
       navigate("/");
-    } catch (error:any) {
+    } catch (error: any) {
       if (typeof error.response === "undefined") {
         return toast.error("Network Error");
       }
@@ -105,7 +103,7 @@ const Login = () => {
 
   return (
     <React.Fragment>
-       <Toaster />
+      <Toaster />
       <div className="relative">
         <AuthIcon />
         <div className="mb-0 w-screen lg:mx-auto lg:w-[500px] card shadow-lg border-none shadow-slate-100 relative">
@@ -178,7 +176,7 @@ const Login = () => {
                   placeholder="Enter password"
                 />
               </div>
-              <div>
+              <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <input
                     id="checkboxDefault1"
@@ -196,12 +194,20 @@ const Login = () => {
                     Remember me
                   </label>
                 </div>
-                <div
+                <div>
+                  <Link
+                    to="/forgotPassword"
+                    className=" font-semibold underline transition-all duration-150 ease-linear text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500"
+                  >
+                    Forgot Password?
+                  </Link>{" "}
+                </div>
+                {/* <div
                   id="remember-error"
                   className="hidden mt-1 text-sm text-red-500"
                 >
                   Please check the "Remember me" before submitting the form.
-                </div>
+                </div> */}
               </div>
               <div className="mt-10">
                 <AnimationButton
