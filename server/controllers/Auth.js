@@ -361,6 +361,8 @@ export const resetPassword = async (req, res) => {
 
     const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
 
+    console.log('object', verifyToken)
+
     if (validuser && verifyToken._id) {
       const newPassword = await bcrypt.hash(password, 10);
 

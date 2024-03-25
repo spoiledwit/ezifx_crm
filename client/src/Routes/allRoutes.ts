@@ -13,6 +13,7 @@ import ForgotPassword from "pages/Authentication/ForgotPassword";
 import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
 import Register from "pages/Authentication/Register";
+import ResetPassword from "pages/Authentication/ResetPassword";
 import SupportDetails from "pages/Support/SupportDetails";
 import UserProfile from "pages/UserProfile";
 import WithdrawalDetails from "pages/Withdrawals/WithdrawalDetails";
@@ -67,6 +68,7 @@ const publicRoutes = [
   { path: "/login", component: Login },
   { path: "/logout", component: Logout },
   { path: "/forgotPassword", component: ForgotPassword },
+  { path: "/reset-password/:id/:token", component: ResetPassword },
 ];
 
 export { authProtectedRoutes, publicRoutes };

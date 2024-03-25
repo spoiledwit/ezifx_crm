@@ -316,7 +316,13 @@ module.exports = {
       },
     },
   },
+  daisyui: {
+    themes: ["light", "dark"],
+  },
   plugins: [
+    // Daisy ui compnent lib
+    require("daisyui"),
+
     require("tailwindcss-animate"),
     require("./plugins/headings.js"),
     require("./plugins/buttons.js"),
@@ -339,7 +345,5 @@ module.exports = {
     require("./plugins/prismjs.js"),
     //apps pages
     require("./plugins/apps.js"),
-    // Daisy ui compnent lib
-    // require("daisyui")
   ],
 };
