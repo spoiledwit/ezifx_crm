@@ -1,18 +1,20 @@
 import Dashboard from "pages/Dashboard/Analytics";
 import Deposit from "pages/Deposits/Deposit";
 import Deposits from "pages/Deposits/Deposits";
+import Kycs from "pages/KYC/KYCs";
 import Referral from "pages/Referrals";
 import Support from "pages/Support/Support";
 import Transactions from "pages/Transactions";
 import UsersTable from "pages/Users/ListView";
 import Withdrawal from "pages/Withdrawals/Withdrawal";
 import Withdrawals from "pages/Withdrawals/Withdrawals";
-import Kycs from "pages/KYC/KYCs";
 
 import AccountList from "pages/Account/AccountList";
 import AccountDetails from "pages/Accounts/AccountDetails";
+import ForgotPassword from "pages/Authentication/ForgotPassword";
 import Login from "pages/Authentication/Login";
 import Logout from "pages/Authentication/LogOut";
+import ResetPassword from "pages/Authentication/ResetPassword";
 import SupportDetails from "pages/Support/SupportDetails";
 import UserProfile from "pages/UserProfile";
 import UserDetails from "pages/Users/UserDetails";
@@ -72,6 +74,8 @@ const publicRoutes = [
   // authentication
   { path: "/login", component: Login },
   { path: "/logout", component: Logout },
+  { path: "/forgotPassword", component: ForgotPassword },
+  { path: "/reset-password/:id/:token", component: ResetPassword },
 ];
 
 export { authProtectedRoutes, publicRoutes };
