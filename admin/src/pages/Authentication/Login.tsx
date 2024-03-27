@@ -194,14 +194,6 @@ const Login = () => {
                     Remember me
                   </label>
                 </div>
-                <div>
-                  <Link
-                    to="/forgotPassword"
-                    className=" font-semibold underline transition-all duration-150 ease-linear text-slate-500 dark:text-zink-200 hover:text-custom-500 dark:hover:text-custom-500"
-                  >
-                    Forgot Password?
-                  </Link>{" "}
-                </div>
                 {/* <div
                   id="remember-error"
                   className="hidden mt-1 text-sm text-red-500"

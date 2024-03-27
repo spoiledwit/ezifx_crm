@@ -320,9 +320,6 @@ module.exports = {
     themes: ["light", "dark"],
   },
   plugins: [
-    // Daisy ui compnent lib
-    require("daisyui"),
-
     require("tailwindcss-animate"),
     require("./plugins/headings.js"),
     require("./plugins/buttons.js"),
