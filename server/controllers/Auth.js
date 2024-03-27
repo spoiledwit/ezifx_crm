@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import AuthModel from "../models/Auth.js";
 import Deposit from "../models/Deposit.js";
-import OTPModel from "../models/OTP.js";
 import Withdrawal from "../models/Withdrawal.js";
 import { sendEmail } from "../utils/sendEmail.js";
 
@@ -219,97 +218,6 @@ export const updatePassword = async (req, res) => {
   }
 };
 
-export const sendOtp = async (req, res) => {
-  let { userId, token } = req.params;
-
-  if (!userId || !token) {
-    return res.status(400).send("UserId or Token is missing");
-  }
- 
-
-
-  try {
-    const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
-
-    const presuer = await AuthModel.findById(userId);
-
-    if (presuer) {
-      const OTPDigits = Math.floor(100000 + Math.random() * 900000);
-
-      const existEmail = await OTPModel.findOne({ email: presuer?.email });
-
-      if (existEmail) {
-        const updateData = await OTPModel.findByIdAndUpdate(
-          { _id: existEmail._id },
-          {
-            otp: OTPDigits,
-          },
-          { new: true }
-        );
-        await updateData.save();
-
-        const to = presuer.email;
-        const subject = "OTP Confirmation";
-        const text = `We have received a request to reset the password for your account. To proceed, please use the following <br/>One Time Passcode (OTP): ${OTPDigits} <br/>This OTP is valid for 5 min`;
-        sendEmail(to, subject, text);
-      } else {
-        const saveOtpData = new OTPModel({
-          email: presuer?.email,
-          otp: OTPDigits,
-        });
-
-        await saveOtpData.save();
-
-        const to = presuer.email;
-        const subject = "OTP Confirmation";
-        const text = `We have received a request to reset the password for your account. To proceed, please use the following <br/>One Time Passcode (OTP): ${OTPDigits} <br/>This OTP is valid for 5 min`;
-        sendEmail(to, subject, text);
-      }
-    } else {
-      return res.status(400).json({ error: "User not found" });
-    }
-  } catch (error) {
-    return res.status(400).json({ error: "Invalid Details", error });
-  }
-
-  return res.status(201).json({
-    success: true,
-    message: "Check your mail box and verify 6 digit code",
-    status: 200,
-  });
-};
-
-export const verifyOtp = async (req, res) => {
-  const { otp } = req.body;
-
-  console.log("222222222", otp);
-
-  if (!otp) {
-    return res.status(400).json({ error: "Please Enter 6 digit OTP" });
-  }
-
-  try {
-    const otpverification = await OTPModel.findOne({ otp: otp });
-
-    console.log("3333333333", otpverification);
-
-    if (!otpverification) {
-      return res.status(400).json({ error: "Invalid OTP" });
-    }
-
-    if (otpverification.otp === otp) {
-      return res.status(201).json({
-        success: true,
-        message: "OTP Verified",
-        status: 200,
-      });
-    } else {
-      return res.status(400).json({ message: "Invalid OTP", status: 400 });
-    }
-  } catch (error) {
-    return res.status(400).json({ message: "Invalid Details", error });
-  }
-};
 
 export const sendPasswordResetLink = async (req, res) => {
   let { email } = req.body;
@@ -376,10 +284,6 @@ export const resetPassword = async (req, res) => {
         { _id: id },
         { hashedPassword: newPassword, verifyToken: "" }
       );
-
-      console.log("pppppppppppppp", validuser);
-
-      await OTPModel.deleteOne({ email: validuser.email });
 
       setNewUserPass.save();
       res
