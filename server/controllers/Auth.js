@@ -218,7 +218,6 @@ export const updatePassword = async (req, res) => {
   }
 };
 
-
 export const sendPasswordResetLink = async (req, res) => {
   let { email } = req.body;
 
@@ -252,15 +251,14 @@ export const sendPasswordResetLink = async (req, res) => {
       const text = `You have requested to reset your password. Please follow the link below to reset your password: </br> Link: ${link} <br/>This Link is valid for 5 min`;
       sendEmail(to, subject, text);
     }
+    return res.status(201).json({
+      success: true,
+      message: "Check your mail box",
+      status: 200,
+    });
   } catch (error) {
     return res.status(400).json({ error: "Invalid Details", error });
   }
-
-  return res.status(201).json({
-    success: true,
-    message: "Check your mail box",
-    status: 200,
-  });
 };
 
 export const resetPassword = async (req, res) => {
