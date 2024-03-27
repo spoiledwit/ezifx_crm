@@ -2,39 +2,23 @@ import logo from "assets/images/logo.webp";
 import axios from "axios";
 import withRouter from "Common/withRouter";
 import AnimationButton from "components/UIElement/UiButtons/AnimationButton";
-import { getUserFromLocalStorage, login } from "helpers/auth";
 import AuthIcon from "pages/AuthenticationInner/AuthIcon";
 import React, { useCallback } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useAuthStore } from "store/useAuthStore";
-import OTPModal from "./OTPModal";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
   document.title = "Forgot Password";
 
   const [newPassword, setNewPassword] = React.useState("");
-  const [password, setPassword] = React.useState("");
   const [signing, setSigning] = React.useState(false);
-  const [remember, setRemember] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
   const [alertMsg, setAlertMsg] = React.useState("");
 
   const { id, token } = useParams();
 
-  const [show, setShow] = React.useState<boolean>(false);
-  const [otp, setOtp] = React.useState("");
-  const [otpLoading, setOtpLoading] = React.useState<boolean>(false);
-
-  const toggle = useCallback(() => {
-    if (show) {
-      setShow(false);
-    } else {
-      setShow(true);
-    }
-  }, [show]);
 
   const resetPassword = async () => {
     try {
@@ -62,78 +46,6 @@ const ResetPassword = () => {
       toast.error("Something went wrong, please try again");
     } finally {
       setSigning(false);
-    }
-  };
-
-  const verifyOtp = async () => {
-    if (!otp || otp?.length != 6) {
-      return toast.error("Please enter 6 digit code");
-    }
-
-    try {
-      setOtpLoading(true);
-
-      const res = await axios.post(
-        `${process.env.REACT_APP_BASE_URI}/auth/otpVerification`,
-        { otp }
-      );
-
-      //   Resetting the password
-      resetPassword();
-    } catch (error: any) {
-      if (typeof error.response === "undefined") {
-        return toast.error("Network Error");
-      }
-      if (typeof error.response.data === "string") {
-        return toast.error(error.response.data);
-      }
-
-      if (error?.error?.message == "jwt expired") {
-        return toast.error("Reset password link is expired");
-      } else if (error.response.data.error) {
-        return toast.error(error.response.data.error);
-      }
-
-      toast.error("Something went wrong, please try again");
-    } finally {
-      setOtpLoading(false);
-    }
-  };
-
-  const sendOtp = async () => {
-    if (!newPassword) {
-      return toast.error("Please enter the new password");
-    }
-  
-
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_BASE_URI}/auth/otp/${id}/${token}`
-      );
-
-      setShow(true);
-    } catch (error: any) {
-      if (typeof error.response === "undefined") {
-        return toast.error("Network Error");
-      }
-      if (typeof error.response.data === "string") {
-        return toast.error(error.response.data);
-      }
-
-      console.log("sssssss", error.response.data.error.message);
-
-
-      if (error.response.data.error.message) {
-        return toast.error("Reset password link is expired");
-      }
-      if (error.response.data.error) {
-        return toast.error(error.response.data.error);
-      }
-
-
-      return toast.error("Somthing went wrong");
-    } finally {
-      setOtpLoading(false);
     }
   };
 
@@ -245,36 +157,19 @@ const ResetPassword = () => {
               </div>
 
               <div className="mt-10 flex justify-center">
-                {/* <button
-                  type="submit"
-                  className="flex items-center text-white btn bg-custom-500 border-custom-500 hover:text-white hover:bg-custom-600 hover:border-custom-600 focus:text-white focus:bg-custom-600 focus:border-custom-600 focus:ring focus:ring-custom-100 active:text-white active:bg-custom-600 active:border-custom-600 active:ring active:ring-custom-100 dark:ring-custom-400/20"
-                >
-                  Submit
-                </button> */}
                 <AnimationButton
                   className="w-full items-center justify-center"
                   loading={signing || loading}
                   disabled={signing || loading}
                   loadingText={loading ? "Submitting ..." : "Submit"}
                   label="Submit"
-                  onClick={sendOtp}
+                  onClick={resetPassword}
                 />
               </div>
             </form>
           </div>
         </div>
       </div>
-
-      {show && (
-        <OTPModal
-          show={show}
-          toggle={toggle}
-          resetPassword={verifyOtp}
-          loading={otpLoading}
-          otp={otp}
-          setOtp={setOtp}
-        />
-      )}
     </React.Fragment>
   );
 };
